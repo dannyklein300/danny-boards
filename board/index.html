@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Undeniable Life × Self Made Life · October 2026 Leaderboard</title>
+<meta name="theme-color" content="#f7f1e7" />
+<link rel="icon" href="assets/sml_icon.png" />
+<style>
+:root{
+  --bg:#faf6ef; --ink:#0b1630; --ink2:#22314f; --muted:#6b7590; --line:rgba(11,22,48,.09); --card:#ffffff;
+  --magenta:#e1197a; --orange:#ff7a1a; --gold:#ffb020; --blue:#2165ff; --sky:#3fb6ff; --violet:#7a3cff;
+  --ul:linear-gradient(120deg,#e1197a,#ff7a1a 70%,#ffb020);
+  --sml:linear-gradient(120deg,#1546d6,#2165ff 55%,#3fb6ff);
+  --brand:linear-gradient(100deg,#e1197a 0%,#ff7a1a 28%,#b23cc9 55%,#2165ff 78%,#3fb6ff 100%);
+  --brand-soft:linear-gradient(100deg,rgba(225,25,122,.12),rgba(255,122,26,.1) 30%,rgba(122,60,255,.08) 55%,rgba(33,101,255,.1) 80%,rgba(63,182,255,.12));
+  --green:#14a06a;
+  --font:"Inter","SF Pro Display","Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+  --shadow:0 1px 2px rgba(11,22,48,.04),0 12px 32px rgba(11,22,48,.07);
+  --shadow-lg:0 2px 4px rgba(11,22,48,.04),0 24px 60px rgba(11,22,48,.1);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; min-height:100vh; color:var(--ink); text-align:center; font-family:var(--font); -webkit-font-smoothing:antialiased; overflow-x:hidden;
+  background:
+    radial-gradient(820px 420px at 8% -10%, rgba(225,25,122,.13), transparent 62%),
+    radial-gradient(620px 360px at 34% -6%, rgba(255,122,26,.10), transparent 60%),
+    radial-gradient(620px 360px at 66% -6%, rgba(122,60,255,.07), transparent 60%),
+    radial-gradient(820px 420px at 94% -10%, rgba(33,101,255,.14), transparent 62%),
+    linear-gradient(180deg,#fffdf9 0%, var(--bg) 38%, #f1f2f7 100%);
+}
+.bg-grid{position:fixed; inset:0; pointer-events:none; opacity:.5;
+  background-image:radial-gradient(rgba(11,22,48,.07) 1px, transparent 1.2px); background-size:22px 22px;
+  -webkit-mask-image:radial-gradient(ellipse 70% 55% at 50% 0%,#000 20%,transparent 75%); mask-image:radial-gradient(ellipse 70% 55% at 50% 0%,#000 20%,transparent 75%)}
+.wrap{width:100%; max-width:960px; margin:0 auto; padding:0 16px 64px; position:relative}
+.num{font-weight:900; font-variant-numeric:tabular-nums; letter-spacing:-.02em}
+.grad-text{background:var(--brand); -webkit-background-clip:text; background-clip:text; color:transparent}
+
+/* header */
+header{padding:26px 0 0; display:flex; flex-direction:column; align-items:center}
+.brandbar{display:flex; align-items:center; justify-content:center; max-width:94%; padding:4px 0}
+.brandbar .logo{width:min(600px,100%); height:auto; display:block;
+  filter:drop-shadow(0 1px 1px rgba(11,22,48,.35)) drop-shadow(0 10px 18px rgba(11,22,48,.18)); animation:logoIn .8s cubic-bezier(.2,.9,.3,1.2) both}
+@keyframes logoIn{from{opacity:0; transform:translateY(-8px) scale(.97)}}
+.eyebrow{display:inline-flex; gap:8px; align-items:center; margin:18px auto 10px; padding:6px 12px; border-radius:999px;
+  font-size:11px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; color:var(--ink2); background:rgba(255,255,255,.75); border:1px solid var(--line)}
+.eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(20,160,106,.18);animation:pulse 1.8s infinite}
+.eyebrow .sep{opacity:.35}
+@keyframes pulse{50%{box-shadow:0 0 0 8px rgba(20,160,106,0)}}
+h1{margin:0; font-weight:900; font-size:clamp(30px,5.6vw,48px); line-height:1.05; letter-spacing:-.025em; color:var(--ink)}
+h1 .grad-text{padding-right:2px}
+.sub{margin:10px auto 0; color:var(--muted); font-weight:600; font-size:15px; max-width:560px}
+.updated{margin-top:8px; font-size:12px; font-weight:700; color:var(--muted)}
+.updated b{color:var(--ink2)}
+
+/* tabs */
+.tabs{display:inline-flex; gap:4px; padding:5px; margin:20px auto 20px; border-radius:999px; background:rgba(255,255,255,.85); border:1px solid var(--line); box-shadow:var(--shadow); max-width:100%}
+.tabs a{display:inline-flex; align-items:center; gap:6px; text-decoration:none; color:var(--ink2); font-weight:800; font-size:13px; padding:10px 16px; border-radius:999px; transition:background .2s,color .2s; white-space:nowrap}
+.tabs a:hover{background:rgba(11,22,48,.05)}
+.tabs a.on{background:var(--ink); color:#fff; box-shadow:0 8px 20px rgba(11,22,48,.22)}
+.tabs a.on::before{content:""; width:7px; height:7px; border-radius:50%; background:var(--brand)}
+.tabs a .ext{font-size:10px; opacity:.6}
+@media (max-width:520px){ .tabs{gap:2px; padding:4px} .tabs a{padding:9px 10px; font-size:12px; gap:5px} .tabs a.on::before{width:6px; height:6px} }
+@media (max-width:400px){ .tabs a{padding:8px 8px; font-size:11.5px} }
+
+.panel{background:rgba(255,255,255,.88); border:1px solid rgba(255,255,255,.95); border-radius:26px; box-shadow:var(--shadow-lg); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); padding:24px 22px; position:relative; overflow:hidden}
+.kicker{font-size:11px; font-weight:900; letter-spacing:.16em; text-transform:uppercase; color:var(--muted)}
+.section-title{margin:30px 0 14px; font-size:12px; font-weight:900; letter-spacing:.2em; text-transform:uppercase; color:var(--ink2);
+  display:flex; align-items:center; justify-content:center; gap:12px}
+.section-title::before,.section-title::after{content:""; height:2px; width:46px; border-radius:2px; background:var(--brand)}
+.section-title::after{transform:scaleX(-1)}
+
+/* growth hero */
+.hero{max-width:860px; margin:0 auto}
+.hero::before{content:""; position:absolute; inset:0 0 auto 0; height:4px; background:var(--brand)}
+.hero .big{font-size:clamp(40px,8vw,66px); line-height:1.02; margin-top:6px}
+.chips{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:16px}
+.chip{background:#fff; border:1px solid var(--line); border-radius:16px; padding:11px 8px}
+.chip b{display:block; font-size:19px}
+.chip span{font-size:10px; font-weight:800; letter-spacing:.07em; text-transform:uppercase; color:var(--muted)}
+@media (max-width:560px){ .chips{grid-template-columns:1fr 1fr} }
+.chart{margin-top:18px; text-align:left}
+.chart-head{display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom:6px}
+.chart-head .t{font-size:12px; font-weight:900; letter-spacing:.1em; text-transform:uppercase; color:var(--ink2)}
+.chart-head .s{font-size:12px; font-weight:700; color:var(--muted)}
+.chart-head .s b{color:var(--green)}
+.chart svg{display:block; width:100%; height:auto; overflow:visible}
+.chart .ax{font:700 10px var(--font); fill:#8a93a9}
+.chart .grid{stroke:rgba(11,22,48,.07); stroke-width:1}
+.chart .line{fill:none; stroke:url(#gLine); stroke-width:3; stroke-linecap:round; stroke-linejoin:round}
+.chart .proj{fill:none; stroke:rgba(11,22,48,.22); stroke-width:2; stroke-dasharray:4 6}
+.chart .pt{fill:#fff; stroke-width:2.5}
+.chart .pt:hover{r:7}
+.chart .now{font:800 10px var(--font); fill:var(--ink2)}
+.drawline{stroke-dasharray:var(--len); stroke-dashoffset:var(--len); animation:draw 1.6s cubic-bezier(.3,.7,.2,1) .2s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.milestone{margin-top:16px}
+.milestone .row{display:flex; justify-content:space-between; font-size:12px; font-weight:800; color:var(--muted); margin-bottom:6px}
+.milestone .row b{color:var(--ink)}
+.mbar{height:12px; border-radius:999px; background:rgba(11,22,48,.07); overflow:hidden}
+.mbar i{display:block; height:100%; width:0; border-radius:999px; background:var(--brand); transition:width 1.4s cubic-bezier(.2,.8,.2,1); position:relative; overflow:hidden}
+.mbar i::after{content:""; position:absolute; inset:0; background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent); transform:translateX(-100%); animation:sweep 2.8s ease-in-out infinite}
+@keyframes sweep{60%,100%{transform:translateX(100%)}}
+
+/* team badge under names */
+.tb{display:inline-flex; align-items:center; line-height:1; vertical-align:middle}
+.tb img{height:22px; width:auto; display:block; filter:drop-shadow(0 1px .5px rgba(11,22,48,.45)) drop-shadow(0 3px 5px rgba(11,22,48,.16))}
+.tb.sml img{height:28px}
+
+.note{color:var(--muted); font-size:12px; margin-top:22px; line-height:1.65}
+.note b{color:var(--ink2)}
+#confetti{position:fixed; inset:0; pointer-events:none; z-index:40}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important; transition:none!important}}
+
+.mini-stats{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:14px auto 20px; max-width:860px}
+@media (max-width:640px){.mini-stats{grid-template-columns:1fr 1fr}}
+.mini{padding:14px 10px; border-radius:18px; background:rgba(255,255,255,.9); border:1px solid var(--line); box-shadow:var(--shadow); transition:transform .2s, box-shadow .2s}
+.mini:hover{transform:translateY(-3px); box-shadow:0 14px 30px rgba(10,26,51,.1)}
+.mini .ic{font-size:18px}
+.mini .l{font-size:10px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-top:2px}
+.mini .v{font-size:16px; font-weight:900; margin-top:4px; line-height:1.25}
+.mini .v small{display:block; font-size:11px; color:var(--muted); font-weight:700}
+
+.filters{display:flex; gap:8px; justify-content:center; flex-wrap:wrap}
+.pill{display:inline-flex; align-items:center; gap:7px; border:1px solid var(--line); background:rgba(255,255,255,.75); color:var(--muted);
+  font:800 13px inherit; font-family:inherit; padding:9px 14px; border-radius:999px; cursor:pointer; transition:all .2s}
+.pill img{height:15px; width:auto}
+.pill:hover{color:var(--ink); transform:translateY(-1px)}
+.pill.active{color:#fff; border-color:transparent; background:var(--ink); box-shadow:0 10px 24px rgba(10,26,51,.2)}
+.pill.ul.active{background:var(--ul)} .pill.sml.active{background:var(--sml)}
+.fdot{width:10px; height:10px; border-radius:50%; display:inline-block}
+.fdot.ul{background:var(--ul)} .fdot.sml{background:var(--sml)}
+.pill.active .fdot{box-shadow:0 0 0 2px #fff}
+
+/* podium */
+.podium{display:flex; justify-content:center; align-items:flex-end; gap:14px; margin:28px auto 8px; max-width:780px}
+.pod{position:relative; flex:1 1 0; max-width:250px; min-width:0; display:flex; flex-direction:column; align-items:center; animation:rise .6s both}
+.pod.r1{order:2; padding-top:16px} .pod.r2{order:1} .pod.r3{order:3}
+.card{position:relative; width:100%; padding:22px 10px 14px; border-radius:22px 22px 0 0; background:rgba(255,255,255,.92); border:1px solid var(--line); border-bottom:0; overflow:hidden; transition:transform .25s, box-shadow .25s}
+.pod:hover .card{transform:translateY(-4px); box-shadow:0 18px 40px rgba(10,26,51,.12)}
+.pod.r1 .card{background:linear-gradient(180deg,#fff5dc,#fff); border-color:#f0c070; animation:glow 2.8s ease-in-out infinite}
+@keyframes glow{0%,100%{box-shadow:0 18px 44px rgba(255,176,32,.25)}50%{box-shadow:0 18px 60px rgba(122,60,255,.2)}}
+.card .shine{position:absolute; top:-40%; left:-40%; width:50%; height:180%; background:linear-gradient(90deg,transparent,rgba(255,255,255,.6),transparent); transform:rotate(25deg); animation:shine 4s infinite; pointer-events:none}
+@keyframes shine{0%,60%{left:-40%}100%{left:130%}}
+.crown{position:absolute; top:-20px; left:50%; transform:translateX(-50%); font-size:30px; z-index:2; filter:drop-shadow(0 6px 10px rgba(255,176,32,.55)); animation:bob 2.2s ease-in-out infinite}
+@keyframes bob{50%{transform:translate(-50%,-5px) rotate(-6deg)}}
+.avatar{width:58px; height:58px; margin:0 auto 8px; border-radius:50%; display:grid; place-items:center; font-weight:900; font-size:18px; color:#fff; position:relative; box-shadow:0 0 0 4px #fff, 0 0 0 7px rgba(10,26,51,.1)}
+.avatar.ul{background:var(--ul)} .avatar.sml{background:var(--sml)}
+.pod.r1 .avatar{width:70px; height:70px; font-size:22px; box-shadow:0 0 0 4px #fff, 0 0 0 7px rgba(255,176,32,.65)}
+.pod.r2 .avatar{box-shadow:0 0 0 4px #fff, 0 0 0 7px rgba(154,166,182,.7)}
+.pod.r3 .avatar{box-shadow:0 0 0 4px #fff, 0 0 0 7px rgba(194,122,62,.6)}
+.medal{position:absolute; right:-8px; bottom:-6px; font-size:22px}
+.card .name{font-weight:900; font-size:15px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.card .tbw{margin:5px 0 2px}
+.card .ap{font-size:clamp(17px,3.2vw,25px); margin:6px 0 2px}
+.card .dl{color:var(--muted); font-size:11px; font-weight:800}
+.card .lvl{margin-top:8px}
+.step{width:100%; border-radius:0 0 14px 14px; display:flex; justify-content:center; padding-top:10px; font-weight:900; font-size:28px; color:rgba(255,255,255,.95)}
+.pod.r1 .step{height:92px; background:var(--brand)}
+.pod.r2 .step{height:62px; background:linear-gradient(180deg,#b9c2ce,#8794a6)}
+.pod.r3 .step{height:44px; background:linear-gradient(180deg,#d9a273,#b06a33)}
+.pod.empty .card{opacity:.5; border-style:dashed}
+@media (max-width:560px){
+  .podium{gap:7px}
+  .card{padding:18px 5px 12px}
+  .avatar{width:42px;height:42px;font-size:14px}
+  .pod.r1 .avatar{width:52px;height:52px;font-size:17px}
+  .card .name{font-size:12px}
+  .card .lvl{font-size:9px; padding:2px 6px}
+  .tb img{height:18px}
+  .tb.sml img{height:23px}
+}
+
+/* list */
+@keyframes rise{from{opacity:0; transform:translateY(12px)}}
+.list{display:flex; flex-direction:column; gap:10px; max-width:780px; margin:0 auto}
+.agent{position:relative; display:grid; grid-template-columns:46px 1fr auto; gap:14px; align-items:center; text-align:left; padding:14px 16px 14px 18px;
+  border-radius:20px; background:rgba(255,255,255,.92); border:1px solid var(--line); box-shadow:0 1px 2px rgba(11,22,48,.03); overflow:hidden; animation:rise .5s both; transition:transform .2s, box-shadow .2s}
+.agent::before{content:""; position:absolute; left:0; top:0; bottom:0; width:5px}
+.agent.ul::before{background:var(--ul)} .agent.sml::before{background:var(--sml)}
+.agent:hover{transform:translateY(-3px); box-shadow:0 16px 36px rgba(10,26,51,.1)}
+.agent.top1{background:linear-gradient(100deg,#fff6e0,#fff 60%); border-color:#f0c070}
+.rnum{width:42px; height:42px; border-radius:14px; display:grid; place-items:center; font-weight:900; font-size:15px; background:rgba(10,26,51,.06)}
+.agent.top1 .rnum,.agent.top2 .rnum,.agent.top3 .rnum{font-size:24px; background:transparent}
+.who{min-width:0}
+.who .n{font-weight:900; font-size:16px; display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+.who .tbw{margin-top:5px}
+.lvl{font-size:10px; font-weight:900; padding:3px 8px; border-radius:999px; background:#eef2f7; color:#35506e; white-space:nowrap; display:inline-block}
+.lvl.t2{background:#e9f0ff; color:#2c4f9a} .lvl.t3{background:#fff0c8; color:#8a6500}
+.lvl.t4{background:linear-gradient(90deg,#fde7f2,#e5efff); color:#9a1248} .lvl.t5{background:var(--brand); color:#fff}
+.xp{display:grid; grid-template-columns:auto 1fr auto; gap:8px; align-items:center; margin-top:8px}
+.xp .lv,.xp .p{font-size:10px; font-weight:800; color:var(--muted); white-space:nowrap}
+.track{height:9px; border-radius:999px; background:rgba(10,26,51,.08); overflow:hidden}
+.fill{height:100%; width:0; border-radius:999px; transition:width 1.1s cubic-bezier(.2,.8,.2,1); position:relative; overflow:hidden}
+.agent.ul .fill{background:var(--ul)} .agent.sml .fill{background:var(--sml)}
+.fill::after{content:""; position:absolute; inset:0; background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent); transform:translateX(-100%); animation:sweep 2.6s ease-in-out infinite}
+.right{text-align:right; display:flex; flex-direction:column; align-items:flex-end; gap:6px}
+.right .apv{font-size:18px}
+.right .g{font-size:11px; font-weight:800; color:var(--muted)}
+.ach-row{display:flex; flex-wrap:wrap; gap:4px; justify-content:flex-end}
+.ach{width:24px; height:24px; border-radius:8px; display:grid; place-items:center; font-size:12px; background:rgba(10,26,51,.06); filter:grayscale(1) opacity(.3); position:relative}
+.ach.on{filter:none; background:#fff; box-shadow:0 4px 10px rgba(10,26,51,.14)}
+.ach .tip{display:none; position:absolute; bottom:115%; left:50%; transform:translateX(-50%); background:var(--ink); color:#fff; font-size:10px; font-weight:800; padding:4px 8px; border-radius:8px; white-space:nowrap; z-index:5}
+.ach:hover .tip{display:block}
+.empty-msg{padding:24px; color:var(--muted); font-weight:700}
+@media (max-width:600px){
+  .agent{grid-template-columns:38px 1fr; gap:10px; padding:12px 12px 12px 16px}
+  .rnum{width:36px; height:36px}
+  .right{grid-column:1/-1; flex-direction:row; justify-content:space-between; align-items:center; gap:10px}
+  .right > div:first-child{text-align:left}
+  .ach-row{flex-wrap:nowrap}
+  .ach{width:20px; height:20px; font-size:10px; border-radius:6px}
+}
+
+/* warming up */
+.warm{max-width:780px; margin:16px auto 0; text-align:left; background:rgba(255,255,255,.6); border:1px dashed rgba(10,26,51,.18); border-radius:18px; padding:4px 14px}
+.warm summary{cursor:pointer; padding:10px 0; font-size:12px; font-weight:900; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); text-align:center; list-style-position:inside}
+.warm-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:8px; padding:4px 0 14px}
+.wchip{display:flex; flex-direction:column; gap:4px; padding:8px 10px; border-radius:12px; background:#fff; border:1px solid var(--line); font-weight:800; font-size:13px}
+.wchip .tb{align-self:flex-start}
+.wchip .tb img{height:18px}
+.wchip .tb.sml img{height:23px}
+.legend{margin:22px auto 0; display:flex; flex-wrap:wrap; gap:8px; justify-content:center; max-width:780px}
+.legend span{font-size:11px; font-weight:800; padding:6px 10px; border-radius:999px; background:rgba(255,255,255,.75); border:1px solid var(--line)}
+
+.filters .pill{box-shadow:var(--shadow)}
+.hl-name{font-size:15px}
+
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<canvas id="confetti"></canvas>
+<div class="wrap">
+  <header>
+    <div class="brandbar"><img class="logo" src="assets/logo_cobrand.png" alt="Undeniable Life × Self Made Life" /></div>
+    <div class="eyebrow"><span class="dot"></span><span>October 2026</span><span class="sep">•</span><span id="daysLeft"></span></div>
+    <h1>October <span class="grad-text">Leaderboard</span></h1>
+    <p class="sub">Every October sale from Undeniable Life and Self Made Life.</p>
+    <div class="updated" id="updated"></div>
+  </header>
+
+  <nav class="tabs" aria-label="Views">
+    <a href="index.html" class="on" aria-current="page">Leaderboard</a>
+    <a href="totals.html">Team Totals</a>
+    <a href="daily.html">Daily Revenue</a>
+    <a href="https://dannyklein300.github.io/danny-boards/kpis/">KPIs <span class="ext">↗</span></a>
+  </nav>
+
+  <section class="panel hero">
+    <div class="kicker">Combined growth · October 2026</div>
+    <div class="big num grad-text" id="grandAp">$0</div>
+    <div class="chips">
+      <div class="chip"><b class="num" id="cDeals">0</b><span>Deals</span></div>
+      <div class="chip"><b class="num" id="cProd">0</b><span>Agents producing</span></div>
+      <div class="chip"><b class="num" id="cAvg">$0</b><span>Avg deal</span></div>
+      <div class="chip"><b class="num" id="cPace">$0</b><span>October pace</span></div>
+    </div>
+    <div class="chart">
+      <div class="chart-head"><span class="t">📈 Team growth by day</span><span class="s" id="chartNote"></span></div>
+      <div id="growth"></div>
+    </div>
+    <div class="milestone">
+      <div class="row"><span>Next team milestone <b id="mNext">$0</b></span><span id="mLeft"></span></div>
+      <div class="mbar"><i id="mFill"></i></div>
+    </div>
+  </section>
+
+  <div class="mini-stats">
+    <div class="mini"><div class="ic">👑</div><div class="l">Top producer</div><div class="v" id="topDog">—</div></div>
+    <div class="mini"><div class="ic">🤝</div><div class="l">Most deals</div><div class="v" id="mostDeals">—</div></div>
+    <div class="mini"><div class="ic">💰</div><div class="l">Biggest deal</div><div class="v" id="bigDeal">—</div></div>
+    <div class="mini"><div class="ic">🔥</div><div class="l">Best day</div><div class="v" id="bestDay">—</div></div>
+  </div>
+
+  <div class="filters" id="filters">
+    <button class="pill active" data-f="ALL">Whole team</button>
+    <button class="pill ul" data-f="UL"><span class="fdot ul"></span>Undeniable Life</button>
+    <button class="pill sml" data-f="SML"><span class="fdot sml"></span>Self Made Life</button>
+  </div>
+
+  <div class="section-title">Podium</div>
+  <div class="podium" id="podium"></div>
+
+  <div class="section-title">Leaderboard</div>
+  <div class="list" id="list"></div>
+
+  <details class="warm" id="warmWrap">
+    <summary><span id="warmCount">0</span> agents warming up · first deal unlocks the board</summary>
+    <div class="warm-grid" id="warm"></div>
+  </details>
+
+  <div class="legend" id="legend"></div>
+  <p class="note">AP from October 2026 sales posted in <b>Self Made Life #daily-sales💰</b> and <b>Undeniable Life Group #daily-sales</b> (Oct 1–31, Arizona time). Each deal counts once.<br/>The logo under each name shows the agent's agency.</p>
+</div>
+
+<script>
+const DATA = {"period": "2026-10", "month_label": "October 2026", "timezone": "America/Phoenix", "updated": "2026-10-10T17:50:00-07:00", "updated_label": "Oct 10, 2026 · 5:50 PM MST (AZ)", "teams": {"UL": {"name": "Undeniable Life"}, "SML": {"name": "Self Made Life"}}, "agents": [{"id": "steve-shatkin", "name": "Steve Shatkin", "team": "SML", "ap": 16370.0, "deals": 7, "posts": [{"date": "2026-10-01", "time": "11:12 AM", "ap": 1812, "carrier": "Mutual of Omaha", "detail": "WL", "policies": 1, "source": "Self Made Life #daily-sales💰"}, {"date": "2026-10-02", "time": "1:46 PM", "ap": 533, "carrier": "CICA", "detail": "GIWL", "policies": 1, "source": "Self Made Life #daily-sales💰"}, {"date": "2026-10-05", "time": "11:46 AM", "ap": 1725, "carrier": "Mutual of Omaha", "detail": "WL, eff imm", "policies": 1, "source": "Self Made Life #daily-sales💰"}, {"date": "2026-10-07", "time": "3:11 PM", "ap": 4000, "carrier": "Mutual of Omaha", "detail": "IUL (replaced his $3,819 Foresters term in UW)", "policies": 1, "source": "Self Made Life #daily-sales💰", "note": "Replacement; Foresters term not counted"}, {"date": "2026-10-08", "time": "8:41 AM", "ap": 2415, "carrier": "Mutual of Omaha", "detail": "IUL (#justrates live-dials)", "policies": 1, "source": "Self Made Life #daily-sales💰"}, {"date": "2026-10-08", "time": "10:01 AM", "ap": 2969, "carrier": "Royal Neighbors", "detail": "WL (posted 'RN WL'; #justrates live-dials)", "policies": 1, "source": "Self Made Life #daily-sales💰"}, {"date": "2026-10-08", "time": "1:29 PM", "ap": 2916.0, "carrier": "Mutual of Omaha", "detail": "IUL (#justrates live-dials)", "policies": 1, "source": "Self Made Life #daily-sales💰"}]}, {"id": "naki-tupoumalohi", "name": "Naki Tupoumalohi", "team": "SML", "ap": 24354.36, "deals": 4, "posts": [{"date": "2026-10-02", "time": "7:14 PM", "ap": 2227.68, "carrier": "UHL", "detail": "Posted 'with Salote Tupoumalohi'; credited to poster Naki", "policies": 1, "source": "Self Made Life #daily-sales💰", "note": "Joint deal"}, {"date": "2026-10-07", "time": "4:37 PM", "ap": 12015, "carrier": "F&G", "detail": "Posted as $12,015 TP, sent to UW, with Salote Tupoumalohi; credited to poster Naki", "policies": 1, "source": "Self Made Life #daily-sales💰", "note": "Posted as target premium (TP); joint deal"}, {"date": "2026-10-09", "time": "9:58 AM", "ap": 1906.68, "carrier": "Transamerica", "detail": "EFT 10/23, with Salote Tupoumalohi; credited to poster Naki", "policies": 1, "source": "Self Made Life #daily-sales💰", "note": "Joint deal"}, {"date": "2026-10-09", "time": "5:51 PM", "ap": 8205, "carrier": "F&G", "detail": "Posted as $8,205 TP, sent to UW, with Salote Tupoumalohi; credited to poster Naki", "policies": 1, "source": "Self Made Life #daily-sales💰", "note": "Posted as target premium (TP); joint deal"}]}, {"id": "justin-mcknight", "name": "Justin McKnight", "team": "SML", "ap": 13743.24, "deals": 7, "posts": [{"date": "2026-10-02", "time": "6:26 PM", "ap": 2985.12, "carrier": "Transamerica", "detail": "Aged mortgage protection follow-up (posted as 'Trans')", "policies": 1, "source": "Self Made Life #daily-sales💰"}, {"date": "2026-10-08", "time": "10:12 AM", "ap": 2859, "carrier": "Mutual of Omaha", "detail": "Follow up / Aged MP", "policies": 1, "source": "Self Made Life #daily-sales💰", "note": "No 'AP' label in post; clear sale post, counted as AP"}, {"date": "2026-10-08", "time": "6:14 PM", "ap": 1046.4, "carrier": "Mutual of Omaha", "detail": "Aged MP", "policies": 1, "source": "Self Made Life #daily-sales💰"}, {"date": "2026-10-08", "time": "7:18 PM", "ap": 1608.12, "carrier": "Ethos", "detail": "His and hers / Aged MP", "policies": 1, "source": "Self Made Life #daily-sales💰"}, {"date": "2026-10-09", "time": "2:50 PM", "ap": 3276, "carrier": "Ethos", "detail": "Aged MP, EFT 11/01", "policies": 1, "source": "Self Made Life #daily-sales💰"}, {"date": "2026-10-09", "time": "2:50 PM", "ap": 942, "carrier": "Ethos", "detail": "Aged MP, EFT immediate", "policies": 1, "source": "Self Made Life #daily-sales💰"}, {"date": "2026-10-10", "time": "5:50 PM", "ap": 1026.6, "carrier": "Kansas City Life", "detail": "30 Year ROP term / Aged MP", "policies": 1, "source": "Self Made Life #daily-sales💰"}]}, {"id": "geno", "name": "Geno", "team": "SML", "ap": 6970, "deals": 4, "posts": [{"date": "2026-10-02", "time": "9:09 AM", "ap": 1330, "carrier": "Ethos", "detail": "", "policies": 1, "source": "Self Made Life #daily-sales💰"}, {"date": "2026-10-02", "time": "9:09 AM", "ap": 1920, "carrier": "Foresters", "detail": "", "policies": 1, "source": "Self Made Life #daily-sales💰"}, {"date": "2026-10-02", "time": "9:10 AM", "ap": 2568, "carrier": "CICA", "detail": "", "policies": 1, "source": "Self Made Life #daily-sales💰"}, {"date": "2026-10-09", "time": "12:38 PM", "ap": 1152, "carrier": "Ethos", "detail": "EFT 11/03", "policies": 1, "source": "Self Made Life #daily-sales💰"}]}, {"id": "spencer", "name": "Spencer", "team": "SML", "ap": 6390, "deals": 3, "posts": [{"date": "2026-10-01", "time": "8:24 PM", "ap": 2325, "carrier": "Foresters", "detail": "Proven 9m, EFT 10/15", "policies": 1, "source": "Self Made Life #daily-sales💰"}, {"date": "2026-10-05", "time": "12:41 PM", "ap": 3078, "carrier": "KCL", "detail": "20yr Term referral, EFT 10/15", "policies": 1, "source": "Self Made Life #daily-sales💰"}, {"date": "2026-10-09", "time": "11:48 AM", "ap": 987, "carrier": "AHL", "detail": "Proven 12m, EFT 10/15", "policies": 1, "source": "Self Made Life #daily-sales💰"}]}, {"id": "izick-ruiz", "name": "Izick Ruiz", "team": "SML", "ap": 4763.36, "deals": 4, "posts": [{"date": "2026-10-01", "time": "10:26 AM", "ap": 661.56, "carrier": "AHL", "detail": "Premium, GOAT vet", "policies": 1, "source": "Self Made Life #daily-sales💰"}, {"date": "2026-10-01", "time": "12:54 PM", "ap": 392.64, "carrier": "Mutual of Omaha", "detail": "Term", "policies": 1, "source": "Self Made Life #daily-sales💰"}, {"date": "2026-10-08", "time": "1:18 PM", "ap": 1448.16, "carrier": "AHL", "detail": "Fresh vet", "policies": 1, "source": "Self Made Life #daily-sales💰"}, {"date": "2026-10-09", "time": "5:13 PM", "ap": 2261, "carrier": "American Home Life", "detail": "AHL, fresh vet", "policies": 1, "source": "Self Made Life #daily-sales💰"}]}, {"id": "khalil-grinds", "name": "Khalil Grinds", "team": "UL", "ap": 4145.88, "deals": 2, "posts": [{"date": "2026-10-03", "time": "5:08 PM", "ap": 1212.24, "carrier": "Mutual of Omaha", "detail": "GOAT Aged, EFT 10/07", "policies": 1, "source": "Self Made Life #daily-sales💰"}, {"date": "2026-10-06", "time": "8:01 PM", "ap": 2933.64, "carrier": "Foresters", "detail": "Self Gen, EFT IMM", "policies": 1, "source": "Self Made Life #daily-sales💰"}]}, {"id": "charon-tucker", "name": "Charon Tucker", "team": "UL", "ap": 3901.08, "deals": 3, "posts": [{"date": "2026-10-05", "time": "11:50 AM", "ap": 1791.72, "carrier": "Liberty Bankers", "detail": "GOAT Aged, EFT IMM", "policies": 1, "source": "Self Made Life #daily-sales💰"}, {"date": "2026-10-05", "time": "11:51 AM", "ap": 784.68, "carrier": "Liberty Bankers", "detail": "Valor Lead, EFT IMM", "policies": 1, "source": "Self Made Life #daily-sales💰"}, {"date": "2026-10-05", "time": "11:52 AM", "ap": 1324.68, "carrier": "Liberty Bankers", "detail": "Aged GOAT, EFT 10/7", "policies": 1, "source": "Self Made Life #daily-sales💰"}]}, {"id": "luna", "name": "Luna", "team": "SML", "ap": 3164.04, "deals": 3, "posts": [{"date": "2026-10-06", "time": "7:41 PM", "ap": 1125.24, "carrier": "UHL", "detail": "Just Rates lead", "policies": 1, "source": "Self Made Life #daily-sales💰"}, {"date": "2026-10-06", "time": "7:51 PM", "ap": 1443.6, "carrier": "Ethos", "detail": "WL, warm market lead", "policies": 1, "source": "Self Made Life #daily-sales💰"}, {"date": "2026-10-07", "time": "9:42 AM", "ap": 595.2, "carrier": "Ethos", "detail": "Warm market text close", "policies": 1, "source": "Self Made Life #daily-sales💰"}]}, {"id": "david-abad", "name": "David Abad", "team": "UL", "ap": 2490.96, "deals": 2, "posts": [{"date": "2026-10-07", "time": "12:33 PM", "ap": 835.44, "carrier": "KCL", "detail": "FEX, EFT 10/15", "policies": 1, "source": "Self Made Life #daily-sales💰"}, {"date": "2026-10-07", "time": "12:34 PM", "ap": 1655.52, "carrier": "KCL", "detail": "FEX, EFT 10/15", "policies": 1, "source": "Self Made Life #daily-sales💰"}]}, {"id": "salote-tupoumalohi", "name": "Salote Tupoumalohi", "team": "SML", "ap": 2466.12, "deals": 2, "posts": [{"date": "2026-10-07", "time": "2:02 PM", "ap": 750.36, "carrier": "Mutual of Omaha", "detail": "WL, EFT immediately", "policies": 1, "source": "Self Made Life #daily-sales💰"}, {"date": "2026-10-08", "time": "8:56 PM", "ap": 1715.76, "carrier": "Foresters", "detail": "WL, Effective immediately; T'd up by Naki Tupoumalohi (posted Forrester)", "policies": 1, "source": "Self Made Life #daily-sales💰"}]}, {"id": "donovan-scandariato", "name": "Donovan Scandariato", "team": "UL", "ap": 1764, "deals": 1, "posts": [{"date": "2026-10-09", "time": "11:23 AM", "ap": 1764, "carrier": "Mutual of Omaha", "detail": "Term Life Express (MOO TLE)", "policies": 1, "source": "Self Made Life #daily-sales💰"}]}, {"id": "andrea-mora", "name": "Andrea Mora", "team": "SML", "ap": 1728.0, "deals": 1, "posts": [{"date": "2026-10-08", "time": "1:20 PM", "ap": 1728.0, "carrier": "Ethos", "detail": "eff imm / Follow up", "policies": 1, "source": "Self Made Life #daily-sales💰"}]}, {"id": "ipo-lake", "name": "Ipo Lake", "team": "SML", "ap": 1559, "deals": 1, "posts": [{"date": "2026-10-09", "time": "3:03 PM", "ap": 1559, "carrier": "Transamerica", "detail": "First sale at Pinnacle, instant approval, instant draft", "policies": 1, "source": "Self Made Life #daily-sales💰"}]}, {"id": "tyler-glennon", "name": "Tyler Glennon", "team": "SML", "ap": 3440.0, "deals": 3, "posts": [{"date": "2026-10-08", "time": "5:40 PM", "ap": 900.0, "carrier": "CICA", "detail": "Just rates - PIVOT CITY live-dials", "policies": 1, "source": "Self Made Life #daily-sales💰"}, {"date": "2026-10-09", "time": "6:40 PM", "ap": 932.0, "carrier": "AHL", "detail": "Just rates, Crank wheel with video", "policies": 1, "source": "Self Made Life #daily-sales💰"}, {"date": "2026-10-10", "time": "10:21 AM", "ap": 1608.0, "carrier": "AHL", "detail": "Just rates - SUPER SALES SATURDAY", "policies": 1, "source": "Self Made Life #daily-sales💰"}]}, {"id": "neo-johnson", "name": "Neo Johnson", "team": "SML", "ap": 607.2, "deals": 1, "posts": [{"date": "2026-10-07", "time": "7:57 AM", "ap": 607.2, "carrier": "Ethos", "detail": "", "policies": 1, "source": "Self Made Life #daily-sales💰"}]}, {"id": "joe-delpino", "name": "Joe DelPino", "team": "SML", "ap": 511.2, "deals": 1, "posts": [{"date": "2026-10-07", "time": "12:53 PM", "ap": 511.2, "carrier": "CICA", "detail": "Standard", "policies": 1, "source": "Self Made Life #daily-sales💰"}]}, {"id": "aaron-hildebrand", "name": "Aaron Hildebrand", "team": "UL", "ap": 0, "deals": 0, "posts": []}, {"id": "alexander-petrowski", "name": "Alexander Petrowski", "team": "UL", "ap": 0, "deals": 0, "posts": []}, {"id": "alia-al-mazem", "name": "Alia Al-Mazem", "team": "UL", "ap": 0, "deals": 0, "posts": []}, {"id": "anthony-carter", "name": "Anthony Carter", "team": "UL", "ap": 0, "deals": 0, "posts": []}, {"id": "autumn-hines", "name": "Autumn Hines", "team": "UL", "ap": 0, "deals": 0, "posts": []}, {"id": "ava", "name": "Ava", "team": "UL", "ap": 0, "deals": 0, "posts": []}, {"id": "carlos-fierro", "name": "Carlos Fierro", "team": "UL", "ap": 0, "deals": 0, "posts": []}, {"id": "chris-flores", "name": "Chris Flores", "team": "UL", "ap": 0, "deals": 0, "posts": []}, {"id": "chris-matlock", "name": "Chris Matlock", "team": "UL", "ap": 0, "deals": 0, "posts": []}, {"id": "des-woods", "name": "Des Woods", "team": "UL", "ap": 0, "deals": 0, "posts": []}, {"id": "desirae-rhodes", "name": "Desirae Rhodes", "team": "UL", "ap": 0, "deals": 0, "posts": []}, {"id": "diane-stottlemire", "name": "Diane Stottlemire", "team": "UL", "ap": 0, "deals": 0, "posts": []}, {"id": "frank-baltierrez", "name": "Frank Baltierrez", "team": "UL", "ap": 0, "deals": 0, "posts": []}, {"id": "gerardo-diaz", "name": "Gerardo Diaz", "team": "UL", "ap": 0, "deals": 0, "posts": []}, {"id": "jackie-stofa", "name": "Jackie Stofa", "team": "UL", "ap": 0, "deals": 0, "posts": []}, {"id": "jake-evans", "name": "Jake Evans", "team": "UL", "ap": 0, "deals": 0, "posts": []}, {"id": "james-wyman", "name": "James Wyman", "team": "UL", "ap": 0, "deals": 0, "posts": []}, {"id": "janee-cato", "name": "Janeé Cato", "team": "UL", "ap": 0, "deals": 0, "posts": []}, {"id": "jermaine-ruffin-jr", "name": "Jermaine Ruffin Jr", "team": "UL", "ap": 0, "deals": 0, "posts": []}, {"id": "jordan-gipson", "name": "Jordan Gipson", "team": "UL", "ap": 0, "deals": 0, "posts": []}, {"id": "kiana-brusett", "name": "Kiana Brusett", "team": "UL", "ap": 0, "deals": 0, "posts": []}, {"id": "lucas-tyre", "name": "Lucas Tyre", "team": "UL", "ap": 0, "deals": 0, "posts": []}, {"id": "luke-desrosiers", "name": "Luke Desrosiers", "team": "UL", "ap": 0, "deals": 0, "posts": []}, {"id": "mellice-jellison", "name": "Mellice Jellison", "team": "UL", "ap": 0, "deals": 0, "posts": []}, {"id": "melvin-lewis", "name": "Melvin Lewis", "team": "UL", "ap": 0, "deals": 0, "posts": []}, {"id": "michael-gonzalez", "name": "Michael Gonzalez", "team": "UL", "ap": 0, "deals": 0, "posts": []}, {"id": "morgan-whiteman", "name": "Morgan Whiteman", "team": "UL", "ap": 0, "deals": 0, "posts": []}, {"id": "nia-alex", "name": "Nia Alex", "team": "UL", "ap": 0, "deals": 0, "posts": []}, {"id": "spencer-brown", "name": "Spencer Brown", "team": "UL", "ap": 0, "deals": 0, "posts": []}, {"id": "tay-nobles", "name": "Tay Nobles", "team": "UL", "ap": 0, "deals": 0, "posts": []}], "totals": {"UL": {"ap": 12301.92, "deals": 8, "producers": 4, "roster": 34, "top": {"name": "Khalil Grinds", "ap": 4145.88}}, "SML": {"ap": 86066.52, "deals": 41, "producers": 13, "roster": 13, "top": {"name": "Naki Tupoumalohi", "ap": 24354.36}}, "ALL": {"ap": 98368.44, "deals": 49, "producers": 17}}};
+
+const TEAMS = {
+  UL:  {name:'Undeniable Life', badge:'assets/badge_ul.png',  cls:'ul'},
+  SML: {name:'Self Made Life',  badge:'assets/badge_sml.png', cls:'sml'}
+};
+const LEVELS = [
+  {lv:1,name:'Rookie',ap:0,t:''},{lv:2,name:'On the Board',ap:1,t:''},{lv:3,name:'Grinder',ap:2500,t:'t2'},
+  {lv:4,name:'Hustler',ap:5000,t:'t2'},{lv:5,name:'Spark',ap:10000,t:'t3'},{lv:6,name:'Blaze',ap:15000,t:'t3'},
+  {lv:7,name:'Producer',ap:20000,t:'t3'},{lv:8,name:'Hunter',ap:25000,t:'t4'},{lv:9,name:'Closer',ap:30000,t:'t4'},
+  {lv:10,name:'Rainmaker',ap:40000,t:'t4'},{lv:11,name:'Powerhouse',ap:50000,t:'t5'}
+];
+const ACHIEVEMENTS = [
+  {ap:1,emoji:'✅',name:'First Deal'},{ap:2500,emoji:'⚡',name:'Grinder $2.5k'},{ap:5000,emoji:'🔥',name:'Hustler $5k'},
+  {ap:10000,emoji:'💎',name:'Spark $10k'},{ap:20000,emoji:'🎯',name:'Producer $20k'},{ap:30000,emoji:'🏆',name:'Closer $30k'},
+  {ap:50000,emoji:'👑',name:'Powerhouse $50k'}
+];
+const MILESTONES=[25000,50000,75000,100000,150000,200000,250000,300000,400000,500000];
+const REDUCED = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+function money(n,dec){ return '$'+Number(n||0).toLocaleString('en-US',{minimumFractionDigits:dec?2:0,maximumFractionDigits:dec?2:0}); }
+function kfmt(n){ return n>=1000? '$'+(n/1000).toFixed(n%1000===0?0:0)+'k' : '$'+n; }
+function esc(s){ return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function initials(n){ return n.split(/\s+/).slice(0,2).map(w=>w[0]||'').join('').toUpperCase(); }
+function levelFor(ap){ let l=LEVELS[0]; for(const x of LEVELS){ if(ap>=x.ap) l=x; } return l; }
+function nextLevel(ap){ return LEVELS.find(x=>x.ap>ap); }
+function teamBadge(team){ const t=TEAMS[team]; return `<span class="tb ${t.cls}" title="${t.name}"><img src="${t.badge}" alt="${t.name}" /></span>`; }
+function countUp(el,to,dec){
+  if(!el) return;
+  el.dataset.cu=to; el.dataset.cudec=dec?1:0; delete el.dataset.ci;
+  if(REDUCED){ el.textContent=money(to,dec); return; }
+  const t0=performance.now(), dur=1300, tok=(el._cuTok=(el._cuTok||0)+1);
+  const step=t=>{ if(el._cuTok!==tok) return; const k=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-k,3); el.textContent=money(to*e,dec&&k===1); if(k<1) requestAnimationFrame(step); };
+  requestAnimationFrame(step);
+}
+function countInt(el,to){
+  if(!el) return;
+  el.dataset.ci=to; delete el.dataset.cu;
+  if(REDUCED){ el.textContent=to; return; }
+  const t0=performance.now(), dur=1100, tok=(el._cuTok=(el._cuTok||0)+1);
+  const step=t=>{ if(el._cuTok!==tok) return; const k=Math.min(1,(t-t0)/dur); el.textContent=Math.round(to*(1-Math.pow(1-k,3))); if(k<1) requestAnimationFrame(step); };
+  requestAnimationFrame(step);
+}
+/* replay every count-up (and bar fill) on the page */
+function replayCounts(){
+  document.querySelectorAll('[data-cu]').forEach(el=>countUp(el,Number(el.dataset.cu),el.dataset.cudec==='1'));
+  document.querySelectorAll('[data-ci]').forEach(el=>countInt(el,Number(el.dataset.ci)));
+  const bars=[...document.querySelectorAll('[data-w]')];
+  bars.forEach(b=>{ b.style.transition='none'; b.style.width='0%'; });
+  requestAnimationFrame(()=>requestAnimationFrame(()=>bars.forEach(b=>{ b.style.transition=''; b.style.width=b.dataset.w+'%'; })));
+  const g=document.getElementById('growth'); if(g&&typeof renderGrowthChart==='function') renderGrowthChart(g);
+}
+let _lastReplay=0;
+document.addEventListener('click',e=>{
+  if(e.target.closest('a,input,select,textarea,summary,label,.tabs')) return;
+  const now=performance.now(); if(now-_lastReplay<250) return; _lastReplay=now;
+  replayCounts();
+});
+function phxNow(){ return new Date(new Date().toLocaleString('en-US',{timeZone:'America/Phoenix'})); }
+function monthStatus(){
+  const now=phxNow(), y=2026, m=9;
+  if(now.getFullYear()>y || (now.getFullYear()===y && now.getMonth()>m)) return 'Final results';
+  if(now.getFullYear()<y || now.getMonth()<m) return 'Starts Oct 1';
+  const left=31-now.getDate();
+  return left===0 ? 'Last day' : left+' days left';
+}
+function initHeader(){
+  const d=document.getElementById('daysLeft'); if(d) d.textContent=monthStatus();
+  const u=document.getElementById('updated'); if(u) u.innerHTML='Updated <b>'+esc(DATA.updated_label)+'</b>';
+}
+/* ---- combined growth ---- */
+function dataDay(){ return Number(String(DATA.updated).slice(8,10)) || 31; }
+function daily(){
+  const days=Array(32).fill(0), dealsBy=Array(32).fill(0);
+  for(const a of DATA.agents) for(const p of a.posts){ const d=Number(p.date.slice(8,10)); days[d]+=p.ap; dealsBy[d]+=(p.policies||1); }
+  const cum=[]; let s=0; for(let d=1; d<=31; d++){ s+=days[d]; cum[d]=s; }
+  return {days,dealsBy,cum};
+}
+function growthStats(){
+  const {days}=daily(), dd=dataDay(), total=DATA.totals.ALL.ap;
+  let best=1; for(let d=1; d<=dd; d++) if(days[d]>days[best]) best=d;
+  const active=days.slice(1,dd+1).filter(v=>v>0).length;
+  return {best, bestAp:days[best], perDay: total/dd, pace: total/dd*31, active, last:days[dd], dd};
+}
+function nextMilestone(v){ return MILESTONES.find(m=>m>v) || Math.ceil((v+1)/100000)*100000; }
+function prevMilestone(v){ let p=0; for(const m of MILESTONES) if(m<=v) p=m; return p; }
+function renderGrowthChart(el, opts={}){
+  const {days,cum}=daily(), dd=dataDay(), total=DATA.totals.ALL.ap, st=growthStats();
+  if(!el._rs){ el._rs=true; let lw=el.clientWidth; addEventListener('resize',()=>{ if(Math.abs(el.clientWidth-lw)>20){ lw=el.clientWidth; renderGrowthChart(el,opts); } }); }
+  const W=Math.max(280,Math.round(el.clientWidth||820)), H=W<520?190:230, P={l:42,r:W<520?12:18,t:16,b:26};
+  const maxY=Math.max(nextMilestone(total), opts.showPace? 0:0);
+  const x=d=>P.l+(d-1)/(31-1)*(W-P.l-P.r), y=v=>H-P.b-(v/maxY)*(H-P.t-P.b);
+  const steps=5, grid=[]; for(let i=0;i<=steps;i++){ const v=maxY*i/steps; grid.push(`<line class="grid" x1="${P.l}" x2="${W-P.r}" y1="${y(v)}" y2="${y(v)}"/><text class="ax" x="${P.l-8}" y="${y(v)+3}" text-anchor="end">${v? '$'+Math.round(v/1000)+'k':'$0'}</text>`); }
+  const xt=(W<520?[1,15,31]:[1,8,15,22,31]).map(d=>`<text class="ax" x="${x(d)}" y="${H-6}" text-anchor="${d===1?'start':d===31?'end':'middle'}">Oct ${d}</text>`).join('');
+  const pts=[]; pts.push([x(1),y(0)]); for(let d=1; d<=dd; d++) pts.push([x(d),y(cum[d])]);
+  // step-ish smooth: start at day1 baseline then each day's close
+  const path='M'+pts.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join(' L');
+  const area=path+` L${x(dd).toFixed(1)},${y(0).toFixed(1)} Z`;
+  let len=0; for(let i=1;i<pts.length;i++) len+=Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]);
+  const dots=[]; for(let d=1; d<=dd; d++) if(days[d]>0){ dots.push(`<circle class="pt" cx="${x(d)}" cy="${y(cum[d])}" r="5" stroke="${d===st.best?'#e1197a':'#2165ff'}"><title>Oct ${d}: +${money(days[d],true)} · total ${money(cum[d],true)}</title></circle>`); }
+  const lx=x(dd), ly=y(cum[dd]);
+  el.innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Combined AP growth by day, October 2026">
+    <defs>
+      <linearGradient id="gLine" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#e1197a"/><stop offset=".35" stop-color="#ff7a1a"/><stop offset=".65" stop-color="#7a3cff"/><stop offset="1" stop-color="#2165ff"/></linearGradient>
+      <linearGradient id="gArea" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#7a3cff" stop-opacity=".22"/><stop offset="1" stop-color="#3fb6ff" stop-opacity="0"/></linearGradient>
+    </defs>
+    ${grid.join('')}${xt}
+    <path d="${area}" fill="url(#gArea)"/>
+    <path class="line drawline" d="${path}" style="--len:${Math.ceil(len)}"/>
+    ${dots.join('')}
+    <line x1="${lx}" x2="${lx}" y1="${P.t}" y2="${H-P.b}" stroke="rgba(11,22,48,.18)" stroke-dasharray="3 4"/>
+    <text class="now" x="${Math.min(lx+8,W-P.r-60)}" y="${Math.max(ly-10,P.t+10)}">${money(cum[dd])}</text>
+  </svg>`;
+}
+function renderMilestone(prefix){
+  const total=DATA.totals.ALL.ap, nx=nextMilestone(total), pv=prevMilestone(total);
+  const pct=Math.max(2,Math.min(100,(total-pv)/(nx-pv)*100));
+  document.getElementById(prefix+'Next').textContent=money(nx);
+  document.getElementById(prefix+'Left').textContent=money(nx-total)+' to go';
+  const f=document.getElementById(prefix+'Fill'); f.dataset.w=pct; setTimeout(()=>f.style.width=pct+'%',120);
+}
+function confetti(){
+  if(REDUCED) return;
+  const c=document.getElementById('confetti'); if(!c) return; const ctx=c.getContext('2d');
+  const W=c.width=innerWidth, H=c.height=innerHeight;
+  const cols=['#e1197a','#ff7a1a','#ffb020','#7a3cff','#2165ff','#3fb6ff'];
+  const ps=Array.from({length:110},()=>({x:W/2+(Math.random()-.5)*W*.35,y:H*.22,vx:(Math.random()-.5)*12,vy:-Math.random()*11-4,
+    r:Math.random()*6.28,vr:(Math.random()-.5)*.3,s:5+Math.random()*6,c:cols[Math.floor(Math.random()*cols.length)]}));
+  const t0=performance.now();
+  (function f(t){ const k=(t-t0)/2600; ctx.clearRect(0,0,W,H); if(k>1) return;
+    for(const p of ps){ p.vy+=.28; p.vx*=.99; p.x+=p.vx; p.y+=p.vy; p.r+=p.vr;
+      ctx.save(); ctx.globalAlpha=1-k; ctx.translate(p.x,p.y); ctx.rotate(p.r); ctx.fillStyle=p.c; ctx.fillRect(-p.s/2,-p.s/4,p.s,p.s/2); ctx.restore(); }
+    requestAnimationFrame(f); })(t0);
+}
+
+let filter='ALL';
+const ALL = DATA.agents.slice().sort((a,b)=>b.ap-a.ap || b.deals-a.deals || a.name.localeCompare(b.name));
+const MEDALS=['🥇','🥈','🥉'];
+
+function renderHero(){
+  const T=DATA.totals.ALL, st=growthStats();
+  countUp(document.getElementById('grandAp'), T.ap, true);
+  countInt(document.getElementById('cDeals'), T.deals);
+  countInt(document.getElementById('cProd'), T.producers);
+  countUp(document.getElementById('cAvg'), T.deals? T.ap/T.deals:0);
+  countUp(document.getElementById('cPace'), Math.round(st.pace/100)*100);
+  document.getElementById('chartNote').innerHTML=`${st.active} selling days · avg <b>${money(st.perDay)}</b>/day`;
+  renderGrowthChart(document.getElementById('growth'));
+  renderMilestone('m');
+}
+function renderHighlights(){
+  const prod=ALL.filter(a=>a.ap>0), st=growthStats();
+  const top=prod[0];
+  const md=prod.slice().sort((a,b)=>b.deals-a.deals||b.ap-a.ap)[0];
+  let big=null; for(const a of prod) for(const p of a.posts){ const v=p.ap/(p.policies||1); if(!big||v>big.v) big={v,a,p}; }
+  if(top) document.getElementById('topDog').innerHTML=esc(top.name)+'<small>'+money(top.ap,true)+'</small>';
+  if(md) document.getElementById('mostDeals').innerHTML=esc(md.name)+'<small>'+md.deals+' deals</small>';
+  if(big) document.getElementById('bigDeal').innerHTML=money(big.v,true)+'<small>'+esc(big.a.name)+' · '+esc(big.p.carrier)+'</small>';
+  document.getElementById('bestDay').innerHTML='Oct '+st.best+'<small>+'+money(st.bestAp)+' team AP</small>';
+}
+function visible(){ return ALL.filter(a=>filter==='ALL'||a.team===filter); }
+
+function renderPodium(rows){
+  const el=document.getElementById('podium'); el.innerHTML='';
+  for(let i=0;i<3;i++){
+    const a=rows[i]; const pod=document.createElement('div');
+    pod.className='pod r'+(i+1)+(a?'':' empty'); pod.style.animationDelay=(i*.08)+'s';
+    if(!a){ pod.innerHTML=`<div class="card"><div class="avatar" style="background:#c9cfd8">?</div><div class="name">Open spot</div><div class="dl">Post a deal to claim it</div></div><div class="step">${i+1}</div>`; el.appendChild(pod); continue; }
+    const L=levelFor(a.ap), t=TEAMS[a.team];
+    pod.innerHTML=`${i===0?'<div class="crown">👑</div>':''}
+      <div class="card">${i===0?'<div class="shine"></div>':''}
+        <div class="avatar ${t.cls}">${esc(initials(a.name))}<span class="medal">${MEDALS[i]}</span></div>
+        <div class="name" title="${esc(a.name)}">${esc(a.name)}</div>
+        <div class="tbw">${teamBadge(a.team)}</div>
+        <div class="ap num" data-ap="${a.ap}">$0</div>
+        <div class="dl">${a.deals} deal${a.deals===1?'':'s'}</div>
+        <span class="lvl ${L.t}">LV${L.lv} · ${L.name}</span>
+      </div><div class="step">${i+1}</div>`;
+    el.appendChild(pod);
+  }
+  el.querySelectorAll('.ap[data-ap]').forEach(n=>countUp(n, Number(n.dataset.ap), true));
+}
+function renderList(rows){
+  const el=document.getElementById('list'); el.innerHTML='';
+  const prod=rows.filter(a=>a.ap>0);
+  if(!prod.length){ el.innerHTML='<div class="empty-msg">No deals yet.</div>'; }
+  prod.forEach((a,i)=>{
+    const L=levelFor(a.ap), N=nextLevel(a.ap), t=TEAMS[a.team];
+    const pct=N? Math.max(3,Math.min(100,(a.ap-L.ap)/(N.ap-L.ap)*100)) : 100;
+    const carriers=[...new Set(a.posts.map(p=>p.carrier).filter(c=>c&&c!=='Unspecified'))].join(', ');
+    const row=document.createElement('div');
+    row.className='agent '+t.cls+(i<3?' top'+(i+1):''); row.style.animationDelay=(i*.04)+'s';
+    row.innerHTML=`<div class="rnum">${i<3?MEDALS[i]:i+1}</div>
+      <div class="who">
+        <div class="n">${esc(a.name)} <span class="lvl ${L.t}">LV${L.lv} · ${L.name}</span></div>
+        <div class="tbw">${teamBadge(a.team)}</div>
+        <div class="xp"><span class="lv">LV${L.lv}</span><div class="track"><div class="fill" data-w="${pct}"></div></div><span class="p">${N? money(N.ap-a.ap)+' to '+N.name : 'MAX'}</span></div>
+      </div>
+      <div class="right">
+        <div><div class="apv num" data-ap="${a.ap}">$0</div><div class="g">${a.deals} deal${a.deals===1?'':'s'}${carriers?' · '+esc(carriers):''}</div></div>
+        <div class="ach-row">${ACHIEVEMENTS.map(b=>`<span class="ach ${a.ap>=b.ap?'on':''}">${b.emoji}<span class="tip">${b.name}</span></span>`).join('')}</div>
+      </div>`;
+    el.appendChild(row);
+  });
+  el.querySelectorAll('.apv[data-ap]').forEach(n=>countUp(n, Number(n.dataset.ap), true));
+  setTimeout(()=>el.querySelectorAll('.fill[data-w]').forEach(f=>f.style.width=f.dataset.w+'%'),80);
+  const zeros=rows.filter(a=>a.ap<=0);
+  document.getElementById('warmWrap').style.display=zeros.length?'':'none';
+  document.getElementById('warmCount').textContent=zeros.length;
+  document.getElementById('warm').innerHTML=zeros.map(a=>`<div class="wchip">${esc(a.name)}${teamBadge(a.team)}</div>`).join('');
+}
+function render(){ const rows=visible(); renderPodium(rows.filter(a=>a.ap>0)); renderList(rows); }
+document.getElementById('filters').addEventListener('click',e=>{
+  const b=e.target.closest('button[data-f]'); if(!b) return;
+  filter=b.dataset.f; document.querySelectorAll('#filters .pill').forEach(x=>x.classList.toggle('active',x===b)); render();
+});
+document.getElementById('legend').innerHTML=ACHIEVEMENTS.map(b=>`<span>${b.emoji} ${b.name}</span>`).join('');
+initHeader(); renderHero(); renderHighlights(); render(); setTimeout(confetti,500);
+
+</script>
+</body>
+</html>

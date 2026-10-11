@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Undeniable Life × Self Made Life · KPI Tracker</title>
+<meta name="theme-color" content="#faf6ef"/>
+<link rel="icon" href="assets/sml_icon.png"/>
+<style>
+:root{
+  --cream:#faf6ef; --ink:#0b1630; --navy:#0b1630; --ink2:#22314f; --muted:#6b7590; --line:rgba(11,22,48,.09);
+  --card:rgba(255,255,255,.88); --pink:#e1197a; --orange:#ff7a1a; --gold:#ffb020; --blue:#2165ff; --sky:#3fb6ff; --violet:#7a3cff;
+  --grad:linear-gradient(110deg,#e1197a 0%,#ff7a1a 30%,#b23cc9 58%,#2165ff 82%,#3fb6ff 100%);
+  --ul:linear-gradient(120deg,#e1197a,#ff7a1a 70%,#ffb020);
+  --sml:linear-gradient(120deg,#1546d6,#2165ff 55%,#3fb6ff);
+  --green:#14a06a; --silver:#9aa6b6; --bronze:#c27a3e;
+  --font:"Inter","SF Pro Display","Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+  --shadow:0 1px 2px rgba(11,22,48,.04),0 12px 32px rgba(11,22,48,.07);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; min-height:100vh; color:var(--ink);
+  font-family:var(--font); text-align:center;
+  -webkit-font-smoothing:antialiased;
+  background:
+    radial-gradient(820px 420px at 8% -10%, rgba(225,25,122,.13), transparent 62%),
+    radial-gradient(620px 360px at 34% -6%, rgba(255,122,26,.10), transparent 60%),
+    radial-gradient(620px 360px at 66% -6%, rgba(122,60,255,.07), transparent 60%),
+    radial-gradient(820px 420px at 94% -10%, rgba(33,101,255,.14), transparent 62%),
+    linear-gradient(180deg,#fffdf9 0%, var(--cream) 38%, #f1f2f7 100%);
+  overflow-x:hidden;
+}
+.bg-grid{
+  position:fixed; inset:0; pointer-events:none; opacity:.35;
+  background-image:linear-gradient(rgba(7,21,40,.04) 1px, transparent 1px),linear-gradient(90deg, rgba(7,21,40,.04) 1px, transparent 1px);
+  background-size:42px 42px; -webkit-mask-image:radial-gradient(ellipse at center, #000 40%, transparent 75%); mask-image:radial-gradient(ellipse at center, #000 40%, transparent 75%);
+}
+.wrap{width:100%; max-width:960px; margin:0 auto; padding:0 16px 70px; position:relative; display:flex; flex-direction:column; align-items:stretch}
+
+/* header */
+header{padding:26px 0 0; display:flex; flex-direction:column; align-items:center}
+header .logo{width:min(600px,94%); height:auto; display:block; margin:0 auto;
+  filter:drop-shadow(0 1px 1px rgba(11,22,48,.35)) drop-shadow(0 10px 18px rgba(11,22,48,.18)); animation:logoIn .8s cubic-bezier(.2,.9,.3,1.2) both}
+@keyframes logoIn{from{opacity:0; transform:translateY(-8px) scale(.97)}}
+.eyebrow{
+  display:inline-flex; gap:8px; align-items:center; margin:18px auto 10px; flex-wrap:wrap; justify-content:center;
+  padding:6px 12px; border-radius:999px; font-size:11px; font-weight:800; color:var(--ink2);
+  letter-spacing:.14em; text-transform:uppercase; background:rgba(255,255,255,.75); border:1px solid var(--line);
+}
+.eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(20,160,106,.18);animation:pulse 1.8s infinite}
+.eyebrow .sep{opacity:.35}
+@keyframes pulse{50%{box-shadow:0 0 0 8px rgba(20,160,106,0)}}
+h1{margin:0; font-family:var(--font); font-weight:900; font-size:clamp(30px,5.6vw,48px); line-height:1.05; letter-spacing:-.025em; color:var(--ink)}
+h1 .gt{background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; padding-right:2px}
+.sub{margin:10px 0 0; color:var(--muted); font-weight:600; font-size:15px}
+
+/* tabs */
+.tabs{display:inline-flex; align-self:center; gap:4px; padding:5px; margin:20px auto 18px; border-radius:999px; background:rgba(255,255,255,.85); border:1px solid var(--line); box-shadow:var(--shadow); max-width:100%}
+.tabs a{display:inline-flex; align-items:center; gap:6px; text-decoration:none; color:var(--ink2); font-weight:800; font-size:13px; padding:10px 16px; border-radius:999px; transition:background .2s,color .2s; white-space:nowrap}
+.tabs a:hover{background:rgba(11,22,48,.05)}
+.tabs a.on{background:var(--ink); color:#fff; box-shadow:0 8px 20px rgba(11,22,48,.22)}
+.tabs a.on::before{content:""; width:7px; height:7px; border-radius:50%; background:var(--grad)}
+@media (max-width:420px){ .tabs a{padding:9px 11px; font-size:12px} }
+
+/* agency badges */
+.tb{display:inline-flex; align-items:center; line-height:1; vertical-align:middle}
+.tb img{height:20px; width:auto; display:block; filter:drop-shadow(0 1px .5px rgba(11,22,48,.45)) drop-shadow(0 3px 5px rgba(11,22,48,.16))}
+.tb.sml img{height:26px}
+.combo-list .tb img{height:16px} .combo-list .tb.sml img{height:21px}
+.card .tbw{margin:4px 0 2px; display:flex; justify-content:center}
+.combo-list li .av.ul{background:var(--ul)} .combo-list li .av.sml{background:var(--sml)}
+.combo-list li .nm{flex:1; min-width:0}
+.combo-list li.add{border-top:1px dashed var(--line); margin-top:4px; border-radius:0 0 10px 10px; color:var(--ink2)}
+.combo-list li.add .av{background:var(--grad)}
+.newagent{display:none; margin-top:10px; padding:12px; border-radius:14px; border:1.5px dashed rgba(122,60,255,.35); background:rgba(255,255,255,.7)}
+.newagent.on{display:block}
+.newagent .row{display:grid; grid-template-columns:1fr auto; gap:8px; align-items:end}
+.newagent .seg{display:flex; gap:6px; flex-wrap:wrap; margin-top:4px}
+.newagent .seg label{margin:0; display:inline-flex; align-items:center; gap:6px; padding:8px 10px; border-radius:12px; border:1.5px solid var(--line); background:#fff; cursor:pointer; text-transform:none; letter-spacing:0; font-size:13px; color:var(--ink)}
+.newagent .seg input{width:auto; margin:0}
+.newagent .seg label:has(input:checked){border-color:var(--violet); box-shadow:0 0 0 3px rgba(122,60,255,.12)}
+.newagent .seg img{height:18px} .newagent .seg .sml img{height:22px}
+.newagent .addbtn{border:0; border-radius:12px; padding:11px 14px; font:800 14px var(--font); color:#fff; background:var(--ink); cursor:pointer}
+.newagent .hint{margin-top:6px; font-size:11px; font-weight:700; color:var(--muted)}
+.newagent .x{float:right; border:0; background:none; font:800 16px var(--font); color:var(--muted); cursor:pointer}
+.toolbar{display:flex; flex-direction:column; align-items:center; gap:10px; margin:6px 0 18px}
+.period{display:flex; gap:8px; flex-wrap:wrap; justify-content:center}
+.pill{
+  border:1px solid var(--line); background:rgba(255,255,255,.7); backdrop-filter:blur(8px);
+  color:var(--muted); font:700 13px var(--font); padding:10px 14px; border-radius:999px; cursor:pointer; transition:all .2s;
+}
+.pill:hover{color:var(--ink)}
+.pill.active{background:var(--ink); color:#fff; border-color:var(--ink); box-shadow:0 10px 24px rgba(7,21,40,.2)}
+.range{font-size:12px; font-weight:700; color:var(--muted)}
+
+/* glass panels */
+.glass{
+  background:var(--card); border:1px solid rgba(255,255,255,.7); border-radius:24px;
+  box-shadow:0 20px 50px rgba(7,21,40,.08); backdrop-filter:blur(14px); padding:22px 20px;
+}
+
+/* checkout card */
+.checkout{position:relative; z-index:5; text-align:left; margin:4px 0 22px; border:1px solid rgba(225,25,122,.22); background:var(--grad) top/100% 5px no-repeat, var(--card)}
+.co-head{display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:4px}
+.co-head h2{margin:0; font-family:var(--font); font-size:18px; font-weight:800; letter-spacing:.03em}
+.co-head .tag{font-size:11px; font-weight:800; padding:5px 10px; border-radius:999px; background:#fff0c8; color:#8a6500}
+.co-sub{margin:0 0 4px; color:var(--muted); font-size:13px; font-weight:600}
+.checkout label{display:block; font-size:11px; font-weight:800; letter-spacing:.04em; text-transform:uppercase; color:var(--muted); margin:12px 0 6px}
+.checkout select,.checkout input{width:100%; padding:11px 12px; border:1.5px solid rgba(7,21,40,.12); border-radius:12px; font:600 15px var(--font); color:var(--navy); background:#fff; transition:border-color .15s, box-shadow .15s}
+.checkout select:focus,.checkout input:focus{outline:0; border-color:var(--pink); box-shadow:0 0 0 4px rgba(225,25,122,.12)}
+.g2{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.g5{display:grid; grid-template-columns:repeat(5,1fr); gap:10px}
+@media (max-width:640px){ .g5{grid-template-columns:1fr 1fr} .g5 .wide{grid-column:1/-1} }
+@media (max-width:420px){ .g2{grid-template-columns:1fr} }
+/* type-to-search agent picker */
+.combo{position:relative}
+.combo input[type=text]{padding-right:40px}
+.combo-clear{position:absolute; right:6px; top:50%; transform:translateY(-50%); width:30px; height:30px; border:0; border-radius:9px; background:rgba(7,21,40,.06); color:var(--muted); font:800 16px var(--font); cursor:pointer; display:none}
+.combo.has .combo-clear{display:block}
+.combo.ok input[type=text]{border-color:rgba(23,168,107,.55); background:#fbfffd}
+.combo-list{position:absolute; left:0; right:0; top:calc(100% + 6px); margin:0; padding:6px; list-style:none; max-height:280px; overflow:auto; background:#fff; border:1px solid var(--line); border-radius:14px; box-shadow:0 22px 50px rgba(7,21,40,.18); z-index:30; display:none; -webkit-overflow-scrolling:touch}
+.combo.open .combo-list{display:block}
+.combo-list li{display:flex; align-items:center; gap:10px; padding:10px 10px; border-radius:10px; font-weight:700; font-size:15px; cursor:pointer; user-select:none}
+.combo-list li .av{width:28px; height:28px; flex:none; border-radius:50%; display:grid; place-items:center; font-size:11px; font-weight:900; color:#fff; background:linear-gradient(135deg,#5b6b80,#071528)}
+.combo-list li.act,.combo-list li:hover{background:linear-gradient(90deg,#fde7f2,#eef3ff)}
+.combo-list li.act .av{background:var(--grad)}
+.combo-list li mark{background:none; color:var(--pink); font-weight:900}
+.combo-list li.none{color:var(--muted); cursor:default; font-weight:600; font-size:13px}
+.combo-list li.none:hover{background:none}
+.combo-err{display:none; margin-top:6px; font-size:12px; font-weight:800; color:#b42318}
+.combo-err.on{display:block}
+.streak-hint{margin-top:8px; font-size:12px; font-weight:700; color:var(--muted)}
+.streak-hint b{color:var(--orange)}
+.go{margin-top:18px; width:100%; border:0; border-radius:14px; padding:15px; font:800 16px var(--font); color:#fff; background:var(--grad); cursor:pointer; box-shadow:0 14px 30px rgba(122,60,255,.25); transition:transform .15s, box-shadow .15s}
+.go:hover{transform:translateY(-1px); box-shadow:0 18px 36px rgba(225,25,122,.34)}
+.go:disabled{opacity:.55; transform:none}
+.pts-hint{margin-top:8px; text-align:center; font-size:12px; font-weight:700; color:var(--muted)}
+.msg{margin-top:12px; padding:10px 12px; border-radius:12px; font-weight:700; font-size:13px; display:none}
+.msg.ok{display:block; background:#e6f8ef; color:#0f7a4d}.msg.err{display:block; background:#fdecee; color:#b42318}
+
+.section-title{margin:10px 0 6px; font-family:var(--font); font-size:13px; font-weight:800; letter-spacing:.16em; text-transform:uppercase; color:var(--ink); display:flex; align-items:center; justify-content:center; gap:10px}
+.section-title::before,.section-title::after{content:""; height:2px; width:42px; border-radius:2px; background:var(--grad)}
+.formula{font-size:11px; font-weight:700; color:var(--muted); margin:0 auto 4px; max-width:620px}
+.formula code{font:800 11px var(--font); background:rgba(7,21,40,.06); padding:2px 6px; border-radius:6px; color:var(--ink)}
+.block{margin-bottom:34px}
+
+/* podium */
+.podium{display:flex; justify-content:center; align-items:flex-end; gap:14px; margin:34px auto 22px; width:100%; max-width:760px}
+.pod{position:relative; flex:1 1 0; max-width:240px; display:flex; flex-direction:column; align-items:center; min-width:0}
+.card{
+  position:relative; width:100%; text-align:center; padding:22px 12px 16px; border-radius:22px 22px 0 0;
+  background:rgba(255,255,255,.9); border:1px solid var(--line); border-bottom:0; overflow:hidden;
+  transition:transform .25s ease, box-shadow .25s ease;
+}
+.pod:hover .card{transform:translateY(-4px); box-shadow:0 18px 40px rgba(7,21,40,.12)}
+.pod.r1 .card{background:linear-gradient(180deg,#fff4d9,#fff); border-color:#f0c070; animation:glow 2.8s ease-in-out infinite}
+@keyframes glow{0%,100%{box-shadow:0 18px 44px rgba(255,176,32,.25)}50%{box-shadow:0 18px 60px rgba(225,25,122,.32)}}
+.card .shine{position:absolute; top:-40%; left:-40%; width:50%; height:180%; background:linear-gradient(90deg,transparent,rgba(255,255,255,.6),transparent); transform:rotate(25deg); animation:shine 4s infinite; pointer-events:none}
+@keyframes shine{0%,60%{left:-40%}100%{left:130%}}
+.crown{position:absolute; top:-30px; left:50%; transform:translateX(-50%); font-size:30px; filter:drop-shadow(0 6px 10px rgba(255,176,32,.55)); animation:bob 2.2s ease-in-out infinite}
+@keyframes bob{50%{transform:translate(-50%,-5px) rotate(-6deg)}}
+.pod.r1{padding-top:14px}
+.pod.r1 .crown{top:-18px; z-index:2}
+.avatar{width:58px; height:58px; margin:0 auto 8px; border-radius:50%; display:grid; place-items:center; font-weight:900; font-size:18px; color:#fff; background:var(--ink); position:relative}
+.pod.r1 .avatar{width:68px; height:68px; font-size:21px; background:var(--grad); box-shadow:0 0 0 4px #fff, 0 0 0 7px rgba(255,176,32,.6)}
+.pod.r2 .avatar{box-shadow:0 0 0 4px #fff, 0 0 0 7px rgba(154,166,182,.6); background:linear-gradient(135deg,#5b6b80,#071528)}
+.pod.r3 .avatar{box-shadow:0 0 0 4px #fff, 0 0 0 7px rgba(194,122,62,.5); background:linear-gradient(135deg,#8a5522,#071528)}
+.medal{position:absolute; right:-8px; bottom:-6px; font-size:22px}
+.card .name{font-weight:900; font-size:15px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.card .ap{font-family:var(--font); font-size:clamp(18px,3.4vw,26px); font-weight:800; margin:6px 0 2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.card .goal{color:var(--muted); font-size:11px; font-weight:700}
+.card .lvchip{margin-top:8px}
+.card .mini-track{height:7px; border-radius:999px; background:rgba(7,21,40,.08); overflow:hidden; margin:10px 6px 0}
+.step{width:100%; border-radius:0 0 14px 14px; display:flex; align-items:flex-start; justify-content:center; padding-top:10px; font-family:var(--font); font-weight:800; font-size:28px; color:rgba(255,255,255,.95)}
+.pod.r1 .step{height:92px; background:var(--grad)}
+.pod.r2 .step{height:62px; background:linear-gradient(180deg,#b9c2ce,#8794a6)}
+.pod.r3 .step{height:44px; background:linear-gradient(180deg,#d9a273,#b06a33)}
+.pod.empty .card{opacity:.55; border-style:dashed}
+.pod.empty .crown{opacity:.45}
+@media (max-width:560px){
+  .podium{gap:8px}
+  .card{padding:18px 6px 12px}
+  .avatar{width:44px;height:44px;font-size:14px}
+  .pod.r1 .avatar{width:52px;height:52px;font-size:16px}
+  .card .name{font-size:12px}
+  .card .ap{font-size:16px}
+  .card .goal{font-size:10px}
+  .card .lvchip .lvl{font-size:9px; padding:2px 6px}
+  .step{font-size:22px}
+}
+
+/* category kings (also the category switcher) */
+.kings{display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin:14px auto 0; width:100%; max-width:860px}
+.king{
+  position:relative; display:flex; flex-direction:column; align-items:center; gap:3px; min-width:0;
+  padding:12px 8px 11px; border-radius:18px; border:1.5px solid var(--line); background:rgba(255,255,255,.75);
+  font-family:var(--font); color:var(--ink); cursor:pointer; transition:transform .2s, box-shadow .2s, border-color .2s;
+}
+.king:hover{transform:translateY(-3px); box-shadow:0 14px 30px rgba(7,21,40,.1)}
+.king.on{border-color:transparent; background:linear-gradient(#fff,#fff) padding-box, var(--grad) border-box; border:2px solid transparent; box-shadow:0 14px 34px rgba(225,25,122,.18)}
+.king .ke{font-size:22px; line-height:1}
+.king .kl{font-size:10px; font-weight:900; letter-spacing:.08em; text-transform:uppercase; color:var(--muted)}
+.king .kn{font-size:12px; font-weight:900; max-width:100%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.king .kv{font-family:var(--font); font-size:13px; font-weight:800; white-space:nowrap}
+.king .kn.open{color:var(--muted); font-weight:700}
+@media (max-width:560px){
+  .kings{gap:6px}
+  .king{padding:9px 3px 8px; border-radius:14px}
+  .king .ke{font-size:18px}
+  .king .kl{font-size:8.5px; letter-spacing:.04em}
+  .king .kn{font-size:10px}
+  .king .kv{font-size:10.5px}
+}
+.cat-title{margin-top:22px}
+
+/* ranked lists */
+.list{display:flex; flex-direction:column; gap:10px; width:100%; max-width:760px; margin:0 auto}
+.agent{
+  position:relative; display:grid; grid-template-columns:48px 1fr auto; gap:14px; align-items:center;
+  text-align:left; padding:14px 16px; border-radius:20px; background:rgba(255,255,255,.86);
+  border:1px solid var(--line); transition:transform .2s ease, box-shadow .2s ease, border-color .2s;
+  animation:rise .5s both;
+}
+@keyframes rise{from{opacity:0; transform:translateY(10px)}}
+.agent:hover{transform:translateY(-3px) scale(1.01); box-shadow:0 16px 36px rgba(7,21,40,.1); border-color:rgba(225,25,122,.3)}
+.agent.top1{border-color:#f0c070; background:linear-gradient(100deg,#fff6e0,#fff 60%)}
+.agent.top2{border-color:#cfd6e0}
+.agent.top3{border-color:#e6c3a3}
+.agent.zero{background:rgba(255,255,255,.6)}
+.agent.zero .apv{color:var(--muted)}
+.rnum{width:42px; height:42px; border-radius:14px; display:grid; place-items:center; font-weight:900; font-size:15px; background:rgba(7,21,40,.06)}
+.agent.top1 .rnum,.agent.top2 .rnum,.agent.top3 .rnum{font-size:24px; background:transparent}
+.who{min-width:0}
+.who .n{font-weight:900; display:flex; gap:6px; align-items:center; flex-wrap:wrap}
+.lvl{font-size:10px; font-weight:900; padding:3px 8px; border-radius:999px; background:#eef2f7; color:#35506e; white-space:nowrap}
+.lvl.t2{background:#e9f0ff; color:#2c4f9a}
+.lvl.t3{background:#fff0c8; color:#8a6500}
+.lvl.t4{background:linear-gradient(90deg,#fde7f2,#ffe8d4); color:#9a1248}
+.lvl.t5{background:var(--grad); color:#fff}
+.delta{font-size:10px; font-weight:900; padding:2px 6px; border-radius:6px}
+.delta.up{background:#e6f8ef; color:#0f7a4d}
+.delta.down{background:#fdecee; color:#b42318}
+.delta.new{background:#fff0c8; color:#8a6500}
+.streak{font-size:10px; font-weight:900; padding:2px 7px; border-radius:999px; background:#fff1e6; color:#b4470b; white-space:nowrap}
+.streak.hot{background:linear-gradient(90deg,#ff6a1a,#ffb020); color:#fff; box-shadow:0 4px 12px rgba(255,106,26,.35)}
+.xp{display:grid; grid-template-columns:auto 1fr auto; gap:8px; align-items:center; margin-top:7px}
+.xp .lv{font-family:var(--font); font-size:10px; font-weight:800; color:var(--muted)}
+.xp .p{font-size:11px; font-weight:900; min-width:34px; text-align:right; white-space:nowrap}
+.track{height:10px; border-radius:999px; background:rgba(7,21,40,.08); overflow:hidden}
+.fill{height:100%; width:0; border-radius:999px; background:var(--grad); transition:width 1s cubic-bezier(.2,.8,.2,1); position:relative; overflow:hidden}
+.fill::after{content:""; position:absolute; inset:0; background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent); transform:translateX(-100%); animation:sweep 2.6s ease-in-out infinite}
+@keyframes sweep{60%,100%{transform:translateX(100%)}}
+.fill.lvfill{background:linear-gradient(90deg,#4da3ff,#7c5cff)}
+.hints{display:flex; flex-wrap:wrap; gap:6px 12px; margin-top:6px; font-size:11px; font-weight:700; color:var(--muted)}
+.hints b{color:var(--ink)}
+.hints .win{color:var(--green)}
+.right{text-align:right; display:flex; flex-direction:column; align-items:flex-end; gap:6px}
+.right .apv{font-family:var(--font); font-weight:800; font-size:17px; white-space:nowrap}
+.right .g{font-size:11px; font-weight:700; color:var(--muted)}
+.ach-row{display:flex;flex-wrap:wrap;gap:4px;justify-content:flex-end;max-width:190px}
+.ach{
+  width:26px;height:26px;border-radius:9px;display:grid;place-items:center;
+  font-size:13px;border:2px solid transparent;position:relative;background:rgba(7,21,40,.06);
+  box-shadow:0 5px 12px rgba(7,21,40,.12); transition:transform .2s;
+}
+.ach:hover{transform:translateY(-2px) scale(1.12)}
+.ach.more{font-size:10px; font-weight:900; color:var(--muted); box-shadow:none}
+.ach.pop{animation:pop .8s cubic-bezier(.2,1.6,.4,1) both}
+@keyframes pop{0%{transform:scale(.2) rotate(-30deg)}100%{transform:scale(1)}}
+.ach .tip{
+  display:none;position:absolute;bottom:115%;left:50%;transform:translateX(-50%);
+  background:var(--ink);color:#fff;font-size:10px;font-weight:800;padding:4px 8px;
+  border-radius:8px;white-space:nowrap;z-index:5
+}
+.ach:hover .tip{display:block}
+.empty-state{padding:22px 16px; border-radius:20px; border:1.5px dashed rgba(7,21,40,.15); background:rgba(255,255,255,.55); color:var(--muted); font-weight:700; font-size:14px}
+.empty-state b{color:var(--ink)}
+.agent.me{box-shadow:0 0 0 3px rgba(122,60,255,.22)}
+.who .tbw,.ac-tbw{margin-top:4px}
+@media (max-width:600px){
+  .agent{grid-template-columns:40px 1fr; gap:10px; padding:12px}
+  .rnum{width:36px;height:36px}
+  .right{grid-column:1/-1; flex-direction:row; justify-content:space-between; align-items:center; text-align:left}
+  .ach-row{max-width:none}
+  .right > div:first-child{display:flex; align-items:baseline; gap:8px}
+}
+
+/* badges legend */
+.legend{margin:10px auto 0; display:flex; flex-wrap:wrap; gap:8px; justify-content:center; max-width:860px}
+.legend span{font-size:11px; font-weight:800; padding:6px 10px; border-radius:999px; background:rgba(255,255,255,.6); border:1px solid var(--line); color:var(--muted)}
+.legend span.got{background:#fff; color:var(--ink); border-color:rgba(225,25,122,.35); box-shadow:0 6px 14px rgba(225,25,122,.1)}
+
+/* agent KPI totals cards */
+.cards{display:flex; flex-direction:column; gap:12px; width:100%; max-width:760px; margin:14px auto 0}
+.acard{position:relative; text-align:left; padding:16px 18px 14px; border-radius:22px; background:rgba(255,255,255,.88); border:1px solid var(--line); box-shadow:0 12px 30px rgba(7,21,40,.06); animation:rise .5s both; transition:transform .2s, box-shadow .2s, border-color .2s}
+.acard:hover{transform:translateY(-2px); box-shadow:0 18px 40px rgba(7,21,40,.1); border-color:rgba(225,25,122,.25)}
+.acard.top1{border-color:#f0c070; background:linear-gradient(160deg,#fff6e0,#fff 45%)}
+.acard.top2{border-color:#cfd6e0}
+.acard.top3{border-color:#e6c3a3}
+.ac-head{display:grid; grid-template-columns:auto 1fr auto; gap:12px; align-items:center}
+.ac-av{position:relative; width:48px; height:48px; border-radius:50%; display:grid; place-items:center; font-weight:900; font-size:16px; color:#fff; background:linear-gradient(135deg,#5b6b80,#071528)}
+.acard.top1 .ac-av{background:var(--grad); box-shadow:0 0 0 3px #fff, 0 0 0 6px rgba(255,176,32,.55)}
+.acard.top2 .ac-av{box-shadow:0 0 0 3px #fff, 0 0 0 6px rgba(154,166,182,.55)}
+.acard.top3 .ac-av{box-shadow:0 0 0 3px #fff, 0 0 0 6px rgba(194,122,62,.45)}
+.ac-av .rk{position:absolute; right:-7px; bottom:-5px; min-width:22px; height:22px; padding:0 5px; border-radius:999px; display:grid; place-items:center; font-size:11px; font-weight:900; background:#fff; color:var(--ink); border:1px solid var(--line)}
+.ac-av .rk.m{font-size:17px; background:none; border:0; padding:0}
+.ac-name{font-weight:900; font-size:16px; display:flex; flex-wrap:wrap; gap:6px; align-items:center}
+.ac-meta{margin-top:3px; font-size:11px; font-weight:700; color:var(--muted)}
+.ac-pts{text-align:right}
+.ac-pts .v{font-family:var(--font); font-size:22px; font-weight:800; line-height:1; white-space:nowrap; background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent}
+.ac-pts .l{font-size:10px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-top:3px}
+.stats{display:grid; grid-template-columns:repeat(5,1fr); gap:8px; margin-top:14px}
+.stat{position:relative; padding:10px 8px 9px; border-radius:14px; background:linear-gradient(180deg,#fff,rgba(255,255,255,.6)); border:1px solid var(--line); text-align:center; min-width:0}
+.stat.lead{border-color:#f0c070; background:linear-gradient(180deg,#fff7e3,#fff)}
+.stat .si{font-size:16px; line-height:1}
+.stat .sv{font-family:var(--font); font-size:16px; font-weight:800; margin-top:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.stat .sl{font-size:9.5px; font-weight:800; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); margin-top:2px}
+.stat .sb{height:5px; border-radius:999px; background:rgba(7,21,40,.08); overflow:hidden; margin-top:7px}
+.stat .sb .fill{border-radius:999px}
+.stat .cr{position:absolute; top:-9px; right:-4px; font-size:14px; filter:drop-shadow(0 3px 5px rgba(255,176,32,.5))}
+.ac-foot{display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-top:12px}
+.ac-foot .ach-row{justify-content:flex-start; max-width:none}
+.ac-next{font-size:11px; font-weight:700; color:var(--muted)}
+.ac-next b{color:var(--ink)}
+.days{margin-top:10px; border-top:1px dashed rgba(7,21,40,.12); padding-top:8px}
+.days summary{list-style:none; cursor:pointer; font-size:12px; font-weight:800; color:var(--pink); display:inline-flex; align-items:center; gap:6px; padding:4px 0; user-select:none}
+.days summary::-webkit-details-marker{display:none}
+.days summary .car{display:inline-block; transition:transform .2s}
+.days[open] summary .car{transform:rotate(180deg)}
+.day{display:grid; grid-template-columns:96px 1fr auto; gap:10px; align-items:center; padding:7px 10px; margin-top:6px; border-radius:12px; background:rgba(7,21,40,.035); font-size:12px; font-weight:700}
+.day .dd{font-weight:900}
+.day .dk{display:flex; flex-wrap:wrap; gap:4px 12px; color:var(--muted)}
+.day .dk b{color:var(--ink)}
+.day .dp{font-weight:900; color:var(--green); white-space:nowrap}
+.day .run{display:block; font-size:10px; color:var(--muted); font-weight:700; text-align:right}
+@media (max-width:600px){
+  .acard{padding:14px 12px 12px}
+  .ac-av{width:42px; height:42px; font-size:14px}
+  .ac-name{font-size:15px}
+  .ac-pts .v{font-size:18px}
+  .stats{grid-template-columns:repeat(6,1fr); gap:6px}
+  .stat{grid-column:span 2; padding:9px 4px 8px}
+  .stat:nth-child(4),.stat:nth-child(5){grid-column:span 3}
+  .stat .sv{font-size:15px}
+  .day{grid-template-columns:1fr auto; gap:4px 10px}
+  .day .dk{grid-column:1/-1; grid-row:2}
+}
+.sync{margin:0 auto 16px; max-width:760px; padding:10px 14px; border-radius:14px; font-size:12px; font-weight:700; border:1px solid var(--line); background:rgba(255,255,255,.75); color:var(--muted); display:flex; gap:8px; align-items:center; justify-content:center; flex-wrap:wrap}
+.sync b{color:var(--ink)}
+.sync.live{border-color:rgba(23,168,107,.35); background:#eefbf4; color:#0f7a4d}
+.sync.live b{color:#0f7a4d}
+.sync.warn{border-color:rgba(255,176,32,.45); background:#fff8e8; color:#8a6500}
+.sync.warn b{color:#8a6500}
+.sync a{color:inherit; font-weight:900}
+.note{text-align:center; color:var(--muted); font-size:12px; margin-top:14px}
+
+/* month-to-date strip on each card */
+.acard[data-id]{cursor:pointer}
+.acard[data-id]:focus-visible{outline:3px solid rgba(225,25,122,.45); outline-offset:3px}
+.mtd{display:grid; grid-template-columns:auto 1fr; gap:6px 12px; align-items:end; margin-top:12px; padding:10px 12px; border-radius:14px; background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(255,255,255,.55)); border:1px solid var(--line)}
+.mtd .ml{font-size:10px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--muted)}
+.mtd .mv{font-family:var(--font); font-size:17px; font-weight:800; line-height:1.1; margin-top:2px; white-space:nowrap}
+.mtd .ms{font-size:11px; font-weight:700; color:var(--muted); margin-top:2px; white-space:nowrap}
+.mtd .ms b{color:var(--green)}
+.spark{display:flex; align-items:flex-end; gap:2px; height:38px; min-width:0}
+.spark i{flex:1; min-width:2px; border-radius:3px 3px 1px 1px; background:rgba(7,21,40,.08); height:4%; transition:height .8s cubic-bezier(.2,.9,.3,1)}
+.spark i.on{background:var(--grad)}
+.spark i.today{box-shadow:0 0 0 2px #fff, 0 0 0 3.5px rgba(23,168,107,.7)}
+.mtd .tap{grid-column:1/-1; font-size:11px; font-weight:800; color:var(--pink); display:flex; justify-content:space-between; gap:8px}
+.mtd .tap span:last-child{color:var(--muted); font-weight:700}
+
+/* calendar modal */
+.cal-bg{position:fixed; inset:0; z-index:50; display:flex; align-items:center; justify-content:center; padding:18px; background:rgba(7,21,40,.48); -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); opacity:0; transition:opacity .2s}
+.cal-bg[hidden]{display:none}
+.cal-bg.show{opacity:1}
+.cal{position:relative; width:100%; max-width:760px; max-height:calc(100vh - 36px); overflow:auto; -webkit-overflow-scrolling:touch; overscroll-behavior:contain; text-align:left; padding:20px 20px 18px; border-radius:26px; background:linear-gradient(180deg,#fffdf9,#fff 30%); border:1px solid var(--line); box-shadow:0 30px 80px rgba(7,21,40,.35); transform:translateY(14px) scale(.98); transition:transform .25s cubic-bezier(.2,1.2,.4,1)}
+.cal-bg.show .cal{transform:none}
+.cal::before{content:""; position:absolute; left:0; right:0; top:0; height:5px; border-radius:26px 26px 0 0; background:var(--grad)}
+.cal-x{position:sticky; top:0; float:right; z-index:2; width:38px; height:38px; margin:-6px -6px 0 8px; border-radius:50%; border:1px solid var(--line); background:#fff; font:800 20px/1 Inter,sans-serif; color:var(--ink); cursor:pointer; box-shadow:0 6px 16px rgba(7,21,40,.12)}
+.cal-x:hover{transform:rotate(90deg); transition:transform .2s}
+.cal-head{display:grid; grid-template-columns:auto 1fr; gap:12px; align-items:center; padding-right:6px}
+.cal-head .ac-av{background:var(--grad)}
+.cal-nm{font-weight:900; font-size:18px; display:flex; flex-wrap:wrap; gap:6px; align-items:center}
+.cal-sub{margin-top:3px; font-size:12px; font-weight:700; color:var(--muted)}
+.cal-nav{display:flex; align-items:center; justify-content:center; gap:10px; margin:14px 0 4px}
+.cal-nav button{width:34px; height:34px; border-radius:50%; border:1px solid var(--line); background:#fff; font:800 16px var(--font); color:var(--ink); cursor:pointer}
+.cal-nav button:disabled{opacity:.3; cursor:default}
+.cal-nav .mo{font-family:var(--font); font-weight:800; font-size:15px; letter-spacing:.06em; text-transform:uppercase; min-width:170px; text-align:center}
+.cal-tot{display:grid; grid-template-columns:repeat(7,1fr); gap:8px; margin:10px 0 14px}
+.cal-tot .stat .sv{font-size:15px}
+.cal-tot .stat.pts{background:var(--grad); border-color:transparent; color:#fff}
+.cal-tot .stat.pts .sl{color:rgba(255,255,255,.85)}
+.cal-dow{display:grid; grid-template-columns:repeat(7,1fr); gap:6px; margin-bottom:6px; font-size:10px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); text-align:center}
+.cal-grid{display:grid; grid-template-columns:repeat(7,1fr); gap:6px}
+.cd{position:relative; min-height:96px; padding:6px 6px 5px; border-radius:12px; border:1px dashed rgba(7,21,40,.12); background:rgba(7,21,40,.025); color:var(--muted); font-size:11px; font-weight:700; display:flex; flex-direction:column; gap:1px; min-width:0; overflow:hidden}
+.cd.pad{visibility:hidden}
+.cd .dn{font-weight:900; font-size:12px; color:rgba(7,21,40,.38)}
+.cd.future{opacity:.45}
+.cd.has{border:1px solid rgba(225,25,122,.22); background:linear-gradient(180deg,#fff,#fff7f0); color:var(--ink); cursor:pointer; box-shadow:0 6px 14px rgba(7,21,40,.06)}
+.cd.has::before{content:""; position:absolute; left:0; right:0; top:0; height:4px; background:var(--grad); opacity:var(--heat,.5)}
+.cd.has .dn{color:var(--ink)}
+.cd.today{box-shadow:0 0 0 2px rgba(23,168,107,.65)}
+.cd.sel{outline:2.5px solid var(--pink); outline-offset:1px}
+.cd .kl{display:flex; gap:3px; align-items:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; line-height:1.25}
+.cd .kl b{font-weight:900}
+.cd .kl.apl b{color:var(--green)}
+.cd .x2{position:absolute; top:5px; right:5px; font-size:9px; font-weight:900; color:var(--muted)}
+.cd .nil{margin-top:auto; font-size:10px; opacity:.6}
+.cal-detail{margin-top:12px; padding:12px 14px; border-radius:16px; border:1px solid var(--line); background:rgba(255,255,255,.85); font-size:13px; font-weight:700}
+.cal-detail .dh{display:flex; justify-content:space-between; gap:8px; flex-wrap:wrap; font-weight:900}
+.cal-detail .dh span:last-child{color:var(--green)}
+.cal-detail .dk{display:flex; flex-wrap:wrap; gap:6px 16px; margin-top:6px; color:var(--muted)}
+.cal-detail .dk b{color:var(--ink)}
+.cal-detail .run{margin-top:6px; font-size:11px; color:var(--muted)}
+.cal-foot{margin-top:10px; text-align:center; font-size:11px; font-weight:700; color:var(--muted)}
+body.cal-open{overflow:hidden}
+@media (max-width:600px){
+  .cal-bg{padding:0; align-items:flex-end}
+  .cal{max-height:94vh; border-radius:24px 24px 0 0; padding:16px 10px 14px}
+  .cal::before{border-radius:24px 24px 0 0}
+  .cal-nm{font-size:16px}
+  .cal-tot{grid-template-columns:repeat(6,1fr); gap:6px}
+  .cal-tot .stat{grid-column:span 2; padding:8px 3px 7px}
+  .cal-tot .stat:nth-child(4),.cal-tot .stat:nth-child(5){grid-column:span 3}
+  .cal-tot .stat.pts,.cal-tot .stat.dl{grid-column:span 3}
+  .cal-grid,.cal-dow{gap:3px}
+  .cd{min-height:78px; padding:4px 3px 3px; border-radius:9px; font-size:9px}
+  .cd .dn{font-size:10.5px}
+  .cd .kl{gap:1px; letter-spacing:-.02em}
+  .cd .kl .e{font-size:8px}
+  .cd .x2{display:none}
+  .cal-nav .mo{font-size:13px; min-width:140px}
+  .mtd{padding:9px 10px}
+  .mtd .mv{font-size:15px}
+}
+
+/* toast + confetti */
+#confetti{position:fixed; inset:0; pointer-events:none; z-index:40}
+.toast{position:fixed; left:50%; top:18px; transform:translate(-50%,-140%); z-index:41; background:var(--ink); color:#fff; padding:12px 18px; border-radius:14px; font-weight:800; font-size:14px; box-shadow:0 18px 40px rgba(7,21,40,.3); transition:transform .45s cubic-bezier(.2,1.4,.4,1), opacity .3s; max-width:90vw; opacity:0; visibility:hidden}
+.toast.show{transform:translate(-50%,0); opacity:1; visibility:visible}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important; transition:none!important}}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<canvas id="confetti"></canvas>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="wrap">
+  <header>
+    <img class="logo" src="assets/logo_cobrand.png" alt="Undeniable Life × Self Made Life"/>
+    <div class="eyebrow"><span class="dot"></span> <span>Daily checkout</span><span class="sep">•</span><span id="todayLabel"></span></div>
+    <h1>KPI <span class="gt">Tracker</span></h1>
+    <p class="sub" id="subtitle">This month · stack your numbers</p>
+  </header>
+
+  <nav class="tabs" aria-label="Views">
+    <a href="https://dannyklein300.github.io/danny-boards/board/">Leaderboard</a>
+    <a href="https://dannyklein300.github.io/danny-boards/board/totals.html">Team Totals</a>
+    <a href="./" class="on" aria-current="page">KPIs</a>
+  </nav>
+
+  <!-- Check out today -->
+  <div class="glass checkout" id="checkout">
+    <div class="co-head"><h2>✅ Check out today</h2><span class="tag" id="coDate"></span></div>
+    <p class="co-sub">Undeniable Life + Self Made Life · log your numbers, it posts to Discord and stacks onto the boards below.</p>
+    <form id="f">
+      <div class="g2">
+        <div><label for="agentSearch">Agent</label>
+          <div class="combo" id="combo">
+            <input id="agentSearch" type="text" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="Start typing your name…" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="agentList"/>
+            <input id="agent" type="hidden" value=""/>
+            <button type="button" class="combo-clear" id="agentClear" aria-label="Clear name">×</button>
+            <ul class="combo-list" id="agentList" role="listbox"></ul>
+          </div>
+          <div class="combo-err" id="agentErr">Pick your name from the list (or tap “I’m not listed”)</div>
+          <div class="newagent" id="newAgent">
+            <button type="button" class="x" id="naClose" aria-label="Close">×</button>
+            <label for="naName">Your full name</label>
+            <input id="naName" type="text" autocomplete="name" autocapitalize="words" spellcheck="false" placeholder="First and last name"/>
+            <label>Your agency</label>
+            <div class="seg" id="naTeam">
+              <label class="ul"><input type="radio" name="naTeam" value="UL"/><img src="assets/badge_ul.png" alt=""/>Undeniable Life</label>
+              <label class="sml"><input type="radio" name="naTeam" value="SML"/><img src="assets/badge_sml.png" alt=""/>Self Made Life</label>
+            </div>
+            <div class="row" style="margin-top:10px"><div class="hint">Saved on this device so you can pick yourself next time.</div><button type="button" class="addbtn" id="naAdd">Add me</button></div>
+          </div>
+        </div>
+        <div><label for="date">Date</label><input id="date" type="date" required/></div>
+      </div>
+      <div class="streak-hint" id="streakHint"></div>
+      <div class="g5">
+        <div><label for="dials">📞 Dials</label><input id="dials" type="number" min="0" value="0" required/></div>
+        <div><label for="appts">📅 Appointments</label><input id="appts" type="number" min="0" value="0" required/></div>
+        <div><label for="pres">🎤 Presentations</label><input id="pres" type="number" min="0" value="0" required/></div>
+        <div><label for="closed">🤝 Closed Deals</label><input id="closed" type="number" min="0" value="0" required/></div>
+        <div class="wide"><label for="ap">💰 Total AP ($)</label><input id="ap" type="number" min="0" step="0.01" value="0" required/></div>
+      </div>
+      <button class="go" id="sub" type="submit">Submit checkout 🚀</button>
+      <div class="pts-hint" id="ptsHint">This checkout = <b>0 pts</b></div>
+      <div class="msg" id="msg"></div>
+    </form>
+  </div>
+
+  <div class="toolbar">
+    <div class="period" id="period">
+      <button class="pill" type="button" data-p="week">This week</button>
+      <button class="pill active" type="button" data-p="month">This month</button>
+      <button class="pill" type="button" data-p="all">All time</button>
+    </div>
+    <div class="range" id="range"></div>
+  </div>
+  <div class="sync warn" id="syncBar" role="status">📱 Loading checkouts…</div>
+
+  <!-- KPI Champion -->
+  <div class="block">
+    <div class="section-title">🏆 KPI Champion</div>
+    <p class="formula">Score = <code>📞 dial 1</code> <code>📅 appt 5</code> <code>🎤 presentation 10</code> <code>🤝 close 25</code> <code>💰 $100 AP = 1</code> · LV = all-time pts</p>
+    <div class="podium" id="mvpPodium"></div>
+    <div class="list" id="mvpList"></div>
+  </div>
+
+  <!-- Category leaderboards -->
+  <div class="block">
+    <div class="section-title">👑 Category Kings</div>
+    <p class="formula">Tap a category to see its full board</p>
+    <div class="kings" id="kings" role="tablist" aria-label="KPI categories"></div>
+    <div class="section-title cat-title" id="catTitle">Top Dials 📞</div>
+    <div class="podium" id="catPodium"></div>
+    <div class="list" id="catList"></div>
+  </div>
+
+  <!-- Agent KPI Totals (per agent, cumulative) -->
+  <div class="block">
+    <div class="section-title">📊 Agent KPI Totals</div>
+    <p class="formula" id="totalsSub">Every checkout adds up · sorted by KPI pts</p>
+    <div class="cards" id="agentCards"></div>
+  </div>
+
+  <!-- Badges -->
+  <div class="block">
+    <div class="section-title">🏅 Milestone Badges</div>
+    <p class="formula">All-time cumulative totals · they stack up over time · 🔥 streak = consecutive days checked out</p>
+    <div class="legend" id="legend"></div>
+  </div>
+
+  <p class="note">Boards show every Undeniable Life and Self Made Life agent who checked out in the selected period · the logo next to each name shows their agency · team checkouts sync from Discord every 10 minutes · tap any card for that agent's month calendar</p>
+</div>
+<div class="cal-bg" id="calBg" hidden>
+  <div class="cal" id="cal" role="dialog" aria-modal="true" aria-labelledby="calName">
+    <button type="button" class="cal-x" id="calX" aria-label="Close calendar">×</button>
+    <div class="cal-head"><div class="ac-av" id="calAv"></div><div style="min-width:0"><div class="cal-nm" id="calName"></div><div class="cal-sub" id="calSub"></div></div></div>
+    <div class="cal-nav"><button type="button" id="calPrev" aria-label="Previous month">‹</button><span class="mo" id="calMonth"></span><button type="button" id="calNext" aria-label="Next month">›</button></div>
+    <div class="cal-tot" id="calTot"></div>
+    <div class="cal-dow"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+    <div class="cal-grid" id="calGrid"></div>
+    <div class="cal-detail" id="calDetail"></div>
+    <div class="cal-foot">Tap a day for details · tap outside or × to close</div>
+  </div>
+</div>
+<script>
+const BASE_AGENTS=[{"id": "chris-matlock", "name": "Chris Matlock", "team": "UL"}, {"id": "spencer-brown", "name": "Spencer Brown", "team": "UL"}, {"id": "carlos-fierro", "name": "Carlos Fierro", "team": "UL"}, {"id": "jordan-gipson", "name": "Jordan Gipson", "team": "UL"}, {"id": "frank-baltierrez", "name": "Frank Baltierrez", "team": "UL"}, {"id": "david-abad", "name": "David Abad", "team": "UL"}, {"id": "tay-nobles", "name": "Tay Nobles", "team": "UL"}, {"id": "janee-cato", "name": "Janeé Cato", "team": "UL"}, {"id": "chris-flores", "name": "Chris Flores", "team": "UL"}, {"id": "alexander-petrowski", "name": "Alexander Petrowski", "team": "UL"}, {"id": "donovan-scandariato", "name": "Donovan Scandariato", "team": "UL"}, {"id": "morgan-whiteman", "name": "Morgan Whiteman", "team": "UL"}, {"id": "ava", "name": "Ava", "team": "UL"}, {"id": "alia-al-mazem", "name": "Alia Al-Mazem", "team": "UL"}, {"id": "jake-evans", "name": "Jake Evans", "team": "UL"}, {"id": "aaron-hildebrand", "name": "Aaron Hildebrand", "team": "UL"}, {"id": "gerardo-diaz", "name": "Gerardo Diaz", "team": "UL"}, {"id": "autumn-hines", "name": "Autumn Hines", "team": "UL"}, {"id": "jermaine-ruffin-jr", "name": "Jermaine Ruffin Jr", "team": "UL"}, {"id": "anthony-carter", "name": "Anthony Carter", "team": "UL"}, {"id": "luke-desrosiers", "name": "Luke Desrosiers", "team": "UL"}, {"id": "des-woods", "name": "Des Woods", "team": "UL"}, {"id": "lucas-tyre", "name": "Lucas Tyre", "team": "UL"}, {"id": "jackie-stofa", "name": "Jackie Stofa", "team": "UL"}, {"id": "khalil-grinds", "name": "Khalil Grinds", "team": "UL"}, {"id": "james-wyman", "name": "James Wyman", "team": "UL"}, {"id": "desirae-rhodes", "name": "Desirae Rhodes", "team": "UL"}, {"id": "kiana-brusett", "name": "Kiana Brusett", "team": "UL"}, {"id": "nia-alex", "name": "Nia Alex", "team": "UL"}, {"id": "michael-gonzalez", "name": "Michael Gonzalez", "team": "UL"}, {"id": "mellice-jellison", "name": "Mellice Jellison", "team": "UL"}, {"id": "diane-stottlemire", "name": "Diane Stottlemire", "team": "UL"}, {"id": "charon-tucker", "name": "Charon Tucker", "team": "UL"}, {"id": "melvin-lewis", "name": "Melvin Lewis", "team": "UL"}, {"id": "steve-shatkin", "name": "Steve Shatkin", "team": "SML"}, {"id": "naki-tupoumalohi", "name": "Naki Tupoumalohi", "team": "SML"}, {"id": "justin-mcknight", "name": "Justin McKnight", "team": "SML"}, {"id": "geno", "name": "Geno", "team": "SML"}, {"id": "spencer", "name": "Spencer", "team": "SML"}, {"id": "izick-ruiz", "name": "Izick Ruiz", "team": "SML"}, {"id": "luna", "name": "Luna", "team": "SML"}, {"id": "salote-tupoumalohi", "name": "Salote Tupoumalohi", "team": "SML"}, {"id": "andrea-mora", "name": "Andrea Mora", "team": "SML"}, {"id": "ipo-lake", "name": "Ipo Lake", "team": "SML"}, {"id": "tyler-glennon", "name": "Tyler Glennon", "team": "SML"}, {"id": "neo-johnson", "name": "Neo Johnson", "team": "SML"}, {"id": "joe-delpino", "name": "Joe DelPino", "team": "SML"}];
+const HOOK="https://discord.com/api/webhooks/1556814679240872057/fLK0TozwCa25ORn-HzhD6XRfLRJj3BluS40Azi6BWMglY8Eve-jDIFWMkFf-yzjEhkG2";
+const KEY='ulxsml_kpis_v1';
+const CUSTOM_KEY='ulxsml_kpis_custom_agents_v1';
+const TEAMS={UL:{name:'Undeniable Life',badge:'assets/badge_ul.png',cls:'ul'},SML:{name:'Self Made Life',badge:'assets/badge_sml.png',cls:'sml'}};
+const loadCustom=()=>{try{const v=JSON.parse(localStorage.getItem(CUSTOM_KEY)||'[]');return Array.isArray(v)?v.filter(a=>a&&a.id&&a.name&&TEAMS[a.team]):[]}catch{return[]}};
+const AGENTS=BASE_AGENTS.concat(loadCustom().filter(c=>!BASE_AGENTS.some(b=>b.id===c.id)));
+const teamBadge=t=>TEAMS[t]?`<span class="tb ${TEAMS[t].cls}" title="${TEAMS[t].name}"><img src="${TEAMS[t].badge}" alt="${TEAMS[t].name}"/></span>`:'';
+/* Team checkouts read from Discord by the 10-minute sync (kpi_data.json, embedded copy below as fallback). Chayce Glassow is never included. */
+let SHARED_DATA=/*KPI_DATA*/{"generated":"2026-10-10T14:46:32-07:00","generated_label":"Oct 10, 2:46 PM PT","entries":[{"id":"luke-desrosiers","name":"Luke Desrosiers","team":"UL","date":"2026-10-05","dials":0,"appts":0,"pres":0,"closed":0,"ap":0.0},{"id":"alexander-petrowski","name":"Alexander Petrowski","team":"UL","date":"2026-10-06","dials":160,"appts":2,"pres":0,"closed":0,"ap":0.0},{"id":"luke-desrosiers","name":"Luke Desrosiers","team":"UL","date":"2026-10-06","dials":0,"appts":0,"pres":0,"closed":0,"ap":0.0},{"id":"alexander-petrowski","name":"Alexander Petrowski","team":"UL","date":"2026-10-07","dials":245,"appts":3,"pres":0,"closed":0,"ap":0.0},{"id":"luke-desrosiers","name":"Luke Desrosiers","team":"UL","date":"2026-10-07","dials":0,"appts":0,"pres":0,"closed":0,"ap":0.0},{"id":"luke-desrosiers","name":"Luke Desrosiers","team":"UL","date":"2026-10-08","dials":0,"appts":0,"pres":0,"closed":0,"ap":0.0},{"id":"tay-nobles","name":"Tay Nobles","team":"UL","date":"2026-10-08","dials":270,"appts":3,"pres":0,"closed":0,"ap":0.0},{"id":"tay-nobles","name":"Tay Nobles","team":"UL","date":"2026-10-09","dials":400,"appts":2,"pres":1,"closed":0,"ap":0.0},{"id":"luke-desrosiers","name":"Luke Desrosiers","team":"UL","date":"2026-10-09","dials":0,"appts":0,"pres":0,"closed":0,"ap":0.0},{"id":"david-abad","name":"David Abad","team":"UL","date":"2026-10-09","dials":129,"appts":2,"pres":1,"closed":0,"ap":0.0}]}/*END_KPI_DATA*/;
+const SHARED_URL='kpi_data.json';
+
+/* Shared store (Sheet via Apps Script), inactive by default. Set ulxsml_checkout_endpoint / ulxsml_checkout_csv in localStorage (or window.ULXSML_CHECKOUT_ENDPOINT) to turn on. */
+const ENDPOINT=window.ULXSML_CHECKOUT_ENDPOINT||localStorage.getItem('ulxsml_checkout_endpoint')||'';
+const SHEET_CSV=window.ULXSML_CHECKOUT_CSV||localStorage.getItem('ulxsml_checkout_csv')||'';
+let syncState={mode:'local',agents:0,entries:0,msg:'',at:null};
+
+function entryKey(e){return [e.id,e.date,e.dials,e.appts,e.pres,e.closed,e.ap].join('|')}
+function teamOf(id,t){ if(TEAMS[t]) return t; const a=AGENTS.find(x=>x.id===id); return a?a.team:''; }
+function mergeEntries(base,extra){
+  const seen=new Set(base.map(entryKey));
+  const out=base.slice();
+  extra.forEach(e=>{const k=entryKey(e); if(seen.has(k)) return; seen.add(k); out.push(e);});
+  return out;
+}
+function toLocalShape(e){
+  if(!e||typeof e!=='object') return null;
+  const date=String(e.date||'').slice(0,10);
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(date)) return null;
+  const id=String(e.id||e.agent_id||'').trim(); if(!id) return null;
+  const name=String(e.name||e.agent_name||((AGENTS.find(a=>a.id===id)||{}).name)||id);
+  const dials=Number(e.dials); const appts=Number(e.appts!=null?e.appts:e.appointments);
+  const pres=Number(e.pres!=null?e.pres:e.presentations); const closed=Number(e.closed!=null?e.closed:e.closed_deals);
+  const ap=Number(e.ap!=null?e.ap:e.total_ap);
+  const team=teamOf(id,String(e.team||e.agency||'').toUpperCase()==='UNDENIABLE LIFE'?'UL':String(e.team||e.agency||'').toUpperCase()==='SELF MADE LIFE'?'SML':String(e.team||e.agency||'').toUpperCase());
+  return {id,name,team,date,dials:Number.isFinite(dials)?dials:0,appts:Number.isFinite(appts)?appts:0,pres:Number.isFinite(pres)?pres:0,closed:Number.isFinite(closed)?closed:0,ap:Number.isFinite(ap)?ap:0};
+}
+function parseCsvLine(line){
+  const out=[]; let cur='',q=false;
+  for(let i=0;i<line.length;i++){const c=line[i]; if(c==='"'){q=!q;continue;} if(c===','&&!q){out.push(cur);cur='';continue;} cur+=c;}
+  out.push(cur); return out;
+}
+function entriesFromCsv(text){
+  return text.trim().split(/\r?\n/).slice(1).map(line=>{
+    if(!line.trim()) return null;
+    const c=parseCsvLine(line); if(c.length<9) return null;
+    return toLocalShape({date:c[1],id:c[2],name:c[3],dials:c[4],appts:c[5],pres:c[6],closed:c[7],ap:c[8],team:c[9]||''});
+  }).filter(Boolean);
+}
+function persistMerged(remote){
+  const local=load();
+  const shaped=remote.map(toLocalShape).filter(Boolean);
+  const merged=mergeEntries(local,shaped);
+  if(merged.length!==local.length) localStorage.setItem(KEY,JSON.stringify(merged));
+  const agents=new Set(merged.map(e=>e.id)).size;
+  syncState={mode:'live',agents,entries:merged.length,msg:'',at:new Date()};
+  return merged;
+}
+function setSyncBar(){
+  const el=$('syncBar'); if(!el) return;
+  if(syncState.mode!=='live'&&SHARED_DATA&&SHARED_DATA.generated){
+    const all=entries(), ag=new Set(all.map(e=>e.id)).size, mine=all.filter(e=>e.local).length;
+    el.className='sync live';
+    el.innerHTML=`🌐 <b>Team board live</b> · ${ag} agent${ag===1?'':'s'} · ${all.length} checkout${all.length===1?'':'s'} from Discord · synced ${esc(SHARED_DATA.generated_label||'')}${mine?` · +${mine} from this device (syncing)`:''}`;
+    return;
+  }
+  if(syncState.mode==='live'){
+    el.className='sync live';
+    const when=syncState.at?syncState.at.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',timeZone:'America/Phoenix'}):'';
+    el.innerHTML=`🌐 <b>Team board live</b> · ${syncState.agents} agent${syncState.agents===1?'':'s'} tracked · ${syncState.entries} checkout${syncState.entries===1?'':'s'}${when?' · synced '+when+' PT':''}`;
+  }else if(syncState.mode==='error'){
+    el.className='sync warn';
+    el.innerHTML=`⚠️ Shared store unreachable · showing <b>this device only</b> (${syncState.agents} agent${syncState.agents===1?'':'s'}) · ${esc(syncState.msg||'try refresh')}`;
+  }else{
+    const n=new Set(load().map(e=>e&&e.id).filter(Boolean)).size;
+    el.className='sync warn';
+    el.innerHTML=n
+      ?`📱 Tracking <b>${n} agent${n===1?'':'s'} on this device</b> · other phones/laptops won't see these until the Sheet is connected`
+      :`📱 No checkouts on this device yet · team-wide tracking turns on once the shared Sheet is connected`;
+  }
+}
+async function pullShared(){
+  const localN=new Set(load().map(e=>e&&e.id).filter(Boolean)).size;
+  syncState={mode:'local',agents:localN,entries:load().length,msg:'',at:null};
+  if(!ENDPOINT && !SHEET_CSV){ setSyncBar(); return false; }
+  try{
+    if(ENDPOINT){
+      const url=ENDPOINT+(ENDPOINT.includes('?')?'&':'?')+'t='+Date.now();
+      const r=await fetch(url,{method:'GET',credentials:'omit'});
+      if(!r.ok) throw new Error('HTTP '+r.status);
+      const data=await r.json();
+      if(!data||data.ok===false) throw new Error((data&&data.error)||'bad response');
+      const remote=Array.isArray(data.entries)?data.entries:(Array.isArray(data.agents)?data.agents.map(a=>({id:a.agent_id,name:a.agent_name,date:iso,dials:a.dials,appts:a.appointments,pres:a.presentations,closed:a.closed_deals,ap:a.total_ap})):[]);
+      persistMerged(remote); setSyncBar(); return true;
+    }
+    if(SHEET_CSV){
+      const r=await fetch(SHEET_CSV+(SHEET_CSV.includes('?')?'&':'?')+'t='+Date.now(),{credentials:'omit'});
+      if(!r.ok) throw new Error('HTTP '+r.status);
+      persistMerged(entriesFromCsv(await r.text())); setSyncBar(); return true;
+    }
+  }catch(err){
+    syncState={mode:'error',agents:localN,entries:load().length,msg:String(err.message||err),at:null};
+    setSyncBar();
+  }
+  return false;
+}
+async function pushShared(s){
+  if(!ENDPOINT) return {ok:false,skipped:true};
+  const payload={timestamp:new Date().toISOString(),date:s.date,id:s.id,name:s.name,team:s.team,agency:(TEAMS[s.team]||{}).name||'',agent_id:s.id,agent_name:s.name,dials:s.dials,appts:s.appts,appointments:s.appts,pres:s.pres,presentations:s.pres,closed:s.closed,closed_deals:s.closed,ap:s.ap,total_ap:s.ap,skipDiscord:true};
+  // Prefer POST (Apps Script receives body even with no-cors). Also try readable GET fallback.
+  try{
+    await fetch(ENDPOINT,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)});
+    return {ok:true};
+  }catch(_){}
+  try{
+    const q=new URLSearchParams({action:'checkout',date:s.date,team:s.team,agency:(TEAMS[s.team]||{}).name||'',agent_id:s.id,agent_name:s.name,id:s.id,name:s.name,dials:String(s.dials),appts:String(s.appts),pres:String(s.pres),closed:String(s.closed),ap:String(s.ap),skipDiscord:'1'});
+    const r=await fetch(ENDPOINT+(ENDPOINT.includes('?')?'&':'?')+q.toString(),{method:'GET',credentials:'omit'});
+    if(r.ok){const d=await r.json(); return {ok:!!(d&&d.ok!==false)};}
+  }catch(_){}
+  return {ok:false};
+}
+
+const $=i=>document.getElementById(i);
+const RANK_KEY='ulxsml_kpi_ranks_v1';     // UI-only: last-seen ranks for ▲▼ chips
+const LAST_AGENT_KEY='ulxsml_kpi_last_agent'; // UI-only: remembers the agent picked on this device
+const REDUCED=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+const PTS={d:1,a:5,p:10,c:25}, AP_PER_PT=100;
+const CATS=[
+  {k:'d', title:'Top Dials',         short:'Dials',  e:'📞', unit:'dials'},
+  {k:'a', title:'Top Appointments',  short:'Appts',  e:'📅', unit:'appointments'},
+  {k:'p', title:'Top Presentations', short:'Pres',   e:'🎤', unit:'presentations'},
+  {k:'c', title:'Top Closed',        short:'Closed', e:'🤝', unit:'closes'},
+  {k:'ap',title:'Top AP',            short:'AP',     e:'💰', unit:'AP'}
+];
+const BADGE_COLORS={d:'#4da3ff',a:'#7c5cff',p:'#e1197a',c:'#17a86b',ap:'#ffb020',st:'#ff6a1a'};
+const BADGES=[
+  {k:'d',v:100,e:'📞',n:'Dialer'},{k:'d',v:500,e:'☎️',n:'Phone Warrior'},{k:'d',v:1000,e:'📡',n:'Dial Machine'},{k:'d',v:5000,e:'🚀',n:'Dial Legend'},
+  {k:'a',v:10,e:'📅',n:'Booker'},{k:'a',v:50,e:'🗓️',n:'Calendar King'},{k:'a',v:100,e:'🏰',n:'Appointment Empire'},
+  {k:'p',v:10,e:'🎤',n:'Presenter'},{k:'p',v:50,e:'🎙️',n:'Showrunner'},{k:'p',v:100,e:'🏟️',n:'Headliner'},
+  {k:'c',v:5,e:'🤝',n:'Closer'},{k:'c',v:25,e:'🔒',n:'Lockdown'},{k:'c',v:50,e:'🏆',n:'Hall of Fame'},
+  {k:'ap',v:10000,e:'💰',n:'$10K Club'},{k:'ap',v:50000,e:'💎',n:'$50K Club'},{k:'ap',v:100000,e:'👑',n:'$100K Club'},
+  {k:'st',v:3,e:'🔥',n:'On Fire'},{k:'st',v:7,e:'⚡',n:'Week Warrior'},{k:'st',v:30,e:'🌋',n:'Unstoppable'}
+].map(b=>({...b,id:b.k+b.v}));
+const LEVELS=[
+  {lv:1,name:'Rookie',pts:0,t:''},{lv:2,name:'Warmed Up',pts:1,t:''},{lv:3,name:'Grinder',pts:250,t:'t2'},
+  {lv:4,name:'Hustler',pts:750,t:'t2'},{lv:5,name:'Setter',pts:1500,t:'t3'},{lv:6,name:'Presenter',pts:3000,t:'t3'},
+  {lv:7,name:'Closer',pts:5000,t:'t4'},{lv:8,name:'Rainmaker',pts:10000,t:'t4'},{lv:9,name:'Legend',pts:25000,t:'t5'}
+];
+const PLABEL={week:'This week',month:'This month',all:'All time'};
+const MEDALS={1:'🥇',2:'🥈',3:'🥉'};
+let period='month', cat='d';
+
+let SORTED=[...AGENTS].sort((a,b)=>a.name.localeCompare(b.name,'en',{sensitivity:'base'}));
+const iso=new Date().toLocaleDateString('en-CA',{timeZone:'America/Phoenix'});$('date').value=iso;
+const ml=new Date().toLocaleString('en-US',{month:'long',year:'numeric',timeZone:'America/Phoenix'});
+const money=n=>'$'+Number(n||0).toLocaleString('en-US',{maximumFractionDigits:0});
+const int=n=>Math.round(Number(n||0)).toLocaleString('en-US');
+const FMT={money,int};
+const fk=k=>k==='ap'?'money':'int';
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const first=n=>String(n||'').split(' ')[0];
+const initials=n=>String(n||'?').split(/\s+/).slice(0,2).map(w=>w[0]||'').join('').toUpperCase();
+const num=v=>{const n=Number(v);return Number.isFinite(n)&&n>0?n:0};
+const load=()=>{try{const v=JSON.parse(localStorage.getItem(KEY)||'[]');return Array.isArray(v)?v:[]}catch{return[]}};
+const loadUi=k=>{try{return JSON.parse(localStorage.getItem(k)||'{}')||{}}catch{return{}}};
+const saveUi=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}};
+let AG_BY_ID=Object.fromEntries(AGENTS.map(a=>[a.id,a]));
+
+/* ---------- data (reads ulxsml_kpis_v1 entries {id,name,team,date,dials,appts,pres,closed,ap}) ---------- */
+function shapeRow(s){
+    if(!s||typeof s!=='object') return null;
+    const date=String(s.date||'').slice(0,10);
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(date)) return null;
+    const id=String(s.id||s.name||'').trim(); if(!id) return null;
+    return {id,name:String(s.name||(AG_BY_ID[id]||{}).name||id),team:teamOf(id,s.team),date,d:num(s.dials),a:num(s.appts),p:num(s.pres),c:num(s.closed),ap:num(s.ap)};
+}
+const nfold=t=>String(t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
+const matchKey=r=>[nfold(r.name),r.date,r.d,r.a,r.p,r.c,Math.round(r.ap)].join('|');
+let _shCache=null, _entCache=null, _entSig='';
+function sharedRows(){
+  if(_shCache) return _shCache;
+  const list=(SHARED_DATA&&Array.isArray(SHARED_DATA.entries))?SHARED_DATA.entries:[];
+  _shCache=list.map(shapeRow).filter(Boolean).map(r=>(r.shared=true,r));
+  return _shCache;
+}
+function entries(){
+  const raw=localStorage.getItem(KEY)||'', sig=raw+'#'+(SHARED_DATA&&SHARED_DATA.generated);
+  if(_entCache&&sig===_entSig) return _entCache.slice();
+  const sh=sharedRows(), pool=new Map();
+  sh.forEach(r=>{ const k=matchKey(r); pool.set(k,(pool.get(k)||0)+1); });
+  // a checkout from this device only counts until the sync picks it up from Discord (match on agent, date and numbers)
+  const mine=load().map(shapeRow).filter(Boolean).filter(r=>{ const k=matchKey(r), n=pool.get(k)||0; if(n>0){ pool.set(k,n-1); return false; } return true; }).map(r=>(r.local=true,r));
+  _entCache=sh.concat(mine); _entSig=sig;
+  return _entCache.slice();
+}
+async function refreshShared(){
+  try{
+    const r=await fetch(SHARED_URL+'?t='+Date.now(),{cache:'no-store',credentials:'omit'});
+    if(!r.ok) return;
+    const d=await r.json();
+    if(!d||!Array.isArray(d.entries)) return;
+    if(d.generated&&d.generated===(SHARED_DATA&&SHARED_DATA.generated)) return;
+    SHARED_DATA=d; _shCache=null; _entCache=null;
+    render(); setSyncBar(); if(calState.id) drawCal();
+  }catch(_){ /* offline or file:// → embedded copy stays */ }
+}
+const dayNum=s=>Math.round(Date.UTC(+s.slice(0,4),+s.slice(5,7)-1,+s.slice(8,10))/864e5);
+const TODAY_N=dayNum(iso);
+const WEEK_START=TODAY_N-((new Date(TODAY_N*864e5).getUTCDay()+6)%7); // Monday
+const dayLabel=n=>new Date(n*864e5).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',timeZone:'UTC'});
+function inPeriod(e,p){
+  if(p==='all') return true;
+  if(p==='month') return e.date.slice(0,7)===iso.slice(0,7);
+  const n=dayNum(e.date); return n>=WEEK_START&&n<=WEEK_START+6;
+}
+const points=r=>r.d*PTS.d+r.a*PTS.a+r.p*PTS.p+r.c*PTS.c+Math.floor(r.ap/AP_PER_PT);
+function aggregate(list){
+  const m={};
+  list.forEach(e=>{const r=m[e.id]||(m[e.id]={id:e.id,name:e.name,team:e.team,d:0,a:0,p:0,c:0,ap:0,n:0}); if(!r.team&&e.team) r.team=e.team;r.d+=e.d;r.a+=e.a;r.p+=e.p;r.c+=e.c;r.ap+=e.ap;r.n++;});
+  return Object.values(m).map(r=>(r.pts=points(r),r));
+}
+function streaks(list){
+  const by={};
+  list.forEach(e=>{const n=dayNum(e.date); if(n>TODAY_N) return; (by[e.id]||(by[e.id]=new Set())).add(n);});
+  const out={};
+  for(const id in by){
+    const ds=[...by[id]].sort((a,b)=>a-b); let best=1,run=1;
+    for(let i=1;i<ds.length;i++){ run=ds[i]===ds[i-1]+1?run+1:1; if(run>best) best=run; }
+    const last=ds[ds.length-1]; let cur=0;
+    if(last>=TODAY_N-1){ cur=1; for(let i=ds.length-1;i>0&&ds[i-1]===ds[i]-1;i--) cur++; }
+    out[id]={cur,best,today:last===TODAY_N};
+  }
+  return out;
+}
+function levelFor(p){ let l=LEVELS[0]; for(const x of LEVELS) if(p>=x.pts) l=x; return l; }
+function badgesFor(L,st){ return BADGES.filter(b=>(b.k==='st'?(st?st.best:0):(L?L[b.k]:0))>=b.v); }
+function compute(p){
+  const all=entries(), lt=aggregate(all), st=streaks(all);
+  const ltBy=Object.fromEntries(lt.map(r=>[r.id,r]));
+  const rows=aggregate(all.filter(e=>inPeriod(e,p)));
+  rows.forEach(r=>{ r.life=ltBy[r.id]||r; r.st=st[r.id]||{cur:0,best:0,today:false}; r.badges=badgesFor(r.life,r.st); r.level=levelFor(Number(r.life.pts)||0); });
+  const byCat={};
+  CATS.forEach(c=>{ byCat[c.k]=[...rows].sort((x,y)=>y[c.k]-x[c.k]||y.pts-x.pts||x.name.localeCompare(y.name)); });
+  const mvp=[...rows].sort((x,y)=>y.pts-x.pts||y.ap-x.ap||x.name.localeCompare(y.name));
+  return {all,rows,byCat,mvp,lt,ltBy,st};
+}
+const leaderOf=(list,k)=>list[0]&&list[0][k]>0?list[0].id:null;
+function rankMap(list,k){ const m={}; list.forEach((r,i)=>{ if(r[k]>0) m[r.id]=i+1; }); return m; }
+
+/* ---------- motion helpers ---------- */
+function countUp(el,to,fmt){
+  if(!el) return;
+  const from=Number(el.dataset.val||0); el.dataset.val=to;
+  if(REDUCED||from===to){ el.textContent=fmt(to); return; }
+  const t0=performance.now(), dur=1000;
+  const step=t=>{ const k=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-k,3);
+    el.textContent=fmt(from+(to-from)*e); if(k<1) requestAnimationFrame(step); };
+  requestAnimationFrame(step);
+}
+function animateBars(root){ requestAnimationFrame(()=>requestAnimationFrame(()=>{ root.querySelectorAll('[data-w]').forEach(el=>{ el.style.width=el.dataset.w+'%'; }); })); }
+function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toast._h); toast._h=setTimeout(()=>t.classList.remove('show'),3600); }
+function confetti(){
+  if(REDUCED) return;
+  const c=$('confetti'), ctx=c.getContext('2d');
+  const W=c.width=innerWidth, H=c.height=innerHeight;
+  const cols=['#e1197a','#ff6a1a','#ffb020','#071528','#17a86b'];
+  const ps=Array.from({length:140},()=>({x:W/2+(Math.random()-.5)*W*.3,y:H*.25,vx:(Math.random()-.5)*12,vy:-Math.random()*11-4,
+    s:Math.random()*6+4,r:Math.random()*6,vr:(Math.random()-.5)*.3,c:cols[Math.random()*cols.length|0]}));
+  const t0=performance.now();
+  (function frame(t){
+    const k=(t-t0)/2800; ctx.clearRect(0,0,W,H);
+    if(k>=1) return;
+    ctx.globalAlpha=1-Math.max(0,k-.6)/.4;
+    for(const p of ps){ p.vy+=.28; p.vx*=.99; p.x+=p.vx; p.y+=p.vy; p.r+=p.vr;
+      ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.r); ctx.fillStyle=p.c; ctx.fillRect(-p.s/2,-p.s/3,p.s,p.s*.66); ctx.restore(); }
+    requestAnimationFrame(frame);
+  })(t0);
+}
+
+/* ---------- rank-change chips ---------- */
+let baseRanks=loadUi(RANK_KEY);   // baseline from the last visit
+let popFor=null;                  // {id, badges:Set} → animate newly unlocked badges after a submit
+function deltaChip(base,id,r,v){
+  if(!base||v<=0) return '';
+  if(base[id]==null) return `<span class="delta new">NEW</span>`;
+  const d=base[id]-r;
+  return d>0?`<span class="delta up">▲${d}</span>`:d<0?`<span class="delta down">▼${-d}</span>`:'';
+}
+function snapshotRanks(){
+  ['week','month','all'].forEach(p=>{ const S=compute(p);
+    CATS.forEach(c=>{ baseRanks[p+':'+c.k]=rankMap(S.byCat[c.k],c.k); });
+    baseRanks[p+':pts']=rankMap(S.mvp,'pts'); });
+}
+
+/* ---------- html builders ---------- */
+const streakChip=st=>st&&st.cur>0?`<span class="streak ${st.cur>=3?'hot':''}" title="${st.cur}-day checkout streak · best ${st.best}">🔥${st.cur}</span>`:'';
+function badgeRow(a,max){
+  const list=a.badges||[]; if(!list.length) return '';
+  const pop=popFor&&popFor.id===a.id?popFor.badges:null;
+  const shown=list.slice(-max);
+  return `<div class="ach-row">`+(list.length>max?`<div class="ach more">+${list.length-max}</div>`:'')+shown.map(b=>{
+    const col=BADGE_COLORS[b.k];
+    return `<div class="ach ${pop&&pop.has(b.id)?'pop':''}" style="border-color:${col};background:linear-gradient(145deg,${col}33,#fff)"><span class="tip">${b.n} · ${badgeReq(b)}</span>${b.e}</div>`;
+  }).join('')+`</div>`;
+}
+function badgeReq(b){
+  if(b.k==='ap') return '$'+(b.v/1000)+'K AP';
+  if(b.k==='st') return b.v+'-day streak';
+  const c=CATS.find(x=>x.k===b.k); return int(b.v)+' '+c.unit;
+}
+function podiumHtml(list,k,sub,extra){
+  const top=list.filter(r=>r[k]>0).slice(0,3);
+  const lead=top[0]?top[0][k]:0;
+  const slot=r=>{
+    const a=top[r-1];
+    if(!a) return `<div class="pod r${r} empty"><div class="card"><div class="avatar">?</div>
+      <div class="name">Open spot</div><div class="ap">${MEDALS[r]}</div><div class="goal">First checkout claims it</div></div><div class="step">${r}</div>${r===1?'<div class="crown">👑</div>':''}</div>`;
+    const pct=lead?Math.max(4,Math.round(a[k]/lead*100)):0;
+    return `<div class="pod r${r}"><div class="card">${r===1?'<div class="shine"></div>':''}
+        <div class="avatar">${esc(initials(a.name))}<span class="medal">${MEDALS[r]}</span></div>
+        <div class="name">${esc(a.name)}</div>
+        <div class="tbw">${teamBadge(a.team)}</div>
+        <div class="ap" data-count="${a[k]}" data-fmt="${fk(k)}">${FMT[fk(k)](0)}</div>
+        <div class="goal">${sub(a)}</div>
+        <div class="mini-track"><div class="fill" data-w="${pct}"></div></div>
+        ${extra?extra(a):''}
+      </div><div class="step">${r}</div>${r===1?'<div class="crown">👑</div>':''}</div>`;
+  };
+  return slot(2)+slot(1)+slot(3);
+}
+const emptyList=what=>`<div class="empty-state">No checkouts ${period==='all'?'yet':PLABEL[period].toLowerCase()} · <b>first checkout claims the #1 ${what} spot</b> 👑</div>`;
+const plural=(n,w)=>n+' '+w+(n===1?'':'s');
+
+function mvpListHtml(S){
+  if(!S.mvp.length) return emptyList('KPI Champion');
+  const base=baseRanks[period+':pts'];
+  return S.mvp.map((a,i)=>{
+    const r=i+1, lv=a.level, nx=LEVELS.find(x=>x.pts>a.life.pts), zero=a.pts<=0;
+    const lvPct=nx?Math.round((a.life.pts-lv.pts)/(nx.pts-lv.pts)*100):100;
+    const hints=[`📞 <b>${int(a.d)}</b>`,`📅 <b>${int(a.a)}</b>`,`🎤 <b>${int(a.p)}</b>`,`🤝 <b>${int(a.c)}</b>`,`💰 <b>${money(a.ap)}</b>`];
+    const above=i>0?S.mvp[i-1]:null;
+    if(r===1&&S.mvp[1]&&a.pts>S.mvp[1].pts) hints.push(`🛡️ Leading by <b>${int(a.pts-S.mvp[1].pts)} pts</b>`);
+    if(above&&above.pts>a.pts) hints.push(`⚔️ <b>${int(above.pts-a.pts+1)} pts</b> to pass ${esc(first(above.name))}`);
+    const rnum=r<=3&&!zero?MEDALS[r]:r;
+    return `<div class="agent ${!zero&&r<=3?'top'+r:''} ${zero?'zero':''}" style="animation-delay:${Math.min(i,12)*35}ms">
+      <div class="rnum">${rnum}</div>
+      <div class="who">
+        <div class="n">${esc(a.name)}<span class="lvl ${lv.t}">LV ${lv.lv} · ${lv.name}</span>${streakChip(a.st)}${deltaChip(base,a.id,r,a.pts)}</div>
+        <div class="tbw">${teamBadge(a.team)}</div>
+        <div class="xp"><span class="lv">LV ${lv.lv}</span><div class="track"><div class="fill lvfill" data-w="${lvPct}"></div></div><span class="p">${nx?`${int(a.life.pts)}/${int(nx.pts)} XP`:'MAX'}</span></div>
+        <div class="hints">${hints.map(h=>`<span>${h}</span>`).join('')}</div>
+      </div>
+      <div class="right">
+        <div><div class="apv" data-count="${a.pts}" data-fmt="int">0</div><div class="g">pts · ${plural(a.n,'checkout')}</div></div>
+        ${badgeRow(a,6)}
+      </div>
+    </div>`;
+  }).join('');
+}
+function catListHtml(S,c){
+  const list=S.byCat[c.k], k=c.k, fmt=FMT[fk(k)];
+  if(!list.length) return emptyList(c.short);
+  const base=baseRanks[period+':'+k], lead=list[0][k];
+  return list.map((a,i)=>{
+    const r=i+1, v=a[k], zero=v<=0, pct=lead>0?Math.round(v/lead*100):0, above=i>0?list[i-1]:null, hints=[];
+    if(zero) hints.push(`No ${c.unit} logged ${period==='all'?'yet':PLABEL[period].toLowerCase()}`);
+    else{
+      if(r===1&&list[1]&&v>list[1][k]) hints.push(`🛡️ Leading by <b>${fmt(v-list[1][k])}</b>`);
+      if(r===1&&(!list[1]||list[1][k]<=0)) hints.push(`<span class="win">👑 Owns the top spot</span>`);
+      if(above&&above[k]>v) hints.push(`⚔️ <b>${fmt(above[k]-v+1)}</b> to pass ${esc(first(above.name))}`);
+      if(r>1&&above&&above[k]===v) hints.push(`🤜 Tied with ${esc(first(above.name))}`);
+    }
+    const nb=BADGES.find(b=>b.k===k&&a.life[k]<b.v);
+    hints.push(nb?`${nb.e} ${nb.n} in <b>${fmt(nb.v-a.life[k])}</b>`:`<span class="win">🏅 All ${c.short} badges</span>`);
+    const rnum=r<=3&&!zero?MEDALS[r]:r;
+    return `<div class="agent ${!zero&&r<=3?'top'+r:''} ${zero?'zero':''}" style="animation-delay:${Math.min(i,12)*35}ms">
+      <div class="rnum">${rnum}</div>
+      <div class="who">
+        <div class="n">${esc(a.name)}${streakChip(a.st)}${deltaChip(base,a.id,r,v)}</div>
+        <div class="tbw">${teamBadge(a.team)}</div>
+        <div class="xp"><span class="lv">${c.e}</span><div class="track"><div class="fill" data-w="${pct}"></div></div><span class="p">${pct}%</span></div>
+        <div class="hints">${hints.map(h=>`<span>${h}</span>`).join('')}</div>
+      </div>
+      <div class="right">
+        <div><div class="apv" ${zero?'':`data-count="${v}" data-fmt="${fk(k)}"`}>${fmt(0)}</div><div class="g">${c.short.toLowerCase()} · ${plural(a.n,'checkout')}</div></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ---------- agent KPI totals cards ---------- */
+const openDays=new Set();   // which agents have day-by-day expanded
+function agentCardsHtml(S){
+  if(!S.mvp.length) return `<div class="empty-state">No checkouts ${period==='all'?'yet':PLABEL[period].toLowerCase()} · <b>your card shows up after your first checkout</b> 📊</div>`;
+  const tops={}; CATS.forEach(c=>{ tops[c.k]=S.byCat[c.k][0]?S.byCat[c.k][0][c.k]:0; });
+  const perDay={};
+  S.all.filter(e=>inPeriod(e,period)).forEach(e=>{
+    const m=perDay[e.id]||(perDay[e.id]={}), d=m[e.date]||(m[e.date]={d:0,a:0,p:0,c:0,ap:0,n:0});
+    d.d+=e.d; d.a+=e.a; d.p+=e.p; d.c+=e.c; d.ap+=e.ap; d.n++;
+  });
+  return S.mvp.map((a,i)=>{
+    const r=i+1, lv=a.level, zero=a.pts<=0, top=r<=3&&!zero;
+    const rk=top?`<span class="rk m">${MEDALS[r]}</span>`:`<span class="rk">${r}</span>`;
+    const stats=CATS.map(c=>{
+      const v=a[c.k], t=tops[c.k], pct=t>0?Math.round(v/t*100):0, lead=v>0&&v===t;
+      return `<div class="stat ${lead?'lead':''}" title="${c.title.replace('Top ','')}: ${FMT[fk(c.k)](v)}">${lead?'<span class="cr">👑</span>':''}
+        <div class="si">${c.e}</div><div class="sv" data-count="${v}" data-fmt="${fk(c.k)}">${FMT[fk(c.k)](0)}</div><div class="sl">${c.short}</div>
+        <div class="sb"><div class="fill" data-w="${pct}"></div></div></div>`;
+    }).join('');
+    // closest next badge (by % remaining)
+    let nb=null,best=Infinity;
+    BADGES.forEach(b=>{ const have=b.k==='st'?a.st.best:a.life[b.k]; if(have>=b.v) return; const left=(b.v-have)/b.v; if(left<best){best=left;nb={b,need:b.v-have};} });
+    const nextTxt=nb?`Next: ${nb.b.e} ${nb.b.n} in <b>${nb.b.k==='ap'?money(nb.need):nb.b.k==='st'?plural(nb.need,'more day'):int(nb.need)+' '+((u=>nb.need===1?u.replace(/s$/,''):u)((CATS.find(c=>c.k===nb.b.k)||{}).unit||''))}</b>`:'<span class="win">🏅 Every badge unlocked</span>';
+    const days=Object.entries(perDay[a.id]||{}).sort((x,y)=>x[0]<y[0]?-1:1);
+    const cum={d:0,a:0,p:0,c:0,ap:0}; let prev=0; const dayRows=days.map(([date,d])=>{ ['d','a','p','c','ap'].forEach(k=>cum[k]+=d[k]); const run=points(cum), p=run-prev; prev=run; return {date,d,p,run}; }).reverse().map(({date,d,p,run})=>
+      `<div class="day"><span class="dd">${dayLabel(dayNum(date))}${d.n>1?` <span style="color:var(--muted);font-weight:700">×${d.n}</span>`:''}</span>
+        <span class="dk"><span>📞 <b>${int(d.d)}</b></span><span>📅 <b>${int(d.a)}</b></span><span>🎤 <b>${int(d.p)}</b></span><span>🤝 <b>${int(d.c)}</b></span><span>💰 <b>${money(d.ap)}</b></span></span>
+        <span class="dp">+${int(p)} pts<span class="run">total ${int(run)}</span></span></div>`).join('');
+    return `<div class="acard ${top?'top'+r:''}" data-id="${esc(a.id)}" tabindex="0" aria-label="Open ${esc(a.name)}'s month calendar" style="animation-delay:${Math.min(i,12)*40}ms">
+      <div class="ac-head">
+        <div class="ac-av">${esc(initials(a.name))}${rk}</div>
+        <div style="min-width:0"><div class="ac-name">${esc(a.name)}<span class="lvl ${lv.t}">LV ${lv.lv} · ${lv.name}</span>${streakChip(a.st)}</div>
+          <div class="ac-tbw">${teamBadge(a.team)}</div>
+          <div class="ac-meta">${plural(days.length,'day')} logged · ${plural(a.n,'checkout')}</div></div>
+        <div class="ac-pts"><div class="v" data-count="${a.pts}" data-fmt="int">0</div><div class="l">KPI pts</div></div>
+      </div>
+      <div class="stats">${stats}</div>
+      ${mtdHtml(a.id,S.all)}
+      <div class="ac-foot">${badgeRow(a,10)||'<span class="ac-next">No badges yet</span>'}<span class="ac-next">${nextTxt}</span></div>
+      <details class="days" data-id="${esc(a.id)}" ${openDays.has(a.id)?'open':''}><summary>Day by day <span class="car">▾</span></summary>${dayRows}</details>
+    </div>`;
+  }).join('');
+}
+
+/* ---------- month-to-date strip (grows each day) ---------- */
+const MONTH=iso.slice(0,7);
+function dayMap(list,id,month){
+  const m={};
+  list.forEach(e=>{ if(e.id!==id||e.date.slice(0,7)!==month) return;
+    const d=m[e.date]||(m[e.date]={d:0,a:0,p:0,c:0,ap:0,n:0}); d.d+=e.d; d.a+=e.a; d.p+=e.p; d.c+=e.c; d.ap+=e.ap; d.n++; });
+  return m;
+}
+function mtdHtml(id,all){
+  const dm=dayMap(all,id,MONTH), today=+iso.slice(8,10), cum=[]; let run=0, tot={d:0,a:0,p:0,c:0,ap:0};
+  for(let i=1;i<=today;i++){ const k=MONTH+'-'+String(i).padStart(2,'0'), d=dm[k]; if(d){ ['d','a','p','c','ap'].forEach(x=>tot[x]+=d[x]); run=points(tot); } cum.push({run,has:!!d,i}); }
+  const max=Math.max(1,run), td=dm[iso], logged=Object.keys(dm).length;
+  const bars=cum.map(c=>`<i class="${c.has?'on':''} ${c.i===today?'today':''}" data-h="${Math.max(4,Math.round(c.run/max*100))}" title="${MONTH.slice(5)}/${c.i} · ${int(c.run)} pts to date"></i>`).join('');
+  return `<div class="mtd"><div><div class="ml">📈 ${esc(ml.split(' ')[0])} to date</div>
+      <div class="mv"><span data-count="${run}" data-fmt="int">0</span> pts</div>
+      <div class="ms">💰 ${money(tot.ap)} · 📞 ${int(tot.d)} · ${td?`<b>+${int(points(td))} today</b>`:plural(logged,'day')}</div></div>
+    <div class="spark">${bars}</div>
+    <div class="tap"><span>📅 Tap for the month calendar</span><span>${plural(logged,'day')} logged this month</span></div></div>`;
+}
+function growSparks(root){ requestAnimationFrame(()=>requestAnimationFrame(()=>{ (root||document).querySelectorAll('.spark i[data-h]').forEach(el=>{ el.style.height=el.dataset.h+'%'; }); })); }
+
+/* ---------- calendar modal ---------- */
+const calState={id:null,month:MONTH,sel:null};
+const shortMoney=n=>{n=Number(n||0); return n>=10000?'$'+Math.round(n/1000)+'k':n>=1000?'$'+(n/1000).toFixed(1).replace(/\.0$/,'')+'k':'$'+Math.round(n);};
+const monthLabel=m=>new Date(Date.UTC(+m.slice(0,4),+m.slice(5,7)-1,1)).toLocaleDateString('en-US',{month:'long',year:'numeric',timeZone:'UTC'});
+const shiftMonth=(m,k)=>{ const d=new Date(Date.UTC(+m.slice(0,4),+m.slice(5,7)-1+k,1)); return d.toISOString().slice(0,7); };
+function agentMonths(id){ return [...new Set(entries().filter(e=>e.id===id).map(e=>e.date.slice(0,7)))].sort(); }
+function openCal(id){
+  calState.id=id; calState.month=MONTH; calState.sel=null;
+  const ms=agentMonths(id); if(ms.length&&!ms.includes(MONTH)&&ms[ms.length-1]<MONTH) calState.month=ms[ms.length-1];
+  drawCal();
+  const bg=$('calBg'); bg.hidden=false; document.body.classList.add('cal-open');
+  requestAnimationFrame(()=>bg.classList.add('show'));
+  calState.ret=document.activeElement; setTimeout(()=>$('calX').focus({preventScroll:true}),60);
+}
+function closeCal(){
+  const bg=$('calBg'); if(bg.hidden) return;
+  bg.classList.remove('show'); document.body.classList.remove('cal-open');
+  setTimeout(()=>{ bg.hidden=true; },200);
+  const ret=calState.ret; calState.id=null; if(ret&&ret.focus) try{ret.focus({preventScroll:true})}catch{}
+}
+function drawCal(){
+  const id=calState.id; if(!id) return;
+  const all=entries(), mine=all.filter(e=>e.id===id);
+  const S=compute('all'), L=S.ltBy[id], st=S.st[id]||{cur:0,best:0};
+  const name=(AG_BY_ID[id]&&AG_BY_ID[id].name)||(mine[0]&&mine[0].name)||id;
+  const team=(AG_BY_ID[id]&&AG_BY_ID[id].team)||(mine[0]&&mine[0].team)||'';
+  const lv=levelFor(L?L.pts:0), m=calState.month, dm=dayMap(all,id,m);
+  $('calAv').textContent=initials(name);
+  $('calName').innerHTML=`${esc(name)}<span class="lvl ${lv.t}">LV ${lv.lv} · ${lv.name}</span>${streakChip(st)}${typeof teamBadge==='function'?teamBadge(team):''}`;
+  const tot={d:0,a:0,p:0,c:0,ap:0,n:0}; Object.values(dm).forEach(d=>{ ['d','a','p','c','ap','n'].forEach(k=>tot[k]+=d[k]); });
+  const logged=Object.keys(dm).length;
+  $('calSub').textContent=`${monthLabel(m)} · ${plural(logged,'day')} checked out · ${plural(tot.n,'checkout')}${st.best?` · best streak ${st.best}`:''}`;
+  $('calMonth').textContent=monthLabel(m);
+  const ms=agentMonths(id), lo=ms.length?(ms[0]<m?ms[0]:m):m;
+  $('calPrev').disabled=m<=lo; $('calNext').disabled=m>=MONTH;
+  $('calTot').innerHTML=CATS.map(c=>`<div class="stat"><div class="si">${c.e}</div><div class="sv" data-count="${tot[c.k]}" data-fmt="${fk(c.k)}">${FMT[fk(c.k)](0)}</div><div class="sl">${c.short}</div></div>`).join('')
+    +`<div class="stat pts"><div class="si">⚡</div><div class="sv" data-count="${points(tot)}" data-fmt="int">0</div><div class="sl">Month pts</div></div>`
+    +`<div class="stat dl"><div class="si">🔥</div><div class="sv" data-count="${logged}" data-fmt="int">0</div><div class="sl">Days</div></div>`;
+  const y=+m.slice(0,4), mo=+m.slice(5,7), days=new Date(Date.UTC(y,mo,0)).getUTCDate();
+  const lead=(new Date(Date.UTC(y,mo-1,1)).getUTCDay()+6)%7;
+  const maxPts=Math.max(1,...Object.values(dm).map(points));
+  let cells=''; for(let i=0;i<lead;i++) cells+='<div class="cd pad"></div>';
+  for(let i=1;i<=days;i++){
+    const k=m+'-'+String(i).padStart(2,'0'), d=dm[k], n=dayNum(k), cls=['cd'];
+    if(n>TODAY_N) cls.push('future'); if(n===TODAY_N) cls.push('today'); if(d) cls.push('has'); if(calState.sel===k) cls.push('sel');
+    cells+=d?`<div class="${cls.join(' ')}" data-day="${k}" role="button" tabindex="0" style="--heat:${(.35+.65*points(d)/maxPts).toFixed(2)}" aria-label="${dayLabel(n)}: ${int(d.d)} dials, ${int(d.a)} appointments, ${int(d.p)} presentations, ${int(d.c)} closed, ${money(d.ap)} AP">
+        <span class="dn">${i}</span>${d.n>1?`<span class="x2">×${d.n}</span>`:''}
+        <span class="kl"><span class="e">📞</span><b>${int(d.d)}</b></span><span class="kl"><span class="e">📅</span><b>${int(d.a)}</b></span><span class="kl"><span class="e">🎤</span><b>${int(d.p)}</b></span><span class="kl"><span class="e">🤝</span><b>${int(d.c)}</b></span><span class="kl apl"><span class="e">💰</span><b>${shortMoney(d.ap)}</b></span></div>`
+      :`<div class="${cls.join(' ')}"><span class="dn">${i}</span>${n<=TODAY_N?'<span class="nil">—</span>':''}</div>`;
+  }
+  $('calGrid').innerHTML=cells;
+  const keys=Object.keys(dm).sort(); if(!calState.sel||!dm[calState.sel]) calState.sel=keys[keys.length-1]||null;
+  drawCalDetail(dm);
+  $('calTot').querySelectorAll('[data-count]').forEach(el=>{ el.dataset.val=0; countUp(el,Number(el.dataset.count),FMT[el.dataset.fmt]||int); });
+}
+function drawCalDetail(dm){
+  const k=calState.sel, el=$('calDetail');
+  document.querySelectorAll('#calGrid .cd.sel').forEach(c=>c.classList.remove('sel'));
+  if(!k||!dm[k]){ el.innerHTML=`<div class="dh"><span>No checkouts in ${esc(monthLabel(calState.month))} yet</span></div><div class="run">Every checkout lands on this calendar.</div>`; return; }
+  const c=document.querySelector(`#calGrid .cd[data-day="${k}"]`); if(c) c.classList.add('sel');
+  const d=dm[k], ct={d:0,a:0,p:0,c:0,ap:0}; Object.keys(dm).forEach(x=>{ if(x<=k) ['d','a','p','c','ap'].forEach(f=>ct[f]+=dm[x][f]); }); const run=points(ct);
+  el.innerHTML=`<div class="dh"><span>${dayLabel(dayNum(k))}${d.n>1?` · ${d.n} checkouts`:''}</span><span>+${int(points(d))} pts</span></div>
+    <div class="dk"><span>📞 Dials <b>${int(d.d)}</b></span><span>📅 Appts <b>${int(d.a)}</b></span><span>🎤 Presentations <b>${int(d.p)}</b></span><span>🤝 Closed <b>${int(d.c)}</b></span><span>💰 AP <b>${money(d.ap)}</b></span></div>
+    <div class="run">Month to date after this day: <b>${int(run)} pts</b></div>`;
+}
+$('calX').addEventListener('click',closeCal);
+$('calBg').addEventListener('click',e=>{ if(e.target===$('calBg')) closeCal(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&!$('calBg').hidden) closeCal(); });
+$('calPrev').addEventListener('click',()=>{ calState.month=shiftMonth(calState.month,-1); calState.sel=null; drawCal(); });
+$('calNext').addEventListener('click',()=>{ calState.month=shiftMonth(calState.month,1); calState.sel=null; drawCal(); });
+$('calGrid').addEventListener('click',e=>{ const c=e.target.closest('.cd[data-day]'); if(!c) return; calState.sel=c.dataset.day; drawCalDetail(dayMap(entries(),calState.id,calState.month)); });
+$('calGrid').addEventListener('keydown',e=>{ if(e.key!=='Enter'&&e.key!==' ') return; const c=e.target.closest('.cd[data-day]'); if(!c) return; e.preventDefault(); c.click(); });
+$('agentCards').addEventListener('click',e=>{ if(e.target.closest('details.days,summary')) return; const c=e.target.closest('.acard[data-id]'); if(c) openCal(c.dataset.id); });
+$('agentCards').addEventListener('keydown',e=>{ if((e.key==='Enter'||e.key===' ')&&e.target.matches('.acard[data-id]')){ e.preventDefault(); openCal(e.target.dataset.id); } });
+
+/* ---------- render ---------- */
+function rangeText(){
+  if(period==='week') return dayLabel(WEEK_START)+' – '+dayLabel(WEEK_START+6);
+  if(period==='month') return ml;
+  return 'Every checkout, stacked';
+}
+function render(){
+  const S=compute(period);
+  document.querySelectorAll('#period .pill').forEach(b=>b.classList.toggle('active',b.dataset.p===period));
+  $('subtitle').textContent=PLABEL[period]+' · stack your numbers';
+  $('range').textContent=rangeText();
+  $('coDate').textContent='Today · '+dayLabel(TODAY_N);
+  $('todayLabel').textContent=dayLabel(TODAY_N);
+
+  // KPI Champion
+  $('mvpPodium').innerHTML=podiumHtml(S.mvp,'pts',a=>`KPI pts · ${plural(a.n,'checkout')}`,a=>`<div class="lvchip"><span class="lvl ${a.level.t}">LV ${a.level.lv} · ${a.level.name}</span></div>`);
+  $('mvpList').innerHTML=mvpListHtml(S);
+
+  // Category kings (switcher)
+  $('kings').innerHTML=CATS.map(c=>{
+    const L=S.byCat[c.k][0], has=L&&L[c.k]>0;
+    return `<button type="button" role="tab" aria-selected="${cat===c.k}" class="king ${cat===c.k?'on':''}" data-c="${c.k}">
+      <span class="ke">${c.e}</span><span class="kl">${c.short}</span>
+      <span class="kn ${has?'':'open'}">${has?'👑 '+esc(first(L.name)):'Open spot'}</span>
+      <span class="kv">${has?FMT[fk(c.k)](L[c.k]):'—'}</span></button>`;
+  }).join('');
+  const C=CATS.find(x=>x.k===cat);
+  $('catTitle').textContent=C.title+' '+C.e;
+  $('catPodium').innerHTML=podiumHtml(S.byCat[cat],cat,a=>`${C.short.toLowerCase()} · ${plural(a.n,'checkout')}`);
+  $('catList').innerHTML=catListHtml(S,C);
+
+  // badges legend (all-time, everyone who has submitted)
+  const ltWithSt=S.lt.map(r=>({r,b:new Set(badgesFor(r,S.st[r.id]).map(b=>b.id))}));
+  $('legend').innerHTML=BADGES.map(b=>{
+    const n=ltWithSt.filter(x=>x.b.has(b.id)).length;
+    return `<span class="${n?'got':''}" title="${b.n} · ${badgeReq(b)}">${b.e} ${b.n} · ${badgeReq(b)}${n?` · ${n} unlocked`:''}</span>`;
+  }).join('');
+
+  // agent KPI totals (cumulative per agent)
+  $('totalsSub').textContent=`${PLABEL[period]} · ${S.mvp.length} agent${S.mvp.length===1?'':'s'} who submitted · every checkout adds up · sorted by pts`;
+  $('agentCards').innerHTML=agentCardsHtml(S);
+
+  // persist current ranks as the next visit's baseline
+  const saved=loadUi(RANK_KEY);
+  CATS.forEach(c=>{ saved[period+':'+c.k]=rankMap(S.byCat[c.k],c.k); });
+  saved[period+':pts']=rankMap(S.mvp,'pts'); saveUi(RANK_KEY,saved);
+
+  // motion
+  document.querySelectorAll('#mvpPodium [data-count],#mvpList [data-count],#catPodium [data-count],#catList [data-count],#agentCards [data-count]').forEach(el=>{ el.dataset.val=0; countUp(el,Number(el.dataset.count),FMT[el.dataset.fmt]||int); });
+  animateBars(document.querySelector('.wrap'));
+  growSparks(document.querySelector('#agentCards'));
+  updateHints();
+}
+
+/* ---------- form helpers ---------- */
+function updateHints(){
+  const id=$('agent').value, st=streaks(entries())[id], el=$('streakHint');
+  if(!id) el.innerHTML='👋 Type your name to see your streak';
+  else if(!st||!st.cur) el.innerHTML='🔥 Check out today to start a streak';
+  else if(st.today) el.innerHTML=`🔥 <b>${st.cur}-day streak</b> · checked out today ✓ · best ${st.best}`;
+  else el.innerHTML=`🔥 <b>${st.cur}-day streak</b> · check out today to keep it alive · best ${st.best}`;
+  const p=points({d:num($('dials').value),a:num($('appts').value),p:num($('pres').value),c:num($('closed').value),ap:num($('ap').value)});
+  $('ptsHint').innerHTML=`This checkout = <b>${int(p)} pts</b>`;
+}
+function snapshotFor(id){
+  const S=compute(period), L=S.ltBy[id];
+  return {leaders:Object.fromEntries(CATS.map(c=>[c.k,leaderOf(S.byCat[c.k],c.k)])), mvp:leaderOf(S.mvp,'pts'),
+    badges:new Set(L?badgesFor(L,S.st[id]).map(b=>b.id):[])};
+}
+function celebrate(before,s){
+  const after=snapshotFor(s.id), nm=first(s.name), wins=[], per=PLABEL[period].toLowerCase();
+  if(after.mvp===s.id&&before.mvp!==s.id) wins.push(`🏆 ${nm} is the new KPI Champion (${per})!`);
+  CATS.forEach(c=>{ if(after.leaders[c.k]===s.id&&before.leaders[c.k]!==s.id) wins.push(`👑 ${nm} took #1 in ${c.short} (${per})!`); });
+  const fresh=BADGES.filter(b=>after.badges.has(b.id)&&!before.badges.has(b.id));
+  fresh.forEach(b=>wins.push(`${b.e} ${nm} unlocked ${b.n}!`));
+  if(fresh.length){ popFor={id:s.id,badges:new Set(fresh.map(b=>b.id))}; render(); popFor=null; }
+  const p=points({d:s.dials,a:s.appts,p:s.pres,c:s.closed,ap:s.ap}), st=(streaks(entries())[s.id]||{}).cur||0;
+  if(wins.length){ setTimeout(()=>{ confetti(); toast(wins[0]+(wins.length>1?`  +${wins.length-1} more`:'')); },400); }
+  else toast(`✅ ${nm} checked out · +${int(p)} pts${st>1?` · 🔥 ${st}-day streak`:''}`);
+}
+
+$('period').onclick=e=>{const b=e.target.closest('.pill'); if(!b) return; period=b.dataset.p; render();};
+$('kings').onclick=e=>{const b=e.target.closest('.king'); if(!b) return; cat=b.dataset.c; render();};
+$('agentCards').addEventListener('toggle',e=>{const d=e.target; if(!d.matches||!d.matches('details.days')) return; d.open?openDays.add(d.dataset.id):openDays.delete(d.dataset.id);},true);
+
+/* ---------- type-to-search agent picker (roster only, A–Z) ---------- */
+const fold=t=>String(t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+const combo=$('combo'), aIn=$('agentSearch'), aList=$('agentList');
+let matches=[], act=-1;
+function agentById(id){ return AGENTS.find(x=>x.id===id)||null; }
+function exactAgent(t){ const q=fold(t).trim(); return q?SORTED.find(a=>fold(a.name)===q)||null:null; }
+function setAgent(a,save){
+  $('agent').value=a?a.id:''; combo.classList.toggle('ok',!!a); $('agentErr').classList.remove('on');
+  if(a){ aIn.value=a.name; if(save){ try{localStorage.setItem(LAST_AGENT_KEY,a.id)}catch{} } }
+  combo.classList.toggle('has',!!aIn.value); updateHints();
+}
+function hl(name,q){
+  if(!q) return esc(name);
+  const i=fold(name).indexOf(q); if(i<0) return esc(name);
+  return esc(name.slice(0,i))+'<mark>'+esc(name.slice(i,i+q.length))+'</mark>'+esc(name.slice(i+q.length));
+}
+function filterAgents(t){
+  const q=fold(t).trim();
+  if(!q) return SORTED.slice();
+  const starts=[],within=[];
+  SORTED.forEach(a=>{ const n=fold(a.name), i=n.indexOf(q); if(i<0) return; (i===0||n[i-1]===' '||n[i-1]==='-'?starts:within).push(a); });
+  return starts.concat(within);
+}
+function openList(t){
+  const q=fold(t).trim(); matches=filterAgents(t); act=matches.length?0:-1;
+  const cur=$('agent').value; const ci=matches.findIndex(a=>a.id===cur); if(ci>=0) act=ci;
+  aList.innerHTML=(matches.length?matches.map((a,i)=>`<li role="option" id="ao${i}" data-i="${i}" class="${i===act?'act':''}" aria-selected="${i===act}"><span class="av ${(TEAMS[a.team]||{}).cls||''}">${esc(initials(a.name))}</span><span class="nm">${hl(a.name,q)}</span>${teamBadge(a.team)}</li>`).join('')
+    :'<li class="none">No roster match · check the spelling, or add yourself below</li>')
+    +'<li class="add" id="aoAdd" data-add="1"><span class="av">+</span><span class="nm">I’m not listed · add my name</span></li>';
+  combo.classList.add('open'); aIn.setAttribute('aria-expanded','true'); scrollAct();
+}
+function closeList(){ combo.classList.remove('open'); aIn.setAttribute('aria-expanded','false'); act=-1; }
+function scrollAct(){ const el=aList.querySelector('li.act'); if(el){ el.scrollIntoView({block:'nearest'}); aIn.setAttribute('aria-activedescendant',el.id); } }
+function moveAct(d){ if(!matches.length) return; act=(act+d+matches.length)%matches.length;
+  aList.querySelectorAll('li[data-i]').forEach(li=>{const on=+li.dataset.i===act; li.classList.toggle('act',on); li.setAttribute('aria-selected',on);}); scrollAct(); }
+function pick(i){ const a=matches[i]; if(!a) return; setAgent(a,true); closeList(); }
+aIn.addEventListener('focus',()=>{ aIn.select(); openList($('agent').value?'':aIn.value); });
+aIn.addEventListener('input',()=>{ const ex=exactAgent(aIn.value); $('agent').value=ex?ex.id:''; combo.classList.toggle('ok',!!ex); combo.classList.toggle('has',!!aIn.value); $('agentErr').classList.remove('on'); openList(aIn.value); updateHints(); });
+aIn.addEventListener('keydown',e=>{
+  const open=combo.classList.contains('open');
+  if(e.key==='ArrowDown'){ e.preventDefault(); open?moveAct(1):openList(aIn.value); }
+  else if(e.key==='ArrowUp'){ e.preventDefault(); if(open) moveAct(-1); }
+  else if(e.key==='Enter'){ if(open&&act>=0){ e.preventDefault(); pick(act); } else if(open){ e.preventDefault(); openNewAgent(); } }
+  else if(e.key==='Escape'){ if(open){ e.preventDefault(); closeList(); } }
+  else if(e.key==='Tab'){ if(open&&act>=0&&aIn.value.trim()&&!$('agent').value) pick(act); else closeList(); }
+});
+aIn.addEventListener('blur',()=>{ setTimeout(()=>{ closeList(); const ex=exactAgent(aIn.value); if(ex) setAgent(ex,true); },150); });
+aList.addEventListener('mousedown',e=>e.preventDefault());   // keep focus while tapping/clicking
+aList.addEventListener('click',e=>{ if(e.target.closest('li[data-add]')){ openNewAgent(); return; } const li=e.target.closest('li[data-i]'); if(li) pick(+li.dataset.i); });
+/* ---------- "I'm not listed" → custom agent saved on this device ---------- */
+const slug=t=>fold(t).replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+function openNewAgent(){
+  closeList(); $('newAgent').classList.add('on');
+  const typed=aIn.value.trim(); if(typed&&!$('agent').value) $('naName').value=typed;
+  setTimeout(()=>$('naName').focus(),30);
+}
+function addCustomAgent(name,team){
+  name=String(name||'').replace(/\s+/g,' ').trim();
+  if(name.length<2) return {err:'Type your name.'};
+  if(!TEAMS[team]) return {err:'Pick your agency.'};
+  const ex=exactAgent(name); if(ex) return {agent:ex};
+  const a={id:'c-'+slug(name)+'-'+team.toLowerCase(),name,team,custom:true};
+  const list=loadCustom().filter(x=>x.id!==a.id); list.push(a);
+  try{localStorage.setItem(CUSTOM_KEY,JSON.stringify(list))}catch{}
+  if(!AGENTS.some(x=>x.id===a.id)) AGENTS.push(a);
+  SORTED=[...AGENTS].sort((x,y)=>x.name.localeCompare(y.name,'en',{sensitivity:'base'}));
+  AG_BY_ID=Object.fromEntries(AGENTS.map(x=>[x.id,x]));
+  return {agent:a};
+}
+$('naClose').addEventListener('click',()=>$('newAgent').classList.remove('on'));
+$('naAdd').addEventListener('click',()=>{
+  const t=(document.querySelector('input[name="naTeam"]:checked')||{}).value;
+  const r=addCustomAgent($('naName').value,t), msg=$('msg');
+  if(r.err){ msg.className='msg err'; msg.textContent=r.err; return; }
+  setAgent(r.agent,true); $('newAgent').classList.remove('on'); msg.className='msg';
+  toast(`👋 Welcome ${first(r.agent.name)} · ${(TEAMS[r.agent.team]||{}).name}`);
+});
+$('naName').addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); $('naAdd').click(); } });
+$('agentClear').addEventListener('click',()=>{ aIn.value=''; setAgent(null); aIn.focus(); });
+document.addEventListener('click',e=>{ if(!combo.contains(e.target)) closeList(); });
+try{ const la=agentById(localStorage.getItem(LAST_AGENT_KEY)); if(la) setAgent(la,false); }catch{}
+['dials','appts','pres','closed','ap'].forEach(i=>$(i).addEventListener('input',updateHints));
+
+$('f').addEventListener('submit',async e=>{e.preventDefault();const msg=$('msg');msg.className='msg';
+{const ex=exactAgent(aIn.value);$('agent').value='';if(ex)setAgent(ex,true);}
+const a=AGENTS.find(x=>x.id===$('agent').value);
+if(!a){$('agentErr').classList.add('on');combo.classList.remove('ok');msg.className='msg err';msg.textContent='Pick your name from the list (or tap “I’m not listed”) before submitting.';aIn.focus();return}
+const s={id:a.id,name:a.name,team:a.team,date:$('date').value,dials:+$('dials').value||0,appts:+$('appts').value||0,pres:+$('pres').value||0,closed:+$('closed').value||0,ap:+$('ap').value||0};
+$('sub').disabled=true;
+try{const content=['📥 **Daily Checkout** · '+s.name+' ('+((TEAMS[s.team]||{}).name||'')+') · '+s.date,'📞 Dials: **'+s.dials+'**','📅 Appointments: **'+s.appts+'**','🎙 Presentations: **'+s.pres+'**','✅ Closed: **'+s.closed+'**','💰 AP: **'+money(s.ap)+'**'].join('\n');
+const r=await fetch(HOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({content,allowed_mentions:{parse:[]}})});
+if(!r.ok)throw new Error(r.status);
+let before=null;try{before=snapshotFor(s.id);snapshotRanks();}catch(x){console.error(x)}
+const all=load();all.push(s);localStorage.setItem(KEY,JSON.stringify(all));
+let sharedOk=false; try{const pr=await pushShared(s); sharedOk=!!(pr&&pr.ok);}catch(x){console.warn(x)}
+try{await pullShared()}catch(x){console.warn(x)}
+msg.className='msg ok';msg.textContent=sharedOk?'Submitted to Discord · saved to the team Sheet.':'Submitted to Discord · saved on this device.';
+['dials','appts','pres','closed','ap'].forEach(i=>$(i).value=0);
+try{render();if(before)celebrate(before,s);}catch(x){console.error(x)}}
+catch(err){msg.className='msg err';msg.textContent='Could not submit. Try again.'}finally{$('sub').disabled=false}});
+(async()=>{ try{await pullShared()}catch(e){console.warn(e); setSyncBar();} render(); })();
+/* replay every count-up + bar when tapping/clicking anywhere (not on form controls) */
+let _lastReplay=0;
+document.addEventListener('click',e=>{
+  if(e.target.closest('a,button,input,select,textarea,summary,label,.checkout,.tabs,.acard,.cal-bg')) return;
+  const now=performance.now(); if(now-_lastReplay<250) return; _lastReplay=now;
+  document.querySelectorAll('[data-count]').forEach(el=>{ el.dataset.val=0; countUp(el,Number(el.dataset.count),FMT[el.dataset.fmt]||int); });
+  const bars=[...document.querySelectorAll('.wrap [data-w]')];
+  bars.forEach(b=>{ b.style.transition='none'; b.style.width='0%'; });
+  requestAnimationFrame(()=>requestAnimationFrame(()=>bars.forEach(b=>{ b.style.transition=''; b.style.width=b.dataset.w+'%'; })));
+  const sp=[...document.querySelectorAll('.spark i[data-h]')]; sp.forEach(b=>{ b.style.transition='none'; b.style.height='4%'; });
+  requestAnimationFrame(()=>requestAnimationFrame(()=>sp.forEach(b=>{ b.style.transition=''; b.style.height=b.dataset.h+'%'; })));
+});
+refreshShared(); setInterval(refreshShared,5*60*1000);
+</script>
+</body>
+</html>

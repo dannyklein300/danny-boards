@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"/><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/><meta http-equiv="Pragma" content="no-cache"/><meta http-equiv="Expires" content="0"/><meta name="viewport" content="width=1920,height=1080"/>
+<title>ULxSML · TV Board</title><link rel="icon" href="assets/sml_icon.png"/>
+<style>
+:root{--navy:#0b1630;--navy2:#13224a;--cream:#faf6ef;--muted:#9aa6c4;--pink:#e1197a;--orange:#ff7a1a;--gold:#ffb020;--blue:#2165ff;--sky:#3fb6ff;
+--ul:linear-gradient(120deg,#e1197a,#ff7a1a 70%,#ffb020);--sml:linear-gradient(120deg,#1546d6,#2165ff 55%,#3fb6ff);
+--grad:linear-gradient(110deg,#e1197a 0%,#ff7a1a 35%,#ffb020 100%);--font:"Inter","Segoe UI",system-ui,Roboto,Helvetica,Arial,sans-serif}
+*{box-sizing:border-box}html,body{margin:0;height:100%;overflow:hidden;background:var(--navy);color:var(--cream);font-family:var(--font)}
+#stage{position:fixed;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;
+ background:radial-gradient(900px 500px at 0% 0%,rgba(225,25,122,.22),transparent 60%),radial-gradient(900px 500px at 100% 0%,rgba(33,101,255,.22),transparent 60%),radial-gradient(1200px 600px at 50% 120%,rgba(255,122,26,.14),transparent 60%),var(--navy)}
+header{position:absolute;top:0;left:0;right:0;height:110px;display:flex;align-items:center;padding:0 56px;gap:28px}
+header img{height:74px;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4))}
+header .title{font-size:44px;font-weight:900;letter-spacing:-.01em}
+header .title span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+header .right{margin-left:auto;text-align:right}
+#clock{font-size:52px;font-weight:900;font-variant-numeric:tabular-nums}
+#date{font-size:20px;color:var(--muted);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.live{display:inline-flex;align-items:center;gap:8px;font-size:16px;font-weight:800;letter-spacing:.14em;color:#7ef0b8;margin-right:24px}
+.live i{width:12px;height:12px;border-radius:50%;background:#22d38a;box-shadow:0 0 0 0 rgba(34,211,138,.7);animation:pulse 1.6s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 14px rgba(34,211,138,0)}100%{box-shadow:0 0 0 0 rgba(34,211,138,0)}}
+.slides{position:absolute;top:120px;left:56px;right:56px;bottom:70px}
+.slide{position:absolute;top:0;right:0;bottom:0;left:0;opacity:0;transform:translateX(60px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.8,.2,1);pointer-events:none}
+.slide.on{opacity:1;transform:none}.slide.out{opacity:0;transform:translateX(-60px)}
+h2{margin:0 0 18px;font-size:40px;font-weight:900;display:flex;align-items:baseline;gap:18px}
+h2 small{font-size:22px;color:var(--muted);font-weight:700}
+.card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:22px}
+footer{position:absolute;left:56px;right:56px;bottom:22px;height:30px;display:flex;align-items:center;gap:20px}
+#dots{display:flex;gap:12px}#dots b{display:block;height:10px;width:44px;border-radius:6px;background:rgba(255,255,255,.18);overflow:hidden;position:relative}
+#dots b.on::after{content:"";position:absolute;top:0;right:0;bottom:0;left:0;background:var(--grad);transform-origin:left;animation:fill var(--dur) linear forwards}
+#dots b.done{background:rgba(255,176,32,.55)}
+@keyframes fill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+#upd{margin-left:auto;font-size:16px;color:var(--muted);font-weight:600}
+#slname{font-size:18px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+/* leaderboard */
+.lb{display:grid;grid-template-columns:repeat(3,1fr);gap:0 22px}
+.row{display:grid;grid-template-columns:60px 30px 1fr auto;align-items:center;gap:10px;height:51px;padding:0 16px;border-radius:12px;font-size:23px;font-weight:700}
+.row:nth-child(odd){background:rgba(255,255,255,.045)}
+.row .rk{font-weight:900;color:var(--muted);font-variant-numeric:tabular-nums}
+.row .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .ap{font-weight:900;font-variant-numeric:tabular-nums}.row .dl{font-size:16px;color:var(--muted);margin-left:8px;font-weight:700}
+.row.zero{opacity:.45}.row.zero .ap{font-weight:700}
+.row.top1{background:linear-gradient(90deg,rgba(255,176,32,.35),rgba(255,176,32,.05))!important}.row.top1 .rk{color:var(--gold)}
+.row.top2{background:linear-gradient(90deg,rgba(200,210,225,.28),rgba(200,210,225,.04))!important}
+.row.top3{background:linear-gradient(90deg,rgba(194,122,62,.32),rgba(194,122,62,.04))!important}
+.tb{width:26px;height:26px;border-radius:50%;display:inline-grid;place-items:center;font-size:10px;font-weight:900;color:#fff}
+.tb.UL{background:var(--ul)}.tb.SML{background:var(--sml)}
+/* teams */
+.teams{display:grid;grid-template-columns:1fr 1fr;gap:40px;height:100%}
+.team{padding:40px 48px;position:relative;overflow:hidden}
+.team::before{content:"";position:absolute;left:0;top:0;right:0;height:10px}.team.UL::before{background:var(--ul)}.team.SML::before{background:var(--sml)}
+.team .tn{font-size:46px;font-weight:900;display:flex;align-items:center;gap:18px}.team .tn img{height:70px}
+.big{font-size:120px;font-weight:900;letter-spacing:-.03em;line-height:1.05;margin:20px 0 10px;font-variant-numeric:tabular-nums}
+.team.UL .big{background:var(--ul);-webkit-background-clip:text;background-clip:text;color:transparent}
+.team.SML .big{background:var(--sml);-webkit-background-clip:text;background-clip:text;color:transparent}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:20px}
+.stat{padding:22px;border-radius:18px;background:rgba(255,255,255,.06)}.stat b{display:block;font-size:52px;font-weight:900}.stat span{font-size:18px;color:var(--muted);font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+.topline{margin-top:30px;font-size:28px;font-weight:700;color:var(--muted)}.topline b{color:var(--cream)}
+.combo{position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);padding:16px 40px;font-size:34px;font-weight:900;background:var(--navy2);border-radius:999px;border:2px solid rgba(255,176,32,.5)}
+/* carrier */
+.cm{display:grid;grid-template-columns:620px 1fr;gap:50px;align-items:center;height:calc(100% - 70px)}
+.donut{position:relative;width:600px;height:600px}.donut .c{position:absolute;top:0;right:0;bottom:0;left:0;display:grid;place-items:center;text-align:center}
+.donut .c b{font-size:70px;font-weight:900;display:block}.donut .c span{font-size:22px;color:var(--muted);font-weight:800;letter-spacing:.1em}
+.bars .br{display:grid;grid-template-columns:28px 280px 1fr 190px 90px;align-items:center;gap:16px;height:56px;font-size:26px;font-weight:800}
+.bars .sw{width:24px;height:24px;border-radius:7px}.bars .tr{height:22px;background:rgba(255,255,255,.07);border-radius:11px;overflow:hidden}
+.bars .tr i{display:block;height:100%;border-radius:11px;transition:width 1.4s cubic-bezier(.2,.8,.2,1)}
+.bars .v{text-align:right;font-variant-numeric:tabular-nums}.bars .n{text-align:right;color:var(--muted);font-size:20px}
+/* daily */
+.daily{display:grid;grid-template-columns:640px 1fr;gap:40px;height:calc(100% - 70px)}
+.today{padding:36px 40px;display:flex;flex-direction:column;overflow:hidden;min-height:0}
+.today .big{font-size:140px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;margin:6px 0}
+.feed{margin-top:16px;display:flex;flex-direction:column;gap:10px;overflow:hidden;flex:1}
+.feed div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:grid;grid-template-columns:110px 1fr auto;font-size:22px;font-weight:700;padding:10px 14px;border-radius:12px;background:rgba(255,255,255,.05)}
+.feed em{color:var(--muted);font-style:normal}.feed .new{animation:flash 2s ease}
+@keyframes flash{0%{background:rgba(255,176,32,.6)}}
+.chart{padding:30px 36px;display:flex;flex-direction:column}
+.cols{flex:1;display:flex;align-items:flex-end;gap:10px;padding-top:40px}
+.col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:8px}
+.col i{display:block;width:100%;border-radius:10px 10px 4px 4px;background:var(--grad);transition:none;min-height:4px}
+.col.td i{box-shadow:0 0 30px rgba(255,176,32,.7)}
+.col b{font-size:34px;font-weight:900;white-space:nowrap;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.6);font-variant-numeric:tabular-nums}.cols.mid .col b{font-size:27px}.cols.many .col b{font-size:24px;writing-mode:vertical-rl;transform:rotate(180deg);line-height:1}.cols.many{gap:6px}.col span{font-size:22px;color:var(--cream);font-weight:800;white-space:nowrap}.cols.mid .col span{font-size:18px}.cols.many .col span{font-size:14px}
+/* kpis */
+.kt{display:grid;grid-template-columns:repeat(5,1fr);gap:18px;margin-bottom:22px}
+.kt .stat b{font-size:58px}
+.kgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(700px,1fr));gap:36px}
+.kl h3{margin:0 0 10px;font-size:28px;display:flex;align-items:center;gap:12px}
+.kr{display:grid;grid-template-columns:62px 1fr 110px 90px 90px 90px;align-items:center;height:46px;padding:0 14px;border-radius:10px;font-size:22px;font-weight:700}
+.kr:nth-child(even){background:rgba(255,255,255,.045)}.kr.h{color:var(--muted);font-size:15px;letter-spacing:.12em;text-transform:uppercase;height:34px}
+.kr span{text-align:right;font-variant-numeric:tabular-nums}.kr .rk{color:var(--muted);text-align:left}
+.empty{font-size:24px;color:var(--muted);padding:30px;text-align:center}
+/* alert */
+#alert{position:fixed;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;z-index:50;display:grid;place-items:center;pointer-events:none;opacity:0;transition:opacity .5s}
+#alert.on{opacity:1}
+#alert .bg{position:absolute;top:0;right:0;bottom:0;left:0;background:radial-gradient(circle at center,rgba(11,22,48,.75),rgba(11,22,48,.96))}
+#alert .box{position:relative;text-align:center;transform:scale(.6);transition:transform .7s cubic-bezier(.2,1.6,.3,1)}
+#alert.on .box{transform:scale(1)}
+#alert .kick{font-size:44px;font-weight:900;letter-spacing:.3em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 1s infinite alternate}
+@keyframes shine{to{filter:brightness(1.5)}}
+#alert .who{font-size:120px;font-weight:900;margin:10px 0;letter-spacing:-.02em}
+#alert .amt{font-size:200px;font-weight:900;line-height:1;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;font-variant-numeric:tabular-nums}
+#alert .car{font-size:48px;font-weight:800;margin-top:20px;color:var(--cream)}
+#alert .car small{display:block;font-size:28px;color:var(--muted);margin-top:8px}
+#alert .tb{width:70px;height:70px;font-size:22px;vertical-align:middle;margin-right:18px}
+#cf{position:absolute;top:0;right:0;bottom:0;left:0;width:1920px;height:1080px}
+
+#alert .bg{animation:flashbg .5s steps(1) infinite}
+@keyframes flashbg{0%{background:radial-gradient(circle,rgba(225,25,122,.85),rgba(11,22,48,.97))}33%{background:radial-gradient(circle,rgba(255,122,26,.85),rgba(11,22,48,.97))}66%{background:radial-gradient(circle,rgba(255,176,32,.8),rgba(11,22,48,.97))}}
+#alert .who{font-size:150px;text-shadow:0 8px 40px rgba(0,0,0,.6)}#alert .amt{font-size:260px;filter:drop-shadow(0 10px 40px rgba(255,176,32,.6))}
+#alert.on .amt{animation:pop .6s cubic-bezier(.2,1.8,.3,1) infinite alternate}@keyframes pop{to{transform:scale(1.06)}}
+.shake{animation:shake .12s linear infinite}@keyframes shake{0%{transform:translate(0,0)}25%{transform:translate(-14px,8px)}50%{transform:translate(12px,-10px)}75%{transform:translate(-8px,-6px)}100%{transform:translate(10px,10px)}}
+#snd{border:0;width:100%;height:100%;outline:none;position:fixed;top:0;right:0;bottom:0;left:0;z-index:99;display:grid;place-items:center;background:rgba(11,22,48,.92);color:var(--cream);font-family:var(--font);cursor:pointer;text-align:center}
+#snd b{display:block;font-size:64px;font-weight:900;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}#snd span{font-size:28px;color:var(--muted)}
+
+.pod{display:flex;justify-content:center;align-items:flex-end;gap:34px;height:490px;margin-bottom:14px}
+.pd{width:440px;display:flex;flex-direction:column;align-items:center;position:relative}
+.pd .crown{font-size:64px;line-height:1;animation:bob 1.6s ease-in-out infinite;filter:drop-shadow(0 6px 18px rgba(255,176,32,.8))}
+@keyframes bob{50%{transform:translateY(-12px) rotate(-4deg)}}
+.pd .av{width:120px;height:120px;border-radius:50%;display:grid;place-items:center;font-size:52px;font-weight:900;color:#fff;margin:6px 0;border:6px solid var(--c);box-shadow:0 0 50px var(--c);background:var(--navy2)}
+.pd .pn{font-size:34px;font-weight:900;white-space:nowrap;max-width:440px;overflow:hidden;text-overflow:ellipsis}
+.pd .pa{font-size:44px;font-weight:900;color:var(--c);font-variant-numeric:tabular-nums;text-shadow:0 0 24px var(--c)}
+.pd .pdl{font-size:20px;color:var(--muted);font-weight:800}
+.pd .blk{width:100%;margin-top:10px;border-radius:20px 20px 0 0;display:grid;place-items:start center;padding-top:6px;font-size:44px;font-weight:900;color:#0b1630;text-shadow:0 1px 0 rgba(255,255,255,.4);background:linear-gradient(180deg,var(--c),rgba(255,255,255,.05));position:relative;overflow:hidden}
+.pd .blk::after{content:"";position:absolute;top:0;right:0;bottom:0;left:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.45) 50%,transparent 70%);animation:sheen 2.4s infinite}
+@keyframes sheen{from{transform:translateX(-120%)}to{transform:translateX(120%)}}
+.pd.p1{--c:#ffb020}.pd.p2{--c:#c8d2e1}.pd.p3{--c:#e08a4a}.pd.p1 .av{width:130px;height:130px;font-size:54px}.pd.p1 .pn{font-size:42px}.pd.p1 .pa{font-size:58px}
+.rest{display:grid;grid-template-columns:repeat(var(--cols),1fr);gap:4px 18px}
+.rest .row{height:42px;font-size:21px}
+#snd:focus b,#snd:hover b{text-decoration:underline}#snd .ok{display:inline-block;margin-top:26px;padding:16px 46px;border-radius:999px;background:var(--grad);color:#fff;font-size:34px;font-weight:900;box-shadow:0 0 0 6px rgba(255,255,255,.25)}
+body.lite #alert .bg{animation:none;background:radial-gradient(circle,rgba(225,25,122,.8),rgba(11,22,48,.97))}body.lite #alert.on .amt{animation:none}body.lite .pd .blk::after,body.lite .live i{animation:none}
+.team{padding:26px 34px}.team .tn{font-size:36px}.team .tn img{height:52px}.team .big{font-size:84px;margin:8px 0 2px}
+.team .stats{margin-top:10px;gap:12px}.team .stat{padding:10px 16px}.team .stat b{font-size:36px}.team .stat span{font-size:14px}
+.t10{margin-top:14px;display:flex;flex-direction:column;gap:3px}
+.t10r{display:grid;grid-template-columns:58px 1fr auto 36px;align-items:center;height:37px;padding:0 12px;border-radius:9px;font-size:22px;font-weight:700;background:rgba(255,255,255,.04)}
+.t10r .rk{color:var(--muted);font-weight:900}.t10r .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.t10r .ap{font-weight:900;font-variant-numeric:tabular-nums}.t10r .dl{text-align:right;color:var(--muted);font-size:16px}
+.t10r.t1{background:linear-gradient(90deg,rgba(255,176,32,.32),rgba(255,176,32,.04))}.t10r.t2{background:linear-gradient(90deg,rgba(200,210,225,.24),rgba(200,210,225,.03))}.t10r.t3{background:linear-gradient(90deg,rgba(194,122,62,.3),rgba(194,122,62,.03))}
+.combo{bottom:-4px;padding:10px 30px;font-size:26px}
+.cols,.cols *{transition:none!important;animation:none!important}
+.pod.kpod{height:430px}.pod.kpod .pdl{font-size:17px}.pod.kpod .pa{font-size:40px}.pod.kpod.p1 .pa{font-size:50px}
+.kcards{display:flex;justify-content:center;gap:30px;margin-top:6px}
+.kc{display:grid;grid-template-columns:auto auto 1fr auto;grid-template-rows:auto auto;align-items:center;column-gap:14px;width:640px;padding:14px 24px;border-radius:18px;background:linear-gradient(90deg,rgba(63,182,255,.22),rgba(122,60,255,.12));border:2px solid rgba(63,182,255,.45);box-shadow:0 0 24px rgba(63,182,255,.25)}
+.kc .kcr{grid-row:span 2;font-size:40px;font-weight:900;color:var(--sky)}.kc b{font-size:30px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.kc .kcs{font-size:30px;font-weight:900;color:var(--gold)}
+.kc small{grid-column:2 / span 3;font-size:18px;color:var(--muted);font-weight:700}
+.krest{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px 12px;justify-content:center}.krest span{font-size:19px;font-weight:700;padding:6px 14px;border-radius:999px;background:rgba(255,255,255,.06)}.krest em{font-style:normal;color:var(--muted);font-weight:900}
+#bld{opacity:.45;margin-left:12px}
+</style></head><body>
+<div id="stage">
+<header><img src="assets/logo_cobrand.png" alt=""/><div class="title">Live <span>Scoreboard</span> · <span id="mon"></span></div>
+<div class="right"><div><span class="live"><i></i>LIVE</span><span id="clock"></span></div><div id="date"></div></div></header>
+<div class="slides" id="slides"></div>
+<footer><div id="dots"></div><div id="slname"></div><div id="upd"></div></footer>
+</div>
+<button id="snd" type="button" autofocus><div><b>🔊 Start the TV board</b><span>Press OK on the remote (or click) · turns on deal sounds</span><br/><span class="ok">▶ OK / START</span></div></button>
+<div id="alert"><div class="bg"></div><canvas id="cf" width="1920" height="1080"></canvas><div class="box">
+<div class="kick">🔥 DEAL DROPPED 🔥</div><div class="who" id="aw"></div><div class="amt" id="aa"></div><div class="car" id="ac"></div></div></div>
+<script>let DATA = (
+  /*TV_DATA*/
+  { "generated": "2026-10-10T17:55:48-07:00", "month_label": "October 2026", "deals_updated_label": "Oct 10, 2026 \xB7 5:50 PM MST (AZ)", "kpi_updated_label": "Oct 10, 2:46 PM PT", "roster": [{ "id": "steve-shatkin", "name": "Steve Shatkin", "team": "SML" }, { "id": "naki-tupoumalohi", "name": "Naki Tupoumalohi", "team": "SML" }, { "id": "justin-mcknight", "name": "Justin McKnight", "team": "SML" }, { "id": "geno", "name": "Geno", "team": "SML" }, { "id": "spencer", "name": "Spencer", "team": "SML" }, { "id": "izick-ruiz", "name": "Izick Ruiz", "team": "SML" }, { "id": "khalil-grinds", "name": "Khalil Grinds", "team": "UL" }, { "id": "charon-tucker", "name": "Charon Tucker", "team": "UL" }, { "id": "luna", "name": "Luna", "team": "SML" }, { "id": "david-abad", "name": "David Abad", "team": "UL" }, { "id": "salote-tupoumalohi", "name": "Salote Tupoumalohi", "team": "SML" }, { "id": "donovan-scandariato", "name": "Donovan Scandariato", "team": "UL" }, { "id": "andrea-mora", "name": "Andrea Mora", "team": "SML" }, { "id": "ipo-lake", "name": "Ipo Lake", "team": "SML" }, { "id": "tyler-glennon", "name": "Tyler Glennon", "team": "SML" }, { "id": "neo-johnson", "name": "Neo Johnson", "team": "SML" }, { "id": "joe-delpino", "name": "Joe DelPino", "team": "SML" }, { "id": "aaron-hildebrand", "name": "Aaron Hildebrand", "team": "UL" }, { "id": "alexander-petrowski", "name": "Alexander Petrowski", "team": "UL" }, { "id": "alia-al-mazem", "name": "Alia Al-Mazem", "team": "UL" }, { "id": "anthony-carter", "name": "Anthony Carter", "team": "UL" }, { "id": "autumn-hines", "name": "Autumn Hines", "team": "UL" }, { "id": "ava", "name": "Ava", "team": "UL" }, { "id": "carlos-fierro", "name": "Carlos Fierro", "team": "UL" }, { "id": "chris-flores", "name": "Chris Flores", "team": "UL" }, { "id": "chris-matlock", "name": "Chris Matlock", "team": "UL" }, { "id": "des-woods", "name": "Des Woods", "team": "UL" }, { "id": "desirae-rhodes", "name": "Desirae Rhodes", "team": "UL" }, { "id": "diane-stottlemire", "name": "Diane Stottlemire", "team": "UL" }, { "id": "frank-baltierrez", "name": "Frank Baltierrez", "team": "UL" }, { "id": "gerardo-diaz", "name": "Gerardo Diaz", "team": "UL" }, { "id": "jackie-stofa", "name": "Jackie Stofa", "team": "UL" }, { "id": "jake-evans", "name": "Jake Evans", "team": "UL" }, { "id": "james-wyman", "name": "James Wyman", "team": "UL" }, { "id": "janee-cato", "name": "Jane\xE9 Cato", "team": "UL" }, { "id": "jermaine-ruffin-jr", "name": "Jermaine Ruffin Jr", "team": "UL" }, { "id": "jordan-gipson", "name": "Jordan Gipson", "team": "UL" }, { "id": "kiana-brusett", "name": "Kiana Brusett", "team": "UL" }, { "id": "lucas-tyre", "name": "Lucas Tyre", "team": "UL" }, { "id": "luke-desrosiers", "name": "Luke Desrosiers", "team": "UL" }, { "id": "mellice-jellison", "name": "Mellice Jellison", "team": "UL" }, { "id": "melvin-lewis", "name": "Melvin Lewis", "team": "UL" }, { "id": "michael-gonzalez", "name": "Michael Gonzalez", "team": "UL" }, { "id": "morgan-whiteman", "name": "Morgan Whiteman", "team": "UL" }, { "id": "nia-alex", "name": "Nia Alex", "team": "UL" }, { "id": "spencer-brown", "name": "Spencer Brown", "team": "UL" }, { "id": "tay-nobles", "name": "Tay Nobles", "team": "UL" }], "deals": [{ "id": "8b0299ae4a44", "agent_id": "izick-ruiz", "name": "Izick Ruiz", "team": "SML", "date": "2026-10-01", "time": "10:26 AM", "ap": 661.56, "carrier": "AHL", "detail": "Premium, GOAT vet", "policies": 1, "ts": "2026-10-01T10:26:00" }, { "id": "b0cc48c9198f", "agent_id": "steve-shatkin", "name": "Steve Shatkin", "team": "SML", "date": "2026-10-01", "time": "11:12 AM", "ap": 1812, "carrier": "Mutual of Omaha", "detail": "WL", "policies": 1, "ts": "2026-10-01T11:12:00" }, { "id": "e4fd4117f0ff", "agent_id": "izick-ruiz", "name": "Izick Ruiz", "team": "SML", "date": "2026-10-01", "time": "12:54 PM", "ap": 392.64, "carrier": "Mutual of Omaha", "detail": "Term", "policies": 1, "ts": "2026-10-01T12:54:00" }, { "id": "11d2a6de466e", "agent_id": "spencer", "name": "Spencer", "team": "SML", "date": "2026-10-01", "time": "8:24 PM", "ap": 2325, "carrier": "Foresters", "detail": "Proven 9m, EFT 10/15", "policies": 1, "ts": "2026-10-01T20:24:00" }, { "id": "9138d3b68ffe", "agent_id": "geno", "name": "Geno", "team": "SML", "date": "2026-10-02", "time": "9:09 AM", "ap": 1330, "carrier": "Ethos", "detail": "", "policies": 1, "ts": "2026-10-02T09:09:00" }, { "id": "255e27c14c4d", "agent_id": "geno", "name": "Geno", "team": "SML", "date": "2026-10-02", "time": "9:09 AM", "ap": 1920, "carrier": "Foresters", "detail": "", "policies": 1, "ts": "2026-10-02T09:09:00" }, { "id": "c4d369b3410d", "agent_id": "geno", "name": "Geno", "team": "SML", "date": "2026-10-02", "time": "9:10 AM", "ap": 2568, "carrier": "CICA", "detail": "", "policies": 1, "ts": "2026-10-02T09:10:00" }, { "id": "42b8ac247ef6", "agent_id": "steve-shatkin", "name": "Steve Shatkin", "team": "SML", "date": "2026-10-02", "time": "1:46 PM", "ap": 533, "carrier": "CICA", "detail": "GIWL", "policies": 1, "ts": "2026-10-02T13:46:00" }, { "id": "c0b897c0696c", "agent_id": "justin-mcknight", "name": "Justin McKnight", "team": "SML", "date": "2026-10-02", "time": "6:26 PM", "ap": 2985.12, "carrier": "Transamerica", "detail": "Aged mortgage protection follow-up (posted as 'Trans')", "policies": 1, "ts": "2026-10-02T18:26:00" }, { "id": "60fe7c4ec3c4", "agent_id": "naki-tupoumalohi", "name": "Naki Tupoumalohi", "team": "SML", "date": "2026-10-02", "time": "7:14 PM", "ap": 2227.68, "carrier": "UHL", "detail": "Posted 'with Salote Tupoumalohi'; credited to poster Naki", "policies": 1, "ts": "2026-10-02T19:14:00" }, { "id": "3b09d076435a", "agent_id": "khalil-grinds", "name": "Khalil Grinds", "team": "UL", "date": "2026-10-03", "time": "5:08 PM", "ap": 1212.24, "carrier": "Mutual of Omaha", "detail": "GOAT Aged, EFT 10/07", "policies": 1, "ts": "2026-10-03T17:08:00" }, { "id": "4372f359c7df", "agent_id": "steve-shatkin", "name": "Steve Shatkin", "team": "SML", "date": "2026-10-05", "time": "11:46 AM", "ap": 1725, "carrier": "Mutual of Omaha", "detail": "WL, eff imm", "policies": 1, "ts": "2026-10-05T11:46:00" }, { "id": "ab9acaf7037e", "agent_id": "charon-tucker", "name": "Charon Tucker", "team": "UL", "date": "2026-10-05", "time": "11:50 AM", "ap": 1791.72, "carrier": "Liberty Bankers", "detail": "GOAT Aged, EFT IMM", "policies": 1, "ts": "2026-10-05T11:50:00" }, { "id": "d9025c3e4763", "agent_id": "charon-tucker", "name": "Charon Tucker", "team": "UL", "date": "2026-10-05", "time": "11:51 AM", "ap": 784.68, "carrier": "Liberty Bankers", "detail": "Valor Lead, EFT IMM", "policies": 1, "ts": "2026-10-05T11:51:00" }, { "id": "b031e2e681cc", "agent_id": "charon-tucker", "name": "Charon Tucker", "team": "UL", "date": "2026-10-05", "time": "11:52 AM", "ap": 1324.68, "carrier": "Liberty Bankers", "detail": "Aged GOAT, EFT 10/7", "policies": 1, "ts": "2026-10-05T11:52:00" }, { "id": "263370fd1669", "agent_id": "spencer", "name": "Spencer", "team": "SML", "date": "2026-10-05", "time": "12:41 PM", "ap": 3078, "carrier": "KCL", "detail": "20yr Term referral, EFT 10/15", "policies": 1, "ts": "2026-10-05T12:41:00" }, { "id": "7634dcd55e60", "agent_id": "luna", "name": "Luna", "team": "SML", "date": "2026-10-06", "time": "7:41 PM", "ap": 1125.24, "carrier": "UHL", "detail": "Just Rates lead", "policies": 1, "ts": "2026-10-06T19:41:00" }, { "id": "75fafbcbb91b", "agent_id": "luna", "name": "Luna", "team": "SML", "date": "2026-10-06", "time": "7:51 PM", "ap": 1443.6, "carrier": "Ethos", "detail": "WL, warm market lead", "policies": 1, "ts": "2026-10-06T19:51:00" }, { "id": "150b0a11fba9", "agent_id": "khalil-grinds", "name": "Khalil Grinds", "team": "UL", "date": "2026-10-06", "time": "8:01 PM", "ap": 2933.64, "carrier": "Foresters", "detail": "Self Gen, EFT IMM", "policies": 1, "ts": "2026-10-06T20:01:00" }, { "id": "5d1ddd87d24f", "agent_id": "neo-johnson", "name": "Neo Johnson", "team": "SML", "date": "2026-10-07", "time": "7:57 AM", "ap": 607.2, "carrier": "Ethos", "detail": "", "policies": 1, "ts": "2026-10-07T07:57:00" }, { "id": "7570a12c378b", "agent_id": "luna", "name": "Luna", "team": "SML", "date": "2026-10-07", "time": "9:42 AM", "ap": 595.2, "carrier": "Ethos", "detail": "Warm market text close", "policies": 1, "ts": "2026-10-07T09:42:00" }, { "id": "3f164ded55b0", "agent_id": "david-abad", "name": "David Abad", "team": "UL", "date": "2026-10-07", "time": "12:33 PM", "ap": 835.44, "carrier": "KCL", "detail": "FEX, EFT 10/15", "policies": 1, "ts": "2026-10-07T12:33:00" }, { "id": "dc4aef1e93d0", "agent_id": "david-abad", "name": "David Abad", "team": "UL", "date": "2026-10-07", "time": "12:34 PM", "ap": 1655.52, "carrier": "KCL", "detail": "FEX, EFT 10/15", "policies": 1, "ts": "2026-10-07T12:34:00" }, { "id": "44ca4df7dee4", "agent_id": "joe-delpino", "name": "Joe DelPino", "team": "SML", "date": "2026-10-07", "time": "12:53 PM", "ap": 511.2, "carrier": "CICA", "detail": "Standard", "policies": 1, "ts": "2026-10-07T12:53:00" }, { "id": "33c95dc667a1", "agent_id": "salote-tupoumalohi", "name": "Salote Tupoumalohi", "team": "SML", "date": "2026-10-07", "time": "2:02 PM", "ap": 750.36, "carrier": "Mutual of Omaha", "detail": "WL, EFT immediately", "policies": 1, "ts": "2026-10-07T14:02:00" }, { "id": "d9b3bc1cea64", "agent_id": "steve-shatkin", "name": "Steve Shatkin", "team": "SML", "date": "2026-10-07", "time": "3:11 PM", "ap": 4e3, "carrier": "Mutual of Omaha", "detail": "IUL (replaced his $3,819 Foresters term in UW)", "policies": 1, "ts": "2026-10-07T15:11:00" }, { "id": "af14a050bb14", "agent_id": "naki-tupoumalohi", "name": "Naki Tupoumalohi", "team": "SML", "date": "2026-10-07", "time": "4:37 PM", "ap": 12015, "carrier": "F&G", "detail": "Posted as $12,015 TP, sent to UW, with Salote Tupoumalohi; credited to poster Naki", "policies": 1, "ts": "2026-10-07T16:37:00" }, { "id": "25002c152df8", "agent_id": "steve-shatkin", "name": "Steve Shatkin", "team": "SML", "date": "2026-10-08", "time": "8:41 AM", "ap": 2415, "carrier": "Mutual of Omaha", "detail": "IUL (#justrates live-dials)", "policies": 1, "ts": "2026-10-08T08:41:00" }, { "id": "a9d58f8facb1", "agent_id": "steve-shatkin", "name": "Steve Shatkin", "team": "SML", "date": "2026-10-08", "time": "10:01 AM", "ap": 2969, "carrier": "Royal Neighbors", "detail": "WL (posted 'RN WL'; #justrates live-dials)", "policies": 1, "ts": "2026-10-08T10:01:00" }, { "id": "ea00b34cacf1", "agent_id": "justin-mcknight", "name": "Justin McKnight", "team": "SML", "date": "2026-10-08", "time": "10:12 AM", "ap": 2859, "carrier": "Mutual of Omaha", "detail": "Follow up / Aged MP", "policies": 1, "ts": "2026-10-08T10:12:00" }, { "id": "aefd16a1db2b", "agent_id": "izick-ruiz", "name": "Izick Ruiz", "team": "SML", "date": "2026-10-08", "time": "1:18 PM", "ap": 1448.16, "carrier": "AHL", "detail": "Fresh vet", "policies": 1, "ts": "2026-10-08T13:18:00" }, { "id": "71aff6b32a7a", "agent_id": "andrea-mora", "name": "Andrea Mora", "team": "SML", "date": "2026-10-08", "time": "1:20 PM", "ap": 1728, "carrier": "Ethos", "detail": "eff imm / Follow up", "policies": 1, "ts": "2026-10-08T13:20:00" }, { "id": "349e7342fd8a", "agent_id": "steve-shatkin", "name": "Steve Shatkin", "team": "SML", "date": "2026-10-08", "time": "1:29 PM", "ap": 2916, "carrier": "Mutual of Omaha", "detail": "IUL (#justrates live-dials)", "policies": 1, "ts": "2026-10-08T13:29:00" }, { "id": "5767b7fef2a1", "agent_id": "tyler-glennon", "name": "Tyler Glennon", "team": "SML", "date": "2026-10-08", "time": "5:40 PM", "ap": 900, "carrier": "CICA", "detail": "Just rates - PIVOT CITY live-dials", "policies": 1, "ts": "2026-10-08T17:40:00" }, { "id": "7481eee37f1f", "agent_id": "justin-mcknight", "name": "Justin McKnight", "team": "SML", "date": "2026-10-08", "time": "6:14 PM", "ap": 1046.4, "carrier": "Mutual of Omaha", "detail": "Aged MP", "policies": 1, "ts": "2026-10-08T18:14:00" }, { "id": "69547f50f1be", "agent_id": "justin-mcknight", "name": "Justin McKnight", "team": "SML", "date": "2026-10-08", "time": "7:18 PM", "ap": 1608.12, "carrier": "Ethos", "detail": "His and hers / Aged MP", "policies": 1, "ts": "2026-10-08T19:18:00" }, { "id": "441165235a10", "agent_id": "salote-tupoumalohi", "name": "Salote Tupoumalohi", "team": "SML", "date": "2026-10-08", "time": "8:56 PM", "ap": 1715.76, "carrier": "Foresters", "detail": "WL, Effective immediately; T'd up by Naki Tupoumalohi (posted Forrester)", "policies": 1, "ts": "2026-10-08T20:56:00" }, { "id": "4660669f2e48", "agent_id": "naki-tupoumalohi", "name": "Naki Tupoumalohi", "team": "SML", "date": "2026-10-09", "time": "9:58 AM", "ap": 1906.68, "carrier": "Transamerica", "detail": "EFT 10/23, with Salote Tupoumalohi; credited to poster Naki", "policies": 1, "ts": "2026-10-09T09:58:00" }, { "id": "a590b8b378e5", "agent_id": "donovan-scandariato", "name": "Donovan Scandariato", "team": "UL", "date": "2026-10-09", "time": "11:23 AM", "ap": 1764, "carrier": "Mutual of Omaha", "detail": "Term Life Express (MOO TLE)", "policies": 1, "ts": "2026-10-09T11:23:00" }, { "id": "156f621d6fa1", "agent_id": "spencer", "name": "Spencer", "team": "SML", "date": "2026-10-09", "time": "11:48 AM", "ap": 987, "carrier": "AHL", "detail": "Proven 12m, EFT 10/15", "policies": 1, "ts": "2026-10-09T11:48:00" }, { "id": "2e88ed55b721", "agent_id": "geno", "name": "Geno", "team": "SML", "date": "2026-10-09", "time": "12:38 PM", "ap": 1152, "carrier": "Ethos", "detail": "EFT 11/03", "policies": 1, "ts": "2026-10-09T12:38:00" }, { "id": "ba8f9d9b5b4e", "agent_id": "justin-mcknight", "name": "Justin McKnight", "team": "SML", "date": "2026-10-09", "time": "2:50 PM", "ap": 3276, "carrier": "Ethos", "detail": "Aged MP, EFT 11/01", "policies": 1, "ts": "2026-10-09T14:50:00" }, { "id": "4da86431dd7a", "agent_id": "justin-mcknight", "name": "Justin McKnight", "team": "SML", "date": "2026-10-09", "time": "2:50 PM", "ap": 942, "carrier": "Ethos", "detail": "Aged MP, EFT immediate", "policies": 1, "ts": "2026-10-09T14:50:00" }, { "id": "9fac5e52fb4d", "agent_id": "ipo-lake", "name": "Ipo Lake", "team": "SML", "date": "2026-10-09", "time": "3:03 PM", "ap": 1559, "carrier": "Transamerica", "detail": "First sale at Pinnacle, instant approval, instant draft", "policies": 1, "ts": "2026-10-09T15:03:00" }, { "id": "95c7d48eca08", "agent_id": "izick-ruiz", "name": "Izick Ruiz", "team": "SML", "date": "2026-10-09", "time": "5:13 PM", "ap": 2261, "carrier": "American Home Life", "detail": "AHL, fresh vet", "policies": 1, "ts": "2026-10-09T17:13:00" }, { "id": "ca5ab7144d93", "agent_id": "naki-tupoumalohi", "name": "Naki Tupoumalohi", "team": "SML", "date": "2026-10-09", "time": "5:51 PM", "ap": 8205, "carrier": "F&G", "detail": "Posted as $8,205 TP, sent to UW, with Salote Tupoumalohi; credited to poster Naki", "policies": 1, "ts": "2026-10-09T17:51:00" }, { "id": "bc53b735debf", "agent_id": "tyler-glennon", "name": "Tyler Glennon", "team": "SML", "date": "2026-10-09", "time": "6:40 PM", "ap": 932, "carrier": "AHL", "detail": "Just rates, Crank wheel with video", "policies": 1, "ts": "2026-10-09T18:40:00" }, { "id": "a2456085f0d0", "agent_id": "tyler-glennon", "name": "Tyler Glennon", "team": "SML", "date": "2026-10-10", "time": "10:21 AM", "ap": 1608, "carrier": "AHL", "detail": "Just rates - SUPER SALES SATURDAY", "policies": 1, "ts": "2026-10-10T10:21:00" }, { "id": "559932864c4a", "agent_id": "justin-mcknight", "name": "Justin McKnight", "team": "SML", "date": "2026-10-10", "time": "5:50 PM", "ap": 1026.6, "carrier": "Kansas City Life", "detail": "30 Year ROP term / Aged MP", "policies": 1, "ts": "2026-10-10T17:50:00" }], "kpis": [{ "id": "luke-desrosiers", "name": "Luke Desrosiers", "team": "UL", "date": "2026-10-05", "dials": 0, "appts": 0, "pres": 0, "closed": 0, "ap": 0 }, { "id": "alexander-petrowski", "name": "Alexander Petrowski", "team": "UL", "date": "2026-10-06", "dials": 160, "appts": 2, "pres": 0, "closed": 0, "ap": 0 }, { "id": "luke-desrosiers", "name": "Luke Desrosiers", "team": "UL", "date": "2026-10-06", "dials": 0, "appts": 0, "pres": 0, "closed": 0, "ap": 0 }, { "id": "alexander-petrowski", "name": "Alexander Petrowski", "team": "UL", "date": "2026-10-07", "dials": 245, "appts": 3, "pres": 0, "closed": 0, "ap": 0 }, { "id": "luke-desrosiers", "name": "Luke Desrosiers", "team": "UL", "date": "2026-10-07", "dials": 0, "appts": 0, "pres": 0, "closed": 0, "ap": 0 }, { "id": "luke-desrosiers", "name": "Luke Desrosiers", "team": "UL", "date": "2026-10-08", "dials": 0, "appts": 0, "pres": 0, "closed": 0, "ap": 0 }, { "id": "tay-nobles", "name": "Tay Nobles", "team": "UL", "date": "2026-10-08", "dials": 270, "appts": 3, "pres": 0, "closed": 0, "ap": 0 }, { "id": "tay-nobles", "name": "Tay Nobles", "team": "UL", "date": "2026-10-09", "dials": 400, "appts": 2, "pres": 1, "closed": 0, "ap": 0 }, { "id": "luke-desrosiers", "name": "Luke Desrosiers", "team": "UL", "date": "2026-10-09", "dials": 0, "appts": 0, "pres": 0, "closed": 0, "ap": 0 }, { "id": "david-abad", "name": "David Abad", "team": "UL", "date": "2026-10-09", "dials": 129, "appts": 2, "pres": 1, "closed": 0, "ap": 0 }] }
+);
+const Q = new URLSearchParams(location.search);
+if (!/surge\.sh$/.test(location.hostname) && location.protocol !== "file:" && !Q.has("sse") && !Q.has("feed") && !Q.has("nofeed")) Q.set("sse", "/sse");
+const LITE = Q.has("lite") || /Silk|AFT[A-Z]|Fire TV|AmazonWebAppPlatform|Android TV|SMART-TV|Tizen|Web0S/i.test(navigator.userAgent);
+if (LITE) document.documentElement.className += " lite";
+let FPS_SCALE = 1;
+const SLIDE_MS = (+Q.get("sec") || 20) * 1e3, POLL_MS = (+Q.get("poll") || 15) * 1e3, ALERT_MS = 9e3, TZ = "America/Phoenix";
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s != null ? s : "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+const money = (n) => "$" + Math.round(n).toLocaleString("en-US"), int = (n) => Math.round(n).toLocaleString("en-US");
+const short = (n) => n >= 1e3 ? "$" + (n / 1e3).toFixed(n >= 1e4 ? 0 : 1) + "k" : money(n);
+const tb = (t) => '<span class="tb '.concat(t, '">').concat(t === "SML" ? "SML" : "UL", "</span>");
+const todayAZ = () => (/* @__PURE__ */ new Date()).toLocaleDateString("en-CA", { timeZone: TZ });
+const PAL = ["#e1197a", "#ff7a1a", "#ffb020", "#3fb6ff", "#2165ff", "#7a3cff", "#22d38a", "#f05a8a", "#ffd166", "#5ad1c9", "#b23cc9", "#9aa6b6", "#c27a3e", "#6b8cff"];
+function fit() {
+  const s = Math.min(innerWidth / 1920, innerHeight / 1080);
+  for (const el of [$("stage"), $("alert")]) {
+    el.style.transform = "scale(".concat(s, ")");
+    el.style.left = (innerWidth - 1920 * s) / 2 + "px";
+    el.style.top = (innerHeight - 1080 * s) / 2 + "px";
+  }
+}
+addEventListener("resize", fit);
+fit();
+function tick() {
+  const d = /* @__PURE__ */ new Date();
+  $("clock").textContent = d.toLocaleTimeString("en-US", { timeZone: TZ, hour: "numeric", minute: "2-digit" });
+  $("date").textContent = d.toLocaleDateString("en-US", { timeZone: TZ, weekday: "long", month: "long", day: "numeric" }) + " \xB7 AZ";
+}
+setInterval(tick, 1e3);
+tick();
+function agg() {
+  const by = {};
+  DATA.roster.forEach((a) => by[a.id] = { ...a, ap: 0, deals: 0 });
+  DATA.deals.forEach((d) => {
+    const r = by[d.agent_id] || (by[d.agent_id] = { id: d.agent_id, name: d.name, team: d.team, ap: 0, deals: 0 });
+    r.ap += d.ap;
+    r.deals++;
+  });
+  return Object.values(by).sort((a, b) => b.ap - a.ap || a.name.localeCompare(b.name));
+}
+const niceMax = (v) => {
+  const e = Math.pow(10, Math.floor(Math.log10(v)));
+  const m = v / e;
+  return (m <= 1 ? 1 : m <= 2 ? 2 : m <= 2.5 ? 2.5 : m <= 5 ? 5 : 10) * e * 1;
+};
+const ord = (n) => {
+  const v = n % 100;
+  return n + (v >= 11 && v <= 13 ? "th" : { 1: "st", 2: "nd", 3: "rd" }[n % 10] || "th");
+};
+const ini = (n) => n.split(/\s+/).map((w) => w[0]).slice(0, 2).join("").toUpperCase();
+function podium(L, val, sub, cls2) {
+  val = val || ((a) => money(a.ap));
+  sub = sub || ((a) => "".concat(a.deals, " deal").concat(a.deals === 1 ? "" : "s"));
+  const o = [L[1], L[0], L[2]], cls = ["p2", "p1", "p3"], h = [80, 120, 56];
+  return '<div class="pod '.concat(cls2 || "", '">').concat(o.map((a, i) => a ? '<div class="pd '.concat(cls[i], '"><div class="crown">').concat(["\u{1F948}", "\u{1F451}", "\u{1F949}"][i], '</div><div class="av">').concat(esc(ini(a.name)), '</div><div class="pn">').concat(tb(a.team), " ").concat(esc(a.name), '</div><div class="pa">').concat(val(a), '</div><div class="pdl">').concat(sub(a), '</div><div class="blk" style="height:').concat(h[i], 'px">').concat(ord([2, 1, 3][i]), "</div></div>") : '<div class="pd"></div>').join(""), "</div>");
+}
+function rest(L, start) {
+  if (!L.length) return "";
+  const cols = L.length > 24 ? 4 : L.length > 8 ? 3 : Math.max(1, Math.min(2, L.length));
+  const per = Math.ceil(L.length / cols);
+  return '<div class="rest" style="--cols:'.concat(cols, '">').concat(Array.from({ length: cols }, (_, c) => "<div>".concat(L.slice(c * per, (c + 1) * per).map((a, i) => '<div class="row"><span class="rk">'.concat(ord(start + c * per + i), "</span>").concat(tb(a.team), '<span class="nm">').concat(esc(a.name), '</span><span class="ap">').concat(money(a.ap), '<span class="dl">').concat(a.deals, "</span></span></div>")).join(""), "</div>")).join(""), "</div>");
+}
+const producers = () => agg().filter((a) => a.ap > 0);
+function teamSlide(t) {
+  return { name: (t === "UL" ? "Undeniable Life" : "Self Made Life") + " Leaderboard", html() {
+    const L = producers().filter((a) => a.team === t);
+    const top = L.slice(0, 10);
+    return '<h2><img src="assets/badge_'.concat(t.toLowerCase(), '.png" style="height:46px;vertical-align:middle"/> ').concat(t === "UL" ? "Undeniable Life" : "Self Made Life", " \xB7 Top 10 <small>").concat(L.length, " producers \xB7 ").concat(money(L.reduce((s, a) => s + a.ap, 0)), " AP</small></h2>").concat(L.length ? podium(top) + rest(top.slice(3), 4) + (L.length > 10 ? '<div style="margin-top:14px;font-size:20px;color:var(--muted);font-weight:700;text-align:left">Also producing: '.concat(L.slice(10).map((a, i) => "".concat(ord(i + 11), " ").concat(esc(a.name), " ").concat(short(a.ap))).join(" \xB7 "), "</div>") : "") : '<div class="empty">No deals yet this month</div>');
+  } };
+}
+const SLIDES = [
+  { name: "Leaderboard", html() {
+    const L = producers();
+    const tot = L.reduce((s, a) => s + a.ap, 0);
+    return "<h2>\u{1F3C6} Total Leaderboard <small>".concat(L.length, " producers \xB7 ").concat(DATA.deals.length, " deals \xB7 ").concat(money(tot), " AP</small></h2>").concat(podium(L)).concat(rest(L.slice(3), 4));
+  } },
+  { name: "Team Totals", html() {
+    const L = agg();
+    const T = ["UL", "SML"].map((t) => {
+      const m = L.filter((a) => a.team === t);
+      const p = m.filter((a) => a.ap);
+      return { t, ap: p.reduce((s, a) => s + a.ap, 0), deals: p.reduce((s, a) => s + a.deals, 0), prod: p.length, roster: m.length, top: p[0], ten: p.slice(0, 10) };
+    });
+    const all = T[0].ap + T[1].ap;
+    return '<h2>\u2694\uFE0F Team Totals</h2><div class="teams" style="height:calc(100% - 70px)">'.concat(T.map((x) => '<div class="card team '.concat(x.t, '"><div class="tn"><img src="assets/badge_').concat(x.t.toLowerCase(), '.png"/>').concat(x.t === "UL" ? "Undeniable Life" : "Self Made Life", '</div>\n   <div class="big">').concat(money(x.ap), '</div><div style="font-size:24px;color:var(--muted);font-weight:800">').concat(all ? Math.round(x.ap / all * 100) : 0, '% of combined AP</div>\n   <div class="stats"><div class="stat"><b>').concat(x.deals, '</b><span>Deals</span></div><div class="stat"><b>').concat(x.prod, '</b><span>Producers</span></div><div class="stat"><b>').concat(short(x.deals ? x.ap / x.deals : 0), '</b><span>Avg deal</span></div></div>\n   <div class="t10">').concat(x.ten.map((a, k) => '<div class="t10r '.concat(k < 3 ? "t" + (k + 1) : "", '"><span class="rk">').concat(ord(k + 1), '</span><span class="nm">').concat(esc(a.name), '</span><span class="ap">').concat(money(a.ap), '</span><span class="dl">').concat(a.deals, "</span></div>")).join("") || '<div class="empty">No deals yet</div>', "</div></div>")).join(""), '</div>\n   <div class="combo">Combined ').concat(money(all), "</div>");
+  } },
+  teamSlide("UL"),
+  teamSlide("SML"),
+  { name: "Carrier Mix", html() {
+    const m = {};
+    DATA.deals.forEach((d) => {
+      const r = m[d.carrier] || (m[d.carrier] = { c: d.carrier, ap: 0, n: 0 });
+      r.ap += d.ap;
+      r.n++;
+    });
+    const C = Object.values(m).sort((a, b) => b.ap - a.ap);
+    const tot = C.reduce((s, a) => s + a.ap, 0) || 1;
+    const top = C.slice(0, 13);
+    let acc = 0;
+    const stops = C.map((c, i) => {
+      const a = acc;
+      acc += c.ap / tot * 360;
+      return "".concat(PAL[i % PAL.length], " ").concat(a, "deg ").concat(acc, "deg");
+    }).join(",");
+    const mx = top[0] ? top[0].ap : 1;
+    return "<h2>\u{1F9E9} Carrier Mix <small>".concat(C.length, ' carriers \xB7 by AP</small></h2><div class="cm"><div class="donut"><div style="position:absolute;top:0;right:0;bottom:0;left:0;border-radius:50%;background:conic-gradient(').concat(stops || "#333 0 360deg", ');-webkit-mask:radial-gradient(circle,transparent 58%,#000 59%);mask:radial-gradient(circle,transparent 58%,#000 59%)"></div><div class="c"><div><b>').concat(money(tot), "</b><span>").concat(DATA.deals.length, ' DEALS</span></div></div></div>\n  <div class="bars">').concat(top.map((c, i) => '<div class="br"><span class="sw" style="background:'.concat(PAL[i % PAL.length], '"></span><span>').concat(esc(c.c), '</span><span class="tr"><i data-w="').concat(c.ap / mx * 100, '" style="width:0;background:').concat(PAL[i % PAL.length], '"></i></span><span class="v">').concat(money(c.ap), '</span><span class="n">').concat(Math.round(c.ap / tot * 100), "% \xB7 ").concat(c.n, "</span></div>")).join(""), "</div></div>");
+  } },
+  { name: "Daily Revenue", html() {
+    const td = todayAZ();
+    const byD = {};
+    DATA.deals.forEach((d) => {
+      byD[d.date] = (byD[d.date] || 0) + d.ap;
+    });
+    const days = [];
+    const end = /* @__PURE__ */ new Date(td + "T12:00:00");
+    const first = new Date(end);
+    first.setDate(1);
+    for (let d = new Date(first); d <= end; d.setDate(d.getDate() + 1)) {
+      const k = d.toLocaleDateString("en-CA");
+      days.push(k);
+    }
+    const mx = window.__YMAX = Math.max(window.__YMAX || 0, niceMax(Math.max(1, ...days.map((k) => byD[k] || 0))));
+    const tAP = byD[td] || 0;
+    const tD = DATA.deals.filter((d) => d.date === td);
+    const recent = DATA.deals.slice().sort((a, b) => b.ts.localeCompare(a.ts)).slice(0, 8);
+    return '<h2>\u{1F4B0} Daily Revenue <small>live as deals drop</small></h2><div class="daily"><div class="card today"><div style="font-size:26px;font-weight:800;color:var(--muted);letter-spacing:.12em">TODAY\'S AP</div><div class="big">'.concat(money(tAP), '</div>\n  <div style="font-size:26px;font-weight:800">').concat(tD.length, " deal").concat(tD.length === 1 ? "" : "s", " today \xB7 ").concat(money(days.reduce((s, k) => s + (byD[k] || 0), 0)), ' month to date</div>\n  <div style="margin-top:22px;font-size:18px;color:var(--muted);font-weight:800;letter-spacing:.12em">LATEST DEALS</div>\n  <div class="feed">').concat(recent.map((d) => '<div class="'.concat(SEEN_NEW.has(d.id) ? "new" : "", '"><em>').concat(d.date === td ? d.time : (/* @__PURE__ */ new Date(d.date + "T12:00")).toLocaleDateString("en-US", { month: "short", day: "numeric" }), "</em><span>").concat(esc(d.name), " <em>\xB7 ").concat(esc(d.carrier), "</em></span><b>").concat(money(d.ap), "</b></div>")).join(""), '</div></div>\n  <div class="card chart"><div style="font-size:24px;font-weight:800;color:var(--muted);letter-spacing:.1em">AP BY DAY \xB7 ').concat(esc(DATA.month_label || ""), '</div><div class="cols ').concat(days.length > 20 ? "many" : days.length > 12 ? "mid" : "", '">').concat(days.map((k) => {
+      const v = byD[k] || 0;
+      return '<div class="col '.concat(k === td ? "td" : "", '"><b>').concat(v ? short(v) : "", '</b><i style="height:').concat(Math.max(0.6, v / mx * 86).toFixed(2), '%"></i><span>').concat(ord(+k.slice(8)), "</span></div>");
+    }).join(""), "</div></div></div>");
+  } },
+  { name: "KPIs", html() {
+    const E = DATA.kpis || [];
+    const sum = (f) => E.reduce((s, e) => s + (+e[f] || 0), 0);
+    const per = {};
+    E.forEach((e) => {
+      const r = per[e.id] || (per[e.id] = { id: e.id, name: e.name, team: e.team, d: 0, a: 0, p: 0, c: 0 });
+      r.d += +e.dials || 0;
+      r.a += +e.appts || 0;
+      r.p += +e.pres || 0;
+      r.c += +e.closed || 0;
+    });
+    const score = (r) => r.d + r.a * 25 + r.p * 50 + r.c * 100;
+    const P = Object.values(per).filter((r) => r.d || r.a || r.p || r.c).map((r) => Object.assign(r, { sc: score(r) })).sort((a, b) => b.sc - a.sc || b.d - a.d);
+    const kv = (a) => "".concat(int(a.sc), " pts"), ks = (a) => "".concat(int(a.d), " dials \xB7 ").concat(a.a, " appts \xB7 ").concat(a.p, " pres \xB7 ").concat(a.c, " closed");
+    const card = (a, n) => a ? '<div class="kc"><span class="kcr">'.concat(ord(n), "</span>").concat(tb(a.team), "<b>").concat(esc(a.name), '</b><span class="kcs">').concat(int(a.sc), " pts</span><small>").concat(ks(a), "</small></div>") : "";
+    const rest2 = P.slice(5);
+    return "<h2>\u{1F4DE} KPI Leaderboard <small>".concat(int(sum("dials")), " dials \xB7 ").concat(int(sum("appts")), " appts \xB7 ").concat(int(sum("pres")), " pres \xB7 ").concat(int(sum("closed")), " closed \xB7 score = dials + 25\xD7appt + 50\xD7pres + 100\xD7closed</small></h2>\n  ").concat(P.length ? podium(P, kv, ks, "kpod") + '<div class="kcards">'.concat(card(P[3], 4)).concat(card(P[4], 5), "</div>") + (rest2.length ? '<div class="krest">'.concat(rest2.map((r, k) => "<span><em>".concat(ord(k + 6), "</em> ").concat(esc(r.name), " \xB7 ").concat(int(r.d), "d ").concat(r.a, "a ").concat(r.p, "p ").concat(r.c, "c</span>")).join(""), "</div>") : "") : '<div class="empty">No Daily Checkouts posted yet this month</div>');
+  } }
+];
+const SEEN_NEW = /* @__PURE__ */ new Set();
+let cur = 0;
+const host = $("slides");
+SLIDES.forEach((s, i) => {
+  const d = document.createElement("section");
+  d.className = "slide";
+  host.appendChild(d);
+  s.el = d;
+});
+$("dots").innerHTML = SLIDES.map(() => "<b></b>").join("");
+document.documentElement.style.setProperty("--dur", SLIDE_MS + "ms");
+function paint(i) {
+  const s = SLIDES[i];
+  const h = s.html();
+  if (h === s._last) return;
+  const first = s._last === void 0;
+  s._last = h;
+  s.el.innerHTML = h;
+  if (!first) {
+    s.el.querySelectorAll("[data-w]").forEach((b) => {
+      b.style.transition = "none";
+      b.style.width = b.dataset.w + "%";
+    });
+    return;
+  }
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    s.el.querySelectorAll("[data-w]").forEach((b) => b.style.width = b.dataset.w + "%");
+    s.el.querySelectorAll("[data-h]").forEach((b) => b.style.height = Math.max(1, b.dataset.h) + "%");
+  }));
+}
+let timer;
+function show(i) {
+  i = +i;
+  if (!isFinite(i)) i = 0;
+  if (!isFinite(cur) || !SLIDES[cur]) cur = 0;
+  const prev = SLIDES[cur];
+  cur = (i % SLIDES.length + SLIDES.length) % SLIDES.length;
+  if (prev.el !== SLIDES[cur].el) {
+    prev.el.classList.remove("on");
+    prev.el.classList.add("out");
+    setTimeout(() => prev.el.classList.remove("out"), 900);
+  }
+  paint(cur);
+  SLIDES[cur].el.classList.add("on");
+  $("slname").textContent = SLIDES[cur].name;
+  [...$("dots").children].forEach((b, k) => {
+    b.className = k < cur ? "done" : "";
+    if (k === cur) {
+      void b.offsetWidth;
+      b.className = "on";
+    }
+  });
+  clearTimeout(timer);
+  if (!Q.has("slide")) timer = setTimeout(() => show(cur + 1), SLIDE_MS);
+}
+function updLabel() {
+  $("upd").textContent = "v1010.1556 \xB7 Deals synced ".concat(DATA.deals_updated_label || "\u2014", " \xB7 KPIs ").concat(DATA.kpi_updated_label || "\u2014", " \xB7 checked ").concat((/* @__PURE__ */ new Date()).toLocaleTimeString("en-US", { timeZone: TZ, hour: "numeric", minute: "2-digit" }));
+}
+$("mon").textContent = DATA.month_label || "";
+let seen = new Set(DATA.deals.map((d) => d.id)), queue = [], alerting = false;
+const LOAD_TS = Date.now(), PRIMED = { ntfy: 1 }, LSK = "ulxsml_tv_seen_v1";
+let PSEEN;
+try {
+  PSEEN = new Set(JSON.parse(localStorage.getItem(LSK) || "[]"));
+} catch (e) {
+  PSEEN = /* @__PURE__ */ new Set();
+}
+const dealMs = (d) => d.ms || Date.parse((d.ts || "").length === 19 ? d.ts + "-07:00" : d.ts) || 0;
+const pkey = (d) => (d.name || "").toLowerCase() + "|" + (d.date || "") + "|" + Math.round(+d.ap || 0);
+function persistSeen() {
+  try {
+    localStorage.setItem(LSK, JSON.stringify(Array.from(PSEEN).slice(-4e3)));
+  } catch (e) {
+  }
+}
+function gate(cands, src) {
+  const first = !PRIMED[src];
+  PRIMED[src] = 1;
+  const ok = cands.filter((d) => !PSEEN.has(d.id) && !PSEEN.has(pkey(d)) && dealMs(d) >= LOAD_TS - 6e4);
+  cands.forEach((d) => {
+    PSEEN.add(d.id);
+    PSEEN.add(pkey(d));
+  });
+  if (cands.length) persistSeen();
+  if (first || ok.length > 2) return [];
+  return ok;
+}
+DATA.deals.forEach((d) => {
+  PSEEN.add(d.id);
+  PSEEN.add(pkey(d));
+});
+persistSeen();
+async function poll() {
+  try {
+    const r = await fetch("tv_data.json?t=" + Date.now(), { cache: "no-store" });
+    if (!r.ok) throw 0;
+    const j = await r.json();
+    const fresh = (j.deals || []).filter((d) => !seen.has(d.id) && !Object.values(FEED).some((f) => dkey(f) === dkey(d)));
+    DATA = j;
+    mergeFeed();
+    fresh.forEach((d) => seen.add(d.id));
+    const al = gate(fresh, "tvdata");
+    al.forEach((d) => SEEN_NEW.add(d.id));
+    if (al.length) {
+      queue.push(...al.sort((a, b) => a.ts.localeCompare(b.ts)));
+      runAlerts();
+    }
+    paint(cur);
+  } catch (e) {
+  }
+  updLabel();
+}
+const SFX_V = "3";
+const SFX = { x: new Audio("assets/hype.wav?v=" + SFX_V) };
+let soundOn = false;
+const sndEl = $("snd");
+function startBoard() {
+  if (soundOn) return;
+  soundOn = true;
+  Object.keys(SFX).forEach(function(k) {
+    var a = SFX[k];
+    try {
+      a.muted = true;
+      var pr = a.play();
+      if (pr && pr.then) pr.then(function() {
+        a.pause();
+        a.currentTime = 0;
+        a.muted = false;
+      }).catch(function() {
+        a.muted = false;
+      });
+      else {
+        a.pause();
+        a.currentTime = 0;
+        a.muted = false;
+      }
+    } catch (e) {
+      a.muted = false;
+    }
+  });
+  try {
+    var AC = window.AudioContext || window.webkitAudioContext;
+    if (AC) {
+      var c = new AC();
+      var b = c.createBuffer(1, 1, 22050), src = c.createBufferSource();
+      src.buffer = b;
+      src.connect(c.destination);
+      src.start(0);
+    }
+  } catch (e) {
+  }
+  if (sndEl.parentNode) sndEl.parentNode.removeChild(sndEl);
+}
+if (Q.get("sound") === "0" || Q.has("nosound")) {
+  if (sndEl.parentNode) sndEl.parentNode.removeChild(sndEl);
+} else {
+  sndEl.addEventListener("click", startBoard);
+  setTimeout(function() {
+    try {
+      sndEl.focus();
+    } catch (e) {
+    }
+  }, 300);
+}
+document.addEventListener("keydown", function(e) {
+  var k = e.keyCode || e.which;
+  if (!soundOn && document.getElementById("snd") && (k === 13 || k === 23 || k === 32 || e.key === "Enter")) {
+    e.preventDefault();
+    startBoard();
+  }
+});
+const play = (a, v = 1) => {
+  if (!soundOn) return;
+  try {
+    a.currentTime = 0;
+    a.volume = v;
+    a.play().catch(() => {
+    });
+  } catch (e) {
+  }
+};
+function countAmt(el, to, ms) {
+  const t0 = performance.now();
+  (function f(t) {
+    const k = Math.min(1, (t - t0) / ms);
+    el.textContent = money(to * (1 - Math.pow(1 - k, 3)));
+    if (k < 1) requestAnimationFrame(f);
+  })(t0);
+}
+function runAlerts() {
+  if (alerting || !queue.length) return;
+  alerting = true;
+  const d = queue.shift();
+  $("aw").innerHTML = tb(d.team) + esc(d.name);
+  $("ac").innerHTML = esc(d.carrier || "") + (d.detail && d.detail.length < 40 ? "<small>".concat(esc(d.detail), "</small>") : "");
+  $("alert").classList.add("on");
+  if (!LITE) {
+    $("stage").classList.add("shake");
+    $("alert").querySelector(".box").classList.add("shake");
+  } else {
+    $("alert").querySelector(".box").classList.add("shake");
+  }
+  countAmt($("aa"), d.ap, 2200);
+  moneyRain(ALERT_MS - 500);
+  play(SFX.x, 1);
+  setTimeout(() => {
+    $("stage").classList.remove("shake");
+    $("alert").querySelector(".box").classList.remove("shake");
+  }, 1800);
+  setTimeout(() => {
+    $("alert").classList.remove("on");
+    setTimeout(() => {
+      alerting = false;
+      runAlerts();
+    }, 700);
+  }, ALERT_MS);
+}
+window.simulateDeal = (o = {}) => {
+  const d = { id: "sim" + Date.now(), agent_id: "x", name: "Naki Tupoumalohi", team: "SML", date: todayAZ(), time: (/* @__PURE__ */ new Date()).toLocaleTimeString("en-US", { timeZone: TZ, hour: "numeric", minute: "2-digit" }), ap: 2475, carrier: "Mutual of Omaha", detail: "Living Promise", ...o };
+  d.ts = d.date + "T23:59";
+  queue.push(d);
+  runAlerts();
+};
+const SPR = {};
+function sprite(e, sz) {
+  const k = e + sz;
+  if (SPR[k]) return SPR[k];
+  const c = document.createElement("canvas");
+  c.width = c.height = Math.ceil(sz * 1.3);
+  const g = c.getContext("2d");
+  g.font = sz + "px serif";
+  g.textBaseline = "middle";
+  g.textAlign = "center";
+  g.fillText(e, c.width / 2, c.height / 2);
+  return SPR[k] = c;
+}
+function moneyRain(ms) {
+  const c = $("cf"), x = c.getContext("2d");
+  const E = ["\u{1F4B5}", "\u{1F4B5}", "\u{1F4B5}", "\u{1F4B0}", "\u{1FA99}", "\u{1F4B8}"];
+  const SZ = [48, 64, 80];
+  const nb = Math.round((LITE ? 45 : 150) * FPS_SCALE), nc = Math.round((LITE ? 40 : 140) * FPS_SCALE);
+  const P = Array.from({ length: nb }, () => ({ img: sprite(E[Math.random() * E.length | 0], SZ[Math.random() * 3 | 0]), x: Math.random() * 1920, y: -Math.random() * 1400, vx: (Math.random() - 0.5) * 3, vy: 6 + Math.random() * 9, a: Math.random() * 6, va: (Math.random() - 0.5) * 0.15 }));
+  const C = Array.from({ length: nc }, () => ({ x: Math.random() * 1920, y: -Math.random() * 1080, vx: (Math.random() - 0.5) * 6, vy: 4 + Math.random() * 7, r: 8 + Math.random() * 10, c: PAL[Math.random() * 7 | 0] }));
+  const end = performance.now() + ms;
+  let last = performance.now(), slow = 0, frames = 0;
+  (function f(t) {
+    const dt = Math.min(3, (t - last) / 16.7);
+    last = t;
+    frames++;
+    if (dt > 2.2) slow++;
+    if (frames === 40 && slow > 12) {
+      FPS_SCALE = Math.max(0.3, FPS_SCALE * 0.6);
+      P.length = Math.ceil(P.length / 2);
+      C.length = Math.ceil(C.length / 2);
+    }
+    x.clearRect(0, 0, 1920, 1080);
+    const loop = t < end - 1800;
+    for (const p of C) {
+      p.x += p.vx * dt;
+      p.y += p.vy * dt;
+      if (p.y > 1100 && loop) {
+        p.y = -20;
+        p.x = Math.random() * 1920;
+      }
+      x.fillStyle = p.c;
+      x.fillRect(p.x, p.y, p.r, p.r / 2);
+    }
+    for (const p of P) {
+      p.x += (p.vx + Math.sin(t / 300 + p.a) * 1.5) * dt;
+      p.y += p.vy * dt;
+      if (p.y > 1150 && loop) {
+        p.y = -90;
+        p.x = Math.random() * 1920;
+      }
+      if (LITE) x.drawImage(p.img, p.x, p.y);
+      else {
+        x.save();
+        x.translate(p.x, p.y);
+        x.rotate(Math.sin(p.a + t / 500) * 0.5);
+        x.drawImage(p.img, -p.img.width / 2, -p.img.height / 2);
+        x.restore();
+      }
+    }
+    if (t < end) requestAnimationFrame(f);
+    else x.clearRect(0, 0, 1920, 1080);
+  })(performance.now());
+}
+const FEED = {};
+let feedPrimed = false;
+const dkey = (d) => (d.name || "").toLowerCase() + "|" + (d.date || "") + "|" + Math.round(+d.ap || 0);
+function normDeal(r) {
+  const ts = r.ts || r.timestamp || (/* @__PURE__ */ new Date()).toISOString();
+  const dt = new Date(ts);
+  return {
+    id: String(r.id || r.message_id || dkey(r) + ts),
+    agent_id: r.agent_id || String(r.name || "").toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+    name: r.name || r.agent || "New deal",
+    team: String(r.team || "").toUpperCase() === "UL" ? "UL" : "SML",
+    ap: +r.ap || +r.amount || 0,
+    carrier: r.carrier || "",
+    detail: r.detail || r.product || "",
+    date: r.date || dt.toLocaleDateString("en-CA", { timeZone: TZ }),
+    time: r.time || dt.toLocaleTimeString("en-US", { timeZone: TZ, hour: "numeric", minute: "2-digit" }),
+    ts: dt.toLocaleString("sv-SE", { timeZone: TZ }).replace(" ", "T"),
+    ms: dt.getTime()
+  };
+}
+function dropDeal(id) {
+  delete FEED[id];
+  DATA.deals = DATA.deals.filter((d) => d.id !== id);
+  queue = queue.filter((d) => d.id !== id);
+}
+function mergeFeed() {
+  const have = new Set(DATA.deals.map((d) => d.id)), keys = new Set(DATA.deals.map(dkey));
+  Object.values(FEED).forEach((d) => {
+    if (!have.has(d.id) && !keys.has(dkey(d))) DATA.deals.push(d);
+  });
+}
+function ingest(list, alert, src) {
+  const cand = [];
+  (list || []).map(normDeal).forEach((d) => {
+    if (FEED[d.id] || seen.has(d.id)) return;
+    FEED[d.id] = d;
+    seen.add(d.id);
+    cand.push(d);
+  });
+  let al = gate(cand, src || "feed");
+  if (alert === false) al = [];
+  al.forEach((d) => SEEN_NEW.add(d.id));
+  mergeFeed();
+  if (cand.length) paint(cur);
+  if (al.length) {
+    queue.push(...al);
+    runAlerts();
+  }
+}
+if (Q.get("feed")) {
+  const u = Q.get("feed");
+  const fp = async () => {
+    try {
+      const r = await fetch(u + (u.includes("?") ? "&" : "?") + "t=" + Date.now(), { cache: "no-store" });
+      const j = await r.json();
+      if (j && j.history) ingest(j.history, false, "feed-h");
+      ingest(Array.isArray(j) ? j : j.deals, true, "feed");
+    } catch (e) {
+    }
+  };
+  fp();
+  setInterval(fp, (+Q.get("feedpoll") || 3) * 1e3);
+}
+if (Q.get("ntfy")) {
+  const nt = new EventSource("https://ntfy.sh/" + encodeURIComponent(Q.get("ntfy")) + "/sse");
+  nt.onmessage = (e) => {
+    try {
+      const m = JSON.parse(e.data);
+      if (m.event === "message" && m.message) {
+        const j = JSON.parse(m.message);
+        ingest(Array.isArray(j) ? j : [j], true, "ntfy");
+      }
+    } catch (x) {
+    }
+  };
+}
+function startPoll(u) {
+  if (window.__polling) return;
+  window.__polling = 1;
+  const fp = async () => {
+    try {
+      const r = await fetch(u + (u.indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now(), { cache: "no-store" });
+      const j = await r.json();
+      if (j && j.history) ingest(j.history, false, "poll-h");
+      const L = Array.isArray(j) ? j : j.deals;
+      if (feedPrimed) {
+        const ids = new Set(L.map((d) => String(d.id)));
+        (j.history || []).forEach((d) => ids.add(String(d.id)));
+        Object.keys(FEED).forEach((k) => {
+          if (!ids.has(k)) dropDeal(k);
+        });
+      }
+      ingest(L, true, "poll");
+      paint(cur);
+    } catch (e) {
+    }
+  };
+  fp();
+  setInterval(fp, (+Q.get("feedpoll") || 3) * 1e3);
+}
+if (Q.get("sse")) {
+  const SSEU = Q.get("sse");
+  const PU = SSEU.replace(/\/sse(\?.*)?$/, "/deals.json");
+  if (!window.EventSource) {
+    startPoll(PU);
+  } else {
+    let fails = 0;
+    const es = new EventSource(SSEU);
+    let gotSnap = false;
+    es.addEventListener("snapshot", () => {
+      gotSnap = true;
+    });
+    setTimeout(() => {
+      if (!gotSnap) {
+        try {
+          es.close();
+        } catch (x) {
+        }
+        startPoll(PU);
+      }
+    }, 8e3);
+    es.addEventListener("open", () => {
+      fails = 0;
+      feedPrimed = true;
+    });
+    es.onerror = () => {
+      fails++;
+      if (fails >= 4) {
+        try {
+          es.close();
+        } catch (x) {
+        }
+        startPoll(PU);
+      }
+    };
+    es.addEventListener("snapshot", (e) => {
+      try {
+        const j = JSON.parse(e.data);
+        const ids = new Set((j.deals || []).concat(j.history || []).map((d) => String(d.id)));
+        Object.keys(FEED).forEach((k) => {
+          if (!ids.has(k)) dropDeal(k);
+        });
+        ingest((j.history || []).concat(j.deals || []), false, "sse");
+        PRIMED.sse = 1;
+        paint(cur);
+      } catch (x) {
+      }
+    });
+    es.addEventListener("remove", (e) => {
+      try {
+        dropDeal(String(JSON.parse(e.data).id));
+        paint(cur);
+      } catch (x) {
+      }
+    });
+    es.onmessage = (e) => {
+      try {
+        const j = JSON.parse(e.data);
+        ingest(Array.isArray(j) ? j : j.deals || [j], true, "sse");
+      } catch (x) {
+      }
+    };
+  }
+}
+if (Q.has("sim")) setTimeout(() => simulateDeal(), 300);
+document.body.classList.toggle("lite", LITE);
+show(Q.has("slide") ? +Q.get("slide") : 0);
+updLabel();
+poll();
+setInterval(poll, POLL_MS);
+setInterval(() => location.reload(), 6 * 3600 * 1e3);
+document.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowRight") show(cur + 1);
+  if (e.key === "ArrowLeft") show(cur - 1);
+});
+</script></body></html>
