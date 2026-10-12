@@ -1,6 +1,6 @@
 {
-"generated": "2026-10-10T20:27:45-07:00",
-"generated_label": "Oct 10, 8:27 PM PT",
+"generated": "2026-10-11T18:29:17-07:00",
+"generated_label": "Oct 11, 6:29 PM PT",
 "entries": [
 {
 "id": "luke-desrosiers",
@@ -128,6 +128,28 @@
 "name": "Luke Desrosiers",
 "team": "UL",
 "date": "2026-10-10",
+"dials": 0,
+"appts": 0,
+"pres": 0,
+"closed": 0,
+"ap": 0.0
+},
+{
+"id": "luke-desrosiers",
+"name": "Luke Desrosiers",
+"team": "UL",
+"date": "2026-10-11",
+"dials": 0,
+"appts": 0,
+"pres": 0,
+"closed": 0,
+"ap": 0.0
+},
+{
+"id": "tay-nobles",
+"name": "Tay Nobles",
+"team": "UL",
+"date": "2026-10-11",
 "dials": 0,
 "appts": 0,
 "pres": 0,
