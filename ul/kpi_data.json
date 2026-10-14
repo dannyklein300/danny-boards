@@ -1,6 +1,6 @@
 {
-"generated": "2026-10-13T19:41:48-07:00",
-"generated_label": "Oct 13, 7:41 PM PT",
+"generated": "2026-10-13T21:35:07-07:00",
+"generated_label": "Oct 13, 9:35 PM PT",
 "entries": [
 {
 "id": "luke-desrosiers",
@@ -206,6 +206,17 @@
 "team": "UL",
 "date": "2026-10-13",
 "dials": 0,
+"appts": 0,
+"pres": 0,
+"closed": 0,
+"ap": 0.0
+},
+{
+"id": "alexander-petrowski",
+"name": "Alexander Petrowski",
+"team": "UL",
+"date": "2026-10-13",
+"dials": 313,
 "appts": 0,
 "pres": 0,
 "closed": 0,
