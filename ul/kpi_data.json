@@ -1,6 +1,6 @@
 {
-"generated": "2026-10-14T17:35:25-07:00",
-"generated_label": "Oct 14, 5:35 PM PT",
+"generated": "2026-10-14T18:43:08-07:00",
+"generated_label": "Oct 14, 6:43 PM PT",
 "entries": [
 {
 "id": "luke-desrosiers",
@@ -240,6 +240,17 @@
 "date": "2026-10-14",
 "dials": 468,
 "appts": 2,
+"pres": 0,
+"closed": 0,
+"ap": 0.0
+},
+{
+"id": "luke-desrosiers",
+"name": "Luke Desrosiers",
+"team": "UL",
+"date": "2026-10-14",
+"dials": 0,
+"appts": 0,
 "pres": 0,
 "closed": 0,
 "ap": 0.0
