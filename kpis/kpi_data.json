@@ -1,6 +1,6 @@
 {
-"generated": "2026-10-13T21:35:07-07:00",
-"generated_label": "Oct 13, 9:35 PM PT",
+"generated": "2026-10-14T17:35:25-07:00",
+"generated_label": "Oct 14, 5:35 PM PT",
 "entries": [
 {
 "id": "luke-desrosiers",
@@ -229,6 +229,28 @@
 "date": "2026-10-13",
 "dials": 313,
 "appts": 0,
+"pres": 0,
+"closed": 0,
+"ap": 0.0
+},
+{
+"id": "lucas-tyre",
+"name": "Lucas Tyre",
+"team": "UL",
+"date": "2026-10-13",
+"dials": 222,
+"appts": 0,
+"pres": 0,
+"closed": 0,
+"ap": 0.0
+},
+{
+"id": "lucas-tyre",
+"name": "Lucas Tyre",
+"team": "UL",
+"date": "2026-10-14",
+"dials": 468,
+"appts": 2,
 "pres": 0,
 "closed": 0,
 "ap": 0.0
