@@ -186,6 +186,44 @@ h1 .grad-text{padding-right:2px}
     <a href="daily.html">Daily Revenue</a>
     <a href="https://dannyklein300.github.io/danny-boards/kpis/">KPIs <span class="ext">↗</span></a>
   </nav>
+<!-- TEAM TOTALS STRIP (month AP + deals per agency; every counted deal, incl. Danny's real deals) -->
+<style>
+.tt-strip{display:flex;gap:16px;flex-wrap:wrap;margin:18px auto;max-width:1200px;padding:0 12px;font-family:inherit}
+.tt-box{flex:1 1 300px;border-radius:18px;padding:18px 22px;color:#fff;box-shadow:0 8px 28px rgba(0,0,0,.25);text-align:center}
+.tt-box.ul{background:linear-gradient(120deg,#e1197a,#ff7a1a 70%,#ffb020)}
+.tt-box.sml{background:linear-gradient(120deg,#1546d6,#2165ff 55%,#3fb6ff)}
+.tt-k{font-size:15px;letter-spacing:.12em;text-transform:uppercase;font-weight:800;opacity:.95}
+.tt-ap{font-size:clamp(38px,6vw,64px);font-weight:900;line-height:1.1;margin:4px 0}
+.tt-d{font-size:20px;font-weight:700}
+</style>
+<section class="tt-strip" id="ttStrip">
+  <div class="tt-box ul"><div class="tt-k">Team Undeniable Life · <span class="tt-m">Month</span> total</div><div class="tt-ap" id="ttULap">—</div><div class="tt-d"><span id="ttULd">—</span> deals</div></div>
+  <div class="tt-box sml"><div class="tt-k">Team Self Made Life · <span class="tt-m">Month</span> total</div><div class="tt-ap" id="ttSMLap">—</div><div class="tt-d"><span id="ttSMLd">—</span> deals</div></div>
+</section>
+<script>
+(function(){
+  var M=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  function fmt(n){return '$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+  function show(rows,period){
+    var t={UL:{ap:0,d:0},SML:{ap:0,d:0}};
+    rows.forEach(function(r){ if(!t[r.team]) return; t[r.team].ap+=Number(r.ap)||0; t[r.team].d+=Number(r.n||1); });
+    ['UL','SML'].forEach(function(k){ document.getElementById('tt'+k+'ap').textContent=fmt(Math.round(t[k].ap*100)/100); document.getElementById('tt'+k+'d').textContent=t[k].d; });
+    if(period){var m=M[+period.split('-')[1]-1]; [].forEach.call(document.querySelectorAll('.tt-m'),function(e){e.textContent=m;});}
+  }
+  function fromData(){ // fallback: board DATA embedded in page
+    if(typeof DATA==='undefined'||!DATA.agents) return false;
+    var rows=[]; DATA.agents.forEach(function(a){ if(a.deals>0) rows.push({agent:a.name,team:a.team,ap:a.ap,n:a.deals}); });
+    show(rows,DATA.period); return true;
+  }
+  function load(){
+    fetch('../feed/deals.json?t='+Date.now()).then(function(r){return r.json();})
+      .then(function(f){show(f.deals||[],f.period);}).catch(fromData);
+  }
+  load(); setInterval(load,60000);
+})();
+</script>
+<!-- /TEAM TOTALS STRIP -->
+
 
   <section class="panel hero">
     <div class="kicker">Combined team total · October 2026</div>
