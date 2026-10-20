@@ -1,6 +1,6 @@
 {
-"generated": "2026-10-19T19:37:17-07:00",
-"generated_label": "Oct 19, 7:37 PM PT",
+"generated": "2026-10-19T20:42:55-07:00",
+"generated_label": "Oct 19, 8:42 PM PT",
 "entries": [
 {
 "id": "luke-desrosiers",
@@ -382,6 +382,17 @@
 "team": "UL",
 "date": "2026-10-19",
 "dials": 412,
+"appts": 1,
+"pres": 0,
+"closed": 0,
+"ap": 0.0
+},
+{
+"id": "tay-nobles",
+"name": "Tay Nobles",
+"team": "UL",
+"date": "2026-10-19",
+"dials": 315,
 "appts": 1,
 "pres": 0,
 "closed": 0,
