@@ -1,6 +1,6 @@
 {
-"generated": "2026-10-21T15:42:52-07:00",
-"generated_label": "Oct 21, 3:42 PM PT",
+"generated": "2026-10-21T20:35:54-07:00",
+"generated_label": "Oct 21, 8:35 PM PT",
 "entries": [
 {
 "id": "luke-desrosiers",
@@ -419,6 +419,17 @@
 "pres": 1,
 "closed": 0,
 "ap": 0.0
+},
+{
+"id": "crete-vallery",
+"name": "Crete Vallery",
+"team": "UL",
+"date": "2026-10-21",
+"dials": 221,
+"appts": 1,
+"pres": 2,
+"closed": 1,
+"ap": 472.0
 },
 {
 "id": "james-wyman",
