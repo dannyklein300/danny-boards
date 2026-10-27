@@ -1,6 +1,6 @@
 {
-"generated": "2026-10-26T20:39:21-07:00",
-"generated_label": "Oct 26, 8:39 PM PT",
+"generated": "2026-10-26T21:42:02-07:00",
+"generated_label": "Oct 26, 9:42 PM PT",
 "entries": [
 {
 "id": "luke-desrosiers",
@@ -485,6 +485,17 @@
 "pres": 2,
 "closed": 2,
 "ap": 2882.0
+},
+{
+"id": "charon-tucker",
+"name": "Charon Tucker",
+"team": "UL",
+"date": "2026-10-26",
+"dials": 583,
+"appts": 5,
+"pres": 0,
+"closed": 0,
+"ap": 0.0
 },
 {
 "id": "crete-vallery",
