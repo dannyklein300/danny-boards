@@ -1,6 +1,6 @@
 {
-"generated": "2026-10-26T18:37:28-07:00",
-"generated_label": "Oct 26, 6:37 PM PT",
+"generated": "2026-10-26T19:42:12-07:00",
+"generated_label": "Oct 26, 7:42 PM PT",
 "entries": [
 {
 "id": "luke-desrosiers",
@@ -485,6 +485,28 @@
 "pres": 2,
 "closed": 2,
 "ap": 2882.0
+},
+{
+"id": "crete-vallery",
+"name": "Crete Vallery",
+"team": "UL",
+"date": "2026-10-26",
+"dials": 626,
+"appts": 3,
+"pres": 0,
+"closed": 0,
+"ap": 0.0
+},
+{
+"id": "luke-desrosiers",
+"name": "Luke Desrosiers",
+"team": "UL",
+"date": "2026-10-26",
+"dials": 123,
+"appts": 0,
+"pres": 0,
+"closed": 0,
+"ap": 0.0
 }
 ]
 }
