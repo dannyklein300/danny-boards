@@ -1,6 +1,6 @@
 {
-"generated": "2026-10-28T05:34:55-07:00",
-"generated_label": "Oct 28, 5:34 AM PT",
+"generated": "2026-10-29T20:36:18-07:00",
+"generated_label": "Oct 29, 8:36 PM PT",
 "entries": [
 {
 "id": "luke-desrosiers",
@@ -584,6 +584,17 @@
 "pres": 0,
 "closed": 0,
 "ap": 0.0
+},
+{
+"id": "james-wyman",
+"name": "James Wyman",
+"team": "UL",
+"date": "2026-10-29",
+"dials": 190,
+"appts": 2,
+"pres": 3,
+"closed": 1,
+"ap": 662.0
 }
 ]
 }
