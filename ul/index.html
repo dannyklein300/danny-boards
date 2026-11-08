@@ -281,10 +281,10 @@ h1{
     show(rows,DATA.period); return true;
   }
   function load(){
-    fetch('../feed/deals.json?t='+Date.now()).then(function(r){return r.json();})
+    fetch('../feed/deals.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();})
       .then(function(f){show(f.deals||[],f.period);}).catch(fromData);
   }
-  load(); setInterval(load,60000);
+  load(); setInterval(load,30000);
 })();
 </script>
 <!-- /TEAM TOTALS STRIP -->
@@ -610,6 +610,45 @@ document.getElementById('btnSave').onclick=saveEdit;
 document.getElementById('btnReset').onclick=()=>{if(!confirm('Clear your edits for '+period+'? Seeded Discord numbers stay.'))return; snapshotRanks(); const d=load(); d[period]={}; save(d); render();};
 document.getElementById('modal').onclick=e=>{if(e.target.id==='modal')e.target.classList.remove('open');};
 render();
+</script>
+<script>
+// LIVE_SALES_REFRESH: keep the original rendered design, refresh only on a
+// real feed change (not its generated timestamp). No alert or sound is added.
+(function(){
+  var previous=null, busy=false;
+  function signature(f){return JSON.stringify([f.period,f.totals,f.deals]);}
+  function stale(f){
+    if(typeof DATA!=='undefined' && DATA.totals && DATA.totals.ALL){
+      var a=DATA.totals.ALL,b=f.totals&&f.totals.combined;
+      return !!b && (DATA.period!==f.period || Number(a.deals)!==Number(b.deals) || Math.abs(Number(a.ap)-Number(b.ap))>0.01);
+    }
+    if(typeof DEFAULT_AP!=='undefined' && typeof AGENTS!=='undefined'){
+      var byName={}, actual={}, expected=DEFAULT_AP.month||{};
+      AGENTS.forEach(function(a){byName[a.name]=a.id;});
+      (f.deals||[]).forEach(function(d){var id=byName[d.agent];if(id){var v=actual[id]||(actual[id]={ap:0,deals:0});v.ap+=Number(d.ap)||0;v.deals++;}});
+      return AGENTS.some(function(a){var x=actual[a.id]||{ap:0,deals:0},y=expected[a.id]||{ap:0,deals:0};return Math.round(x.ap)!==Number(y.ap)||x.deals!==Number(y.deals);});
+    }
+    return false;
+  }
+  function reload(){
+    // Throttle across page loads in case CDN propagation returns older HTML.
+    try{var key='live-sales-reload:'+location.pathname,last=Number(sessionStorage.getItem(key)||0);if(Date.now()-last<30000)return;sessionStorage.setItem(key,String(Date.now()));}catch(e){}
+    location.reload();
+  }
+  async function check(){
+    if(busy)return;busy=true;
+    try{
+      var r=await fetch('../feed/deals.json?t='+Date.now(),{cache:'no-store'});
+      if(!r.ok)throw new Error('feed unavailable');
+      var f=await r.json();if(!Array.isArray(f.deals)||!f.period)return;
+      var next=signature(f);
+      if((previous!==null&&previous!==next)||stale(f)){reload();return;}
+      previous=next;
+    }catch(e){}finally{busy=false;}
+  }
+  setInterval(check,30000);check();
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)check();});
+})();
 </script>
 </body>
 </html>

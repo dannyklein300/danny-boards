@@ -412,6 +412,44 @@ function confetti(){
     requestAnimationFrame(f); })(t0);
 }
 
+// LIVE_SALES_REFRESH: keep the original rendered design, refresh only on a
+// real feed change (not its generated timestamp). No alert or sound is added.
+(function(){
+  var previous=null, busy=false;
+  function signature(f){return JSON.stringify([f.period,f.totals,f.deals]);}
+  function stale(f){
+    if(typeof DATA!=='undefined' && DATA.totals && DATA.totals.ALL){
+      var a=DATA.totals.ALL,b=f.totals&&f.totals.combined;
+      return !!b && (DATA.period!==f.period || Number(a.deals)!==Number(b.deals) || Math.abs(Number(a.ap)-Number(b.ap))>0.01);
+    }
+    if(typeof DEFAULT_AP!=='undefined' && typeof AGENTS!=='undefined'){
+      var byName={}, actual={}, expected=DEFAULT_AP.month||{};
+      AGENTS.forEach(function(a){byName[a.name]=a.id;});
+      (f.deals||[]).forEach(function(d){var id=byName[d.agent];if(id){var v=actual[id]||(actual[id]={ap:0,deals:0});v.ap+=Number(d.ap)||0;v.deals++;}});
+      return AGENTS.some(function(a){var x=actual[a.id]||{ap:0,deals:0},y=expected[a.id]||{ap:0,deals:0};return Math.round(x.ap)!==Number(y.ap)||x.deals!==Number(y.deals);});
+    }
+    return false;
+  }
+  function reload(){
+    // Throttle across page loads in case CDN propagation returns older HTML.
+    try{var key='live-sales-reload:'+location.pathname,last=Number(sessionStorage.getItem(key)||0);if(Date.now()-last<30000)return;sessionStorage.setItem(key,String(Date.now()));}catch(e){}
+    location.reload();
+  }
+  async function check(){
+    if(busy)return;busy=true;
+    try{
+      var r=await fetch('../feed/deals.json?t='+Date.now(),{cache:'no-store'});
+      if(!r.ok)throw new Error('feed unavailable');
+      var f=await r.json();if(!Array.isArray(f.deals)||!f.period)return;
+      var next=signature(f);
+      if((previous!==null&&previous!==next)||stale(f)){reload();return;}
+      previous=next;
+    }catch(e){}finally{busy=false;}
+  }
+  setInterval(check,30000);check();
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)check();});
+})();
+
 /* Daily Revenue: calendar of combined AP by day with a per-agency total and a who-did-what dropdown per day */
 const Y=PY, M=PM, DIM=PDIM; // month from DATA.period
 const DOW=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
