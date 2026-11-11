@@ -1,5 +1,5 @@
 {
-  "v": 3,
+  "v": 4,
   "clips": [
     {
       "file": "dealsound.mp3",
@@ -12,6 +12,10 @@
     {
       "file": "janice_stfu.mp3",
       "title": "Janice STFU"
+    },
+    {
+      "file": "rick_ross_stay_schemin_ft_drake_french_montana_official_vide.mp3",
+      "title": "Rick Ross - Stay Schemin ft. Drake & French Montana [OFFICIAL VIDEO]"
     }
   ]
 }
