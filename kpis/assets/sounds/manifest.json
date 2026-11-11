@@ -1,9 +1,13 @@
 {
-  "v": 1,
+  "v": 2,
   "clips": [
     {
       "file": "dealsound.mp3",
       "title": "Deal sound"
+    },
+    {
+      "file": "50_cent_i_get_money_official_music_video.mp3",
+      "title": "50 Cent - I Get Money (Official Music Video)"
     }
   ]
 }
