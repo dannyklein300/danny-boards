@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sales Process</title>
+  <script>
+    /**
+     * LINKS — drop real URLs in here. Buttons are rendered from this object.
+     * Leave a value as "" to show a greyed, non-clickable "Link coming" button.
+     * Do not invent URLs. Known logins are filled in; sheet and SOP links are waiting.
+     *
+     * Waiting on real URLs:
+     *   salesOffersPaymentLinks   — Google Sheet "Sales Offers", Personal Payment Links tab
+     *   salesOffersGroupKickoff   — Google Sheet "Sales Offers", Group Kickoff tab
+     *   salesOffersCurrentCoaches — Google Sheet "Sales Offers", Current Coaches tab
+     *   incomeDoc                 — Google Sheet "Income Doc"
+     *   salesTracker              — Google Sheet "Sales Tracker"
+     *   ghlTagsSop                — SOP for GHL tags
+     */
+    const LINKS = {
+      typeform: "https://admin.typeform.com",
+      fathom: "https://fathom.video",
+      ghl: "https://app.gohighlevel.com",
+      slack: "https://app.slack.com",
+      gmail: "https://mail.google.com",
+      salesOffersPaymentLinks: "",
+      salesOffersGroupKickoff: "",
+      salesOffersCurrentCoaches: "",
+      incomeDoc: "",
+      salesTracker: "",
+      ghlTagsSop: ""
+    };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #142027;
+      --muted: #5a6a73;
+      --line: #e4e0d8;
+      --paper: #f4f1eb;
+      --card: #ffffff;
+      --accent: #0d5c4d;
+      --accent-hover: #0a4a3e;
+      --accent-soft: #e4f3ef;
+      --coming: #6f6b65;
+      --coming-bg: #ece9e3;
+      --coming-border: #d5d1c9;
+      --shadow: 0 1px 2px rgba(20, 32, 39, 0.05), 0 8px 24px rgba(20, 32, 39, 0.06);
+      --radius: 16px;
+      --max: 760px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "DM Sans", system-ui, -apple-system, sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .top {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(244, 241, 235, 0.94);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+    .top-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 8px 16px 10px;
+    }
+    .brand {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .brand h1 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+    .brand span {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    nav {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    nav::-webkit-scrollbar { display: none; }
+    nav a {
+      flex: 1 0 auto;
+      text-align: center;
+      text-decoration: none;
+      color: var(--ink);
+      font-size: 0.8rem;
+      font-weight: 650;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid var(--line);
+      white-space: nowrap;
+    }
+    nav a:hover { border-color: var(--accent); color: var(--accent); }
+
+    main {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 20px 16px 64px;
+    }
+
+    .section {
+      scroll-margin-top: 96px;
+      margin-bottom: 36px;
+    }
+    .section-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 8px 0 14px;
+    }
+    .section-head h2 {
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .section-head .rule {
+      flex: 1;
+      height: 1px;
+      background: var(--line);
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px 20px 18px;
+      margin-bottom: 14px;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0 16px;
+    }
+    .num {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 800;
+      font-size: 1.05rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      letter-spacing: -0.04em;
+    }
+    .what {
+      font-size: 1.12rem;
+      font-weight: 750;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+      margin-bottom: 12px;
+    }
+    .meta { min-width: 0; }
+    .row {
+      display: grid;
+      grid-template-columns: 72px 1fr;
+      gap: 8px;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+    }
+    .row .lbl {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding-top: 3px;
+    }
+    .row .val {
+      min-width: 0;
+      overflow-wrap: break-word;
+    }
+    .actions {
+      grid-column: 1 / -1;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: stretch;
+      gap: 8px;
+      margin-top: 14px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex: 1 1 180px;
+      min-height: 48px;
+      padding: 12px 18px;
+      border-radius: 12px;
+      background: var(--accent);
+      color: #fff;
+      font: inherit;
+      font-size: 0.98rem;
+      font-weight: 700;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      text-align: center;
+    }
+    .btn:hover { background: var(--accent-hover); }
+    .btn:focus-visible {
+      outline: 3px solid #8fd4c4;
+      outline-offset: 2px;
+    }
+    .btn.coming,
+    .btn.coming:hover {
+      flex-direction: column;
+      gap: 2px;
+      background: var(--coming-bg);
+      color: var(--coming);
+      border: 1px dashed var(--coming-border);
+      cursor: not-allowed;
+      pointer-events: none;
+      line-height: 1.25;
+    }
+    .coming-label { font-weight: 700; }
+    .coming-for {
+      font-size: 0.72rem;
+      font-weight: 600;
+      opacity: 0.9;
+    }
+
+    .template {
+      grid-column: 1 / -1;
+      margin-top: 12px;
+      background: var(--accent-soft);
+      border: 1px solid #cfe6e0;
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+    .template-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .template-head span {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .copy-btn {
+      flex: none;
+      min-height: 34px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      background: #fff;
+      color: var(--accent);
+      border: 1px solid #b7d8d0;
+      font: inherit;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .copy-btn:hover { background: var(--accent); color: #fff; }
+    .template pre {
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 550;
+      white-space: pre-wrap;
+      overflow-wrap: break-word;
+      line-height: 1.45;
+    }
+
+    footer {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 16px 40px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    @media (max-width: 430px) {
+      .row {
+        grid-template-columns: 1fr;
+        gap: 2px;
+        margin-bottom: 10px;
+      }
+    }
+
+    @media (min-width: 720px) {
+      .brand h1 { font-size: 1.35rem; }
+      .card { padding: 22px 24px 20px; gap: 0 18px; }
+      .num { width: 44px; height: 44px; font-size: 1.15rem; }
+      .what { font-size: 1.22rem; }
+    }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="top-inner">
+      <div class="brand">
+        <h1>Sales Process</h1>
+        <span>12 steps, in order</span>
+      </div>
+      <nav aria-label="Sections">
+        <a href="#before-call">Before Call</a>
+        <a href="#during-call">During Call</a>
+        <a href="#after-call">After Call</a>
+        <a href="#end-of-day">End of Day</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="app"></main>
+  <footer>Follow every step in order. Open each tool in a new tab.</footer>
+
+  <script>
+    const SECTIONS = [
+      {
+        id: "before-call",
+        title: "Before Call",
+        steps: [
+          {
+            n: 1,
+            what: "View lead typeform responses",
+            where: "Typeform Application",
+            buttons: [{ key: "typeform", label: "Open Typeform" }]
+          }
+        ]
+      },
+      {
+        id: "during-call",
+        title: "During Call",
+        steps: [
+          {
+            n: 2,
+            what: "Collect CC over the phone",
+            where: "Google Sheet - Sales Offers > Personal Payment Links Tab",
+            details: "Brooke Link",
+            notes: "Use Non-Brooke link if customer is using link for Klarna/AMEX/etc",
+            buttons: [{ key: "salesOffersPaymentLinks", label: "Open Sales Offers — Payment Links" }]
+          },
+          {
+            n: 3,
+            what: "Book Group Kick-off Call",
+            where: "Google Sheet - Sales Offers > Group Kickoff Tab",
+            notes: "See 2 links for 2 separate call schedules",
+            buttons: [{ key: "salesOffersGroupKickoff", label: "Open Sales Offers — Group Kickoff" }]
+          },
+          {
+            n: 4,
+            what: "Match client with coach",
+            where: "Google Sheet - Sales Offers > Current Coaches Tab",
+            buttons: [{ key: "salesOffersCurrentCoaches", label: "Open Sales Offers — Current Coaches" }]
+          }
+        ]
+      },
+      {
+        id: "after-call",
+        title: "After Call",
+        steps: [
+          {
+            n: 5,
+            what: "Sent Fathom Summary to new coach + team",
+            where: "Fathom",
+            details: "Go into Fathom, copy summary, email to new coach + team@mindstrongfitness.com",
+            notes: "Use client's name as subject line",
+            buttons: [
+              { key: "fathom", label: "Open Fathom" },
+              { key: "gmail", label: "Open Gmail" }
+            ]
+          },
+          {
+            n: 6,
+            what: "Change deal stage in GHL > New Member (Closed)",
+            where: "GHL",
+            buttons: [{ key: "ghl", label: "Open GHL" }]
+          },
+          {
+            n: 7,
+            what: "Change deal info",
+            where: "GHL",
+            details: "After 2-3 seconds “opportunities” will populate on the left side under their name. Fill out Coach, Payment (total revenue contracted), Group Kick off + 1:1 onboarding date and time",
+            buttons: [{ key: "ghl", label: "Open GHL" }]
+          },
+          {
+            n: 8,
+            what: "Fill out Income Doc",
+            where: "Google Sheet - Income Doc",
+            buttons: [{ key: "incomeDoc", label: "Open Income Doc" }]
+          },
+          {
+            n: 9,
+            what: "Post new sale in Sales Team Wins channel on Slack",
+            where: "Slack",
+            template: "New Member: First Name Last Name, Payment Plan. If they got a special deal or discount. Coach First name Last Name.",
+            buttons: [{ key: "slack", label: "Open Slack" }]
+          }
+        ]
+      },
+      {
+        id: "end-of-day",
+        title: "End of Day",
+        steps: [
+          {
+            n: 10,
+            what: "End of Day Sales Text",
+            where: "GHL",
+            details: "Send \"End of Day Sales Text\" template in GHL",
+            buttons: [{ key: "ghl", label: "Open GHL" }]
+          },
+          {
+            n: 11,
+            what: "Update Sales Tracker",
+            where: "Google Sheet - Sales Tracker",
+            details: "Update \"Brooke\" tab not Master spreadsheet",
+            buttons: [{ key: "salesTracker", label: "Open Sales Tracker" }]
+          },
+          {
+            n: 12,
+            what: "Ensure all calls tagged in GHL",
+            where: "GHL",
+            details: "See SOP for GHL tags here",
+            buttons: [
+              { key: "ghl", label: "Open GHL" },
+              { key: "ghlTagsSop", label: "Open GHL Tags SOP" }
+            ]
+          }
+        ]
+      }
+    ];
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function renderButton(btn) {
+      const url = ((window.LINKS || LINKS)[btn.key] || "").trim();
+      if (!url) {
+        return (
+          '<span class="btn coming" aria-disabled="true" data-link-key="' + escapeHtml(btn.key) + '">' +
+            '<span class="coming-label">Link coming</span>' +
+            '<span class="coming-for">' + escapeHtml(btn.label) + "</span>" +
+          "</span>"
+        );
+      }
+      return (
+        '<a class="btn" data-link-key="' + escapeHtml(btn.key) + '" href="' + escapeHtml(url) +
+        '" target="_blank" rel="noopener noreferrer">' + escapeHtml(btn.label) + "</a>"
+      );
+    }
+
+    function row(label, value) {
+      if (!value) return "";
+      return (
+        '<div class="row"><div class="lbl">' + escapeHtml(label) +
+        '</div><div class="val">' + escapeHtml(value) + "</div></div>"
+      );
+    }
+
+    function renderStep(step) {
+      const buttons = (step.buttons || []).map(renderButton).join("");
+      let extra = "";
+      if (step.template) {
+        extra =
+          '<div class="template">' +
+            '<div class="template-head"><span>Post this in Slack</span>' +
+            '<button type="button" class="copy-btn" data-copy="' + escapeHtml(step.template) + '">Copy</button></div>' +
+            "<pre>" + escapeHtml(step.template) + "</pre>" +
+          "</div>";
+      }
+      return (
+        '<article class="card" id="step-' + step.n + '">' +
+          '<div class="num" aria-hidden="true">' + step.n + "</div>" +
+          '<div class="meta">' +
+            '<h3 class="what">' + escapeHtml(step.what) + "</h3>" +
+            row("Where", step.where) +
+            row("Details", step.details) +
+            row("Notes", step.notes) +
+          "</div>" +
+          extra +
+          '<div class="actions">' + buttons + "</div>" +
+        "</article>"
+      );
+    }
+
+    const app = document.getElementById("app");
+    app.innerHTML = SECTIONS.map(function (section) {
+      return (
+        '<section class="section" id="' + section.id + '">' +
+          '<div class="section-head"><h2>' + escapeHtml(section.title) + '</h2><div class="rule"></div></div>' +
+          section.steps.map(renderStep).join("") +
+        "</section>"
+      );
+    }).join("");
+
+    document.querySelectorAll(".copy-btn").forEach(function (btn) {
+      btn.addEventListener("click", async function () {
+        const text = btn.getAttribute("data-copy") || "";
+        try {
+          await navigator.clipboard.writeText(text);
+          const prev = btn.textContent;
+          btn.textContent = "Copied";
+          setTimeout(function () { btn.textContent = prev; }, 1600);
+        } catch (err) {
+          btn.textContent = "Copy failed";
+        }
+      });
+    });
+  </script>
+</body>
+</html>
